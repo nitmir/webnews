@@ -114,7 +114,10 @@ Le Web-news
 	}
 	
 	function logout(){
-		unset($_SESSION);
+		$_SESSION['auth']=false;
+		foreach($_SESSION as $key => $value){
+			unset($_SESSION[$key]);
+		}
 	}
 	
 ?>

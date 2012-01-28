@@ -222,7 +222,7 @@
 		</td>
 		<td align="right" valign="top" nowrap="true" rowspan="2"><font size="-2">
 			Web-News v.1.6.3<br>by <a href="http://web-news.sourceforge.net/webnews.html" target="new">Terence Yim</a></font></br>
-			<a href="?logout">logout</a>
+			<a href="?logout=true">logout</a>
 		</td>
 	</tr>
 	<tr>
