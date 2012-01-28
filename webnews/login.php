@@ -97,7 +97,6 @@ Le Web-news
 		}
 		$query=mysql_query("SELECT * FROM users WHERE mail='".mysql_real_escape_string($mail)."' AND valid='oui'");
 		if(mysql_num_rows($query)!=1){
-			echo 'coocu';
 			return false;
 		}else{
 			$data=mysql_fetch_assoc($query);
