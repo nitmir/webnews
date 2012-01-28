@@ -1,0 +1,56 @@
+Feature added in v1.6.3
+    1. Added the recent messages thread when reading individual article
+    2. Config "thread_search_size" added to "webnews.cfg.php".
+    3. Two new messages are added to language file:
+       - current_msg
+       - recent_thread
+
+Bugs fixed in v1.6.2
+   1. Fixed the incorrect pagination when displaying the search result.
+   2. Fixed the problem with no search result displayed when the search is not perform on the first page of the message list.
+
+Bugs fixed in v1.6.1b2
+   1. Correctly escaped the HTML symbols in the search text.
+   2. Correctly escape the special regular expression symbol in the search text.
+   3. The information string displayed when no search result is found is corrected to read from the messages*.ini file.
+   
+Bug fixed in v1.6.1b1
+   1. Use of the "register_shutdown_function()" function to make sure any NNTP connection opened is closed when the
+      script finished its execution. This solve the problem of connection timeout on some machine.
+
+New features and bug fixed in v1.6.0
+   1. Added the search feature for searching subject and author.
+   2. Re-format the control button layout.
+   3. Save user language and messages per page preferences in client browser cookies.
+   4. The "webnews.cfg" file is renamed into "webnews.cfg.php" to improve security.
+   5. A new setting "$over_link_color" is added in the "webnews.cfg.php" to set the color of a link when mouseover.
+   6. Bugs fixed in some regular expression to have better compatibility across different PHP version.
+   7. Correctly URL-encode the newsgroup name in the links. This fixed the problem of not able to show newsgroups with space in its name.
+   8. Fixed the bug of not showing empty newsgroup (newsgroup with no message in it) correctly.
+
+Bug fixed in v1.5.7
+   1. Yet, another bug in uucoder.php. This bug makes the decoding of some uuencoded message incorrectly.
+
+Bug fixed in v1.5.6
+   1. A bug in uucoder.php was discovered. There was an endless loop inside.
+
+Bug fixed in v1.5.5
+
+   1. uucoder.php changed for faster decoding
+   2. util.php changed for better case checking for the read_ini_file() function.
+   3. Better error checking in newsgroups.php script.
+   4. Fixed decoding bug for UUEncode attachment with whitespaces in file name.
+   
+
+Bugs fixed and enhancements in v1.5.4
+
+   1. NNTP to RSS 2.0 feed is now supported. Now newsgroups not only can access through HTTP, but also through RSS feed.
+   2. A minor fix on closing the NNTP connect properly in "show_header.php" script.
+
+Bugs fixed and enhancement in v1.5.3
+
+   1. The use of the persistant socket connection is revoked back to non-persistant one since the use of persistant 
+      socket connection may cause stability to some web server.
+   2. NNTP connections not closed correctly and this may have trouble with some NNTP server.
+   3. Newsgroups listed using WILDMAT is sorted for the display. 
+
