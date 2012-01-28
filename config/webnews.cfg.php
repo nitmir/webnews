@@ -15,7 +15,7 @@
 /******************************************************************/
 
 	//Mysql Server setting
-	$mysql_host="localhost";
+	$mysql_host="138.231.143.22";
 	$mysql_user="news";
 	$mysql_pass="amlrm";
 	$mysql_db="news";
