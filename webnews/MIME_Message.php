@@ -66,8 +66,6 @@
 			$header_want = "/^(From|Subject|Date|Newsgroups|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
 			
 			$headers = split("\r\n", $headers);
-			print_r($headers);
-			echo "\n\n\n\n";
 
 			// Parse the header
 			for ($line_count = 0; $line_count < sizeof($headers);$line_count++) {
@@ -81,12 +79,9 @@
 							break;
 						}
 					}
-					echo $header[2]."\n";
 					$result[strtolower($header[1])] = decode_MIME_header($header[2]);
 				}
 			}
-			echo "\n\n\n\n";
-			flush();
 			return $result;
 		}
 
