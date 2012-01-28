@@ -470,7 +470,7 @@
 	
 	
 		if ($start_page != 1) {
-				echo "<b><a href=\"newsgroups.php?page=".($start_page - 1)."\">".$messages_ini["text"]["previous"]."$pages_per_page".$messages_ini["text"]["page_quality"]."</a></b>&nbsp;&nbsp;";
+				echo "<b><a href=\"newsgroups.php?page=".($start_page - 1)."\">".$messages_ini["text"]["previous"]."$pages_per_page".(isset($messages_ini["text"]["page_quality"])?$messages_ini["text"]["page_quality"]:'')."</a></b>&nbsp;&nbsp;";
 		}
 		if ($end_page != $page_count) {
 			echo "<b><a href=\"newsgroups.php?page=".($end_page + 1)."\">".$messages_ini["text"]["next"]."$pages_per_page".(isset($messages_ini["text"]["page_quality"])?$messages_ini["text"]["page_quality"]:'')."</a></b>\r\n";

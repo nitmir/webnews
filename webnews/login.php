@@ -30,6 +30,45 @@
 		}
 	}
 	
+	
+	
+	function validate_mail($token){
+		$query=mysql_query("SELECT * FROM users WHERE url='".mysql_real_escape_string($token)."'");
+		if(mysql_num_rows($query)<1){
+			return false;
+		}else{
+			mysql_query("UPDATE users SET valid='oui', url='' WHERE url='".mysql_real_escape_string($token)."'")or die(mysql_error());
+			return true;
+		}
+	}
+	
+	function inscription_mail($mail,$token,$nom){
+		// Sujet
+     $to  = $mail; // notez la virgule
+     $subject = 'Inscription au webnews';
+
+     // message
+     $message = '
+Pour confirmer cotre inscription et pouvoir vous connecter, merci de suivre le lien suivant : 
+http'.(isset($_SERVER['HTTPS'])&&$_SERVER['HTTPS']=='on'?'s':'').'://'.$_SERVER['HTTP_HOST'].'/?confirm='.$token.'
+
+-- 
+Le Web-news
+     ';
+
+     // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+     $headers  = 'MIME-Version: 1.0' . "\r\n";
+     $headers .= 'Content-type: text/plain; charset=iso-8859-1' . "\r\n";
+
+     // En-têtes additionnels
+     $headers .= 'To: '.$nom.' <'.$mail.'>' . "\r\n";
+     $headers .= 'From: Web-news<nobody@crans.org>' . "\r\n";
+
+     // Envoi
+     mail($to, $subject, $message, $headers);
+     }
+		
+	
 	function sha1crypt($password){
 	    // create a salt that ensures crypt creates an sha1 hash
 	    $base64_alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -56,7 +95,7 @@
 		if (is_loged()){
 			return true;
 		}
-		$query=mysql_query("SELECT * FROM users WHERE mail='".mysql_real_escape_string($mail)."'");
+		$query=mysql_query("SELECT * FROM users WHERE mail='".mysql_real_escape_string($mail)."' AND valid='oui'");
 		if(mysql_num_rows($query)!=1){
 			echo 'coocu';
 			return false;

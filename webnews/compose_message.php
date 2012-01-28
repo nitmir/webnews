@@ -46,17 +46,17 @@
 		}
 	}
 	
-	$name = $_SESSION["name"];
+	$name = $_SESSION["nom"];
 	$email = $_SESSION["mail"];
 	//~ $name = "Valentin Samir";
 	//~ $email = "valentin.samir@crans.org";
 
 
-	if (strcmp($_COOKIE["wn_pref_sign".$user], "1") == 0) {
-		if (strcmp($_COOKIE["wn_pref_sign_txt".$user], "") != 0) {
-			$message .= "\r\n\r\n--\r\n".$_COOKIE["wn_pref_sign_txt".$user];
-		}
-	}
+	//~ if (strcmp($_COOKIE["wn_pref_sign".$user], "1") == 0) {
+		//~ if (strcmp($_COOKIE["wn_pref_sign_txt".$user], "") != 0) {
+			//~ $message .= "\r\n\r\n--\r\n".$_COOKIE["wn_pref_sign_txt".$user];
+		//~ }
+	//~ }
 	
 
 	include("webnews/compose_template.php");

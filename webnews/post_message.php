@@ -117,7 +117,7 @@
 				$message = stripslashes($message);
 			}
 	
-			if (sizeof($error_messages) == 0) {
+			if (!isset($error_messages)||sizeof($error_messages) == 0) {
 ?>
 				<form action="newsgroups.php">
 				<font face="Tahoma, Sans-Serif">
@@ -150,7 +150,7 @@
 			</form>
 <?
 		}
-		if (is_requested("add_file") || (sizeof($error_messages) != 0)) {
+		if (is_requested("add_file") || (isset($error_messages)&&sizeof($error_messages) != 0)) {
 			$subject = htmlescape($subject);
 			$name = htmlescape($name);
 			$email = htmlescape($email);

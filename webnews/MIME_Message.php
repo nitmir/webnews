@@ -52,6 +52,7 @@
 		
 		
 		function get_part_header($i) {
+			
 			return $this->MIME_message[$i]["header"];
 		}
 		
@@ -65,23 +66,27 @@
 			$header_want = "/^(From|Subject|Date|Newsgroups|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
 			
 			$headers = split("\r\n", $headers);
+			print_r($headers);
+			echo "\n\n\n\n";
 
 			// Parse the header
 			for ($line_count = 0; $line_count < sizeof($headers);$line_count++) {
 				$line = $headers[$line_count];
 				
 				if (preg_match($header_want, $line, $header)) {
-					while (preg_match("/.+;\s*$/", $header[2])) {
+					while (preg_match("/.+;\s*$/", $header[2])|| (isset($headers[$line_count + 1])&&substr($headers[$line_count + 1],0,1)==' ')) {
 						if (strpos($headers[$line_count + 1], ":") === FALSE) {
 							$header[2] .= str_replace("\r\n", "", $headers[++$line_count]);
 						} else {
 							break;
 						}
 					}
+					echo $header[2]."\n";
 					$result[strtolower($header[1])] = decode_MIME_header($header[2]);
 				}
 			}
-			
+			echo "\n\n\n\n";
+			flush();
 			return $result;
 		}
 

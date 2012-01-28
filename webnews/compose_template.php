@@ -57,11 +57,11 @@ display:block;/* pour effectivement centrer ! *//*
 		</tr>
 		<tr>
 			<td><font size="-1"><b><? echo $messages_ini["text"]["name"]; ?>:</b></font></td>
-			<td><input type="text" name="name" size="60" value="<? echo $name; ?>" style="<? echo $form_style; ?>"></td>
+			<td><input type="text" name="name" size="60" value="<? echo $name; ?>" style="<? echo $form_style; ?>" readonly="readonly"></td>
 		</tr>
 		<tr>
 			<td><font size="-1"><b><? echo $messages_ini["text"]["email"]; ?>:</b></font></td>
-			<td><input type="text" name="email" size="60" value="<? echo $email; ?>" style="<? echo $form_style; ?>"></td>
+			<td><input type="text" name="email" size="60" value="<? echo $email; ?>" style="<? echo $form_style; ?>" readonly="readonly"></td>
 		</tr>
 		<tr>
 <?
