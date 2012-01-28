@@ -102,7 +102,6 @@ Le Web-news
 		}else{
 			$data=mysql_fetch_assoc($query);
 			if(validpass($pass,$data['pass'])){
-				echo 'couocu';
 				$_SESSION['auth']=true;
 				$_SESSION['nom']=$data['nom'];
 				$_SESSION['id']=$data['id'];
