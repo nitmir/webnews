@@ -15,16 +15,15 @@
 /******************************************************************/
 
 	//Mysql Server setting
-	$mysql_host="138.231.143.22";
+	$mysql_host="127.0.0.1";
 	$mysql_user="news";
 	$mysql_pass="amlrm";
 	$mysql_db="news";
 
 	// NNTP Server setting
-	$nntp_server = "news.crans.org";
+	$nntp_server = "127.0.0.1";
 	$user = "Vivelapa";
 	$pass = "ranoia!";
-	//$signature = "-- \nValentin";
 	$signature = '';
 	$sawafter=3600*24*30*6; // 6 month, put 0 for never, déconseillé car empêche la purge de la base de donnée.
 	
