@@ -79,7 +79,7 @@ if(is_loged()){
 						echo '<font color="red">Mot de passe trop court</font></br>';
 					}
 				}else{
-					echo '<font color="red">Email invalide</font></br>';
+					echo '<font color="red">Email invalide&nbsp;: doit être un email @crans.org ou @ens-cachan.fr</font></br>';
 				
 				}
 			}
