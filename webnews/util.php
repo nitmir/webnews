@@ -172,7 +172,14 @@
 	
 	
 	function validate_email($email) {
-		return preg_match("/[\w\-=!#$%^*'+\\.={}|?~]+@[\w\-=!#$%^*'+\\.={}|?~]+[\w\-=!#$%^*'+\\={}|?~]/", $email);
+		$email = strtolower($email);
+		$parts = explode("@", $email);
+		$domain = array_pop($parts);
+		if (in_array($domain, array("crans.org", "ens-cachan.fr", "crans.ens-cachan.fr"))) {
+			return preg_match("/[\w\-=!#$%^*'+\\.={}|?~]+@[\w\-=!#$%^*'+\\.={}|?~]+[\w\-=!#$%^*'+\\={}|?~]/", $email);
+		} else {
+			return FALSE;
+		}
 	}
 
 
@@ -470,7 +477,7 @@
 	function saw_all($nodes){
 		foreach ($nodes as $node) {
 			$message_info = $node->get_message_info();
-			saw($message_info->nntp_message_id,$message_info->date);
+			saw($message_info->message_id,$message_info->date);
 		}
 	}
 	
@@ -592,7 +599,7 @@
 			echo $old_indent;
 			echo $sign."<img src=\"".$image_base."message.gif\" width=\"13\" height=\"13\" border=\"0\" align=\"absmiddle\" alt=\"#\">&nbsp;";
 			
-			if ((($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id))&&!is_saw($message_info->nntp_message_id,$message_info->date)) {
+			if ((($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id))&&!is_saw($message_info->message_id,$message_info->date)) {
 			    $start_tag = "<b><a href=\"newsgroups.php?art_group=".urlencode($_SESSION["newsgroup"])."&article_id=".$message_info->nntp_message_id."\">";
 			    $end_tag = "</a></b>";
 			} elseif (($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id)) {
@@ -601,7 +608,7 @@
 			} else {
 			    $start_tag = "<b>";
 			    $end_tag = $messages_ini["text"]["current_msg"]."</b>";
-			    saw($message_info->nntp_message_id,$message_info->date);
+			    saw($message_info->message_id,$message_info->date);
 			}
 			echo $start_tag.htmlescape(utf8(chop_str($message_info->subject, $subject_length_limit - $level*3))).$end_tag;
 			echo "</font></td>\r\n";

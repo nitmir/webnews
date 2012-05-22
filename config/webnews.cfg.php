@@ -42,11 +42,18 @@
         $newsgroups_list = array(
                                                 "crans.general",
                                                 "crans.crans",
+                                                "crans.crans.annonces",
+                                                "crans.tele",
                                                 "crans.web-sympas",
                                                 "crans.radio-ragots",
                                                 "crans.petites-annonces",
+                                                "crans.politique",
+                                                "crans.culture",
+                                                "crans.dino",
+                                                "crans.informatique",
+                                                "crans.informatique.*",
+                                                "tac.dpt.*",
                                                 "tac.bde",
-                                                "crans.crans.annonces",
 						"tac.crous",
                                                 "crans.test");
         $default_group = "crans.general";
