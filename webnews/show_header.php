@@ -71,6 +71,20 @@
 				$_SESSION["result"] = null;
 				if ($group_info["count"] > 0) {
 					$_SESSION["article_list"] = $nntp->get_article_list($_SESSION["newsgroup"]);
+					
+					$i=0;
+					$query=mysql_query("SELECT * FROM post WHERE user_id='".$_SESSION["id"]."' AND `group`='".$_SESSION["newsgroup"]."'")or die(mysql_error());
+					while($data=mysql_fetch_assoc($query)){
+						$saw[$data['group_id']]=true;
+					}
+					for($j=sizeof($_SESSION["article_list"])-1;isset($_SESSION["article_list"][$j]);$j--){
+						if(isset($_SESSION['read_all_id'][$_SESSION["newsgroup"]])&&$_SESSION["article_list"][$j]<=$_SESSION['read_all_id'][$_SESSION["newsgroup"]]){
+							break;
+						}
+						if(!isset($saw[$_SESSION["article_list"][$j]])){
+							$i++;
+						}
+					}
 					if ($_SESSION["article_list"] === FALSE) {
 						unset($_SESSION["article_list"]);
 						echo "<b>".$messages_ini["error"]["group_fail"].$_SESSION["newsgroup"]." </b><br>";
@@ -242,7 +256,7 @@
 					reset($newsgroups_list);
 				?>
 			</select>
-			<input type="submit" value="<? echo $messages_ini["control"]["go"]; ?>" style="<? echo $form_style_bold; ?>">
+			<input type="submit" value="<? echo $messages_ini["control"]["go"]; ?>" style="<? echo $form_style_bold; ?>"> <a href="?portal"><font size="<?php echo $font_size; ?>">voir toute la liste</font></a>
 		</td>
 		<td width="100%">
 			&nbsp;

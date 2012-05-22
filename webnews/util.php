@@ -449,13 +449,13 @@
 		return $search_pat;
 	}
 	
-	function is_saw($message_id,$date){
+	function is_saw($message_info){
 		global $sawafter;
 		//~ $query=mysql_query("SELECT * FROM post WHERE id='".$message_id."'");
-		if((time()-$date)>$sawafter){
+		if((time()-$message_info->date)>$sawafter||$message_info->date<$_SESSION['read_all'][$_SESSION["newsgroup"]]){
 			return true;
 		} else {
-			$query=mysql_query("SELECT * FROM post WHERE id='".$message_id."' AND date='".$date."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
+			$query=mysql_query("SELECT * FROM post WHERE id='".$message_info->message_id."' AND date='".$message_info->date."'  AND user_id='".$_SESSION['id']."'")or die(mysql_error());
 			if(mysql_num_rows($query)==1){
 				return true;
 			} else {
@@ -464,21 +464,29 @@
 		}
 	}
 	
-	function saw($message_id,$date){
+	function saw($message_info){
 		global $sawafter;
-		if(!is_saw($message_id,$date)){
+		if(!is_saw($message_info)){
 			$limit=time()-$sawafter;
-			$query=mysql_query("INSERT INTO post (id, date,user_id) VALUES ('".$message_id."', '".$date."','".$_SESSION['id']."')")or die(mysql_error());
+			$query=mysql_query("INSERT INTO post (id, date,user_id,group_id,`group`) VALUES ('".$message_info->message_id."', '".$message_info->date."','".$_SESSION['id']."','".$message_info->nntp_message_id."','".$_SESSION["newsgroup"]."')")or die(mysql_error());
 			$query=mysql_query("DELETE FROM post WHERE date<'".$limit."'")or die(mysql_error());
+			$_SESSION['unread'][$_SESSION["newsgroup"]]--;
 		}
 		return true;
 	}
 	
+	
 	function saw_all($nodes){
-		foreach ($nodes as $node) {
-			$message_info = $node->get_message_info();
-			saw($message_info->message_id,$message_info->date);
-		}
+		global $nntp;
+		$_SESSION['read_all'][$_SESSION["newsgroup"]]=time();
+		$nntp->connect();
+		$id=max($nntp->get_article_list($_SESSION["newsgroup"]));
+		$_SESSION['read_all_id'][$_SESSION["newsgroup"]]=$id;
+		mysql_query("DELETE FROM post WHERE id='".$_SESSION["newsgroup"]."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
+		mysql_query("INSERT INTO post (id,date,user_id,group_id,`group`) VALUES ('".$_SESSION["newsgroup"]."','".$_SESSION['read_all'][$_SESSION["newsgroup"]]."','".$_SESSION['id']."','".$id."','".$_SESSION["newsgroup"]."')")or die(mysql_error());
+		$query=mysql_query("DELETE FROM post WHERE date<'".$_SESSION['read_all'][$_SESSION["newsgroup"]]."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
+		$_SESSION['unread'][$_SESSION["newsgroup"]]=0;
+		
 	}
 	
 	function is_utf8($str) {
@@ -531,6 +539,10 @@
 		//~ print_r($nodes);
 		if($_SESSION["sawall"]){
 			saw_all($nodes);
+			$_SESSION["sawall"]=false;
+			$url=preg_replace('/(\?|&)sawall=1/','',$_SERVER['REQUEST_URI']);
+			header("Location: ".$url);
+			die();
 		}
 		
 		$count = 0;
@@ -599,7 +611,7 @@
 			echo $old_indent;
 			echo $sign."<img src=\"".$image_base."message.gif\" width=\"13\" height=\"13\" border=\"0\" align=\"absmiddle\" alt=\"#\">&nbsp;";
 			
-			if ((($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id))&&!is_saw($message_info->message_id,$message_info->date)) {
+			if ((($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id))&&!is_saw($message_info)) {
 			    $start_tag = "<b><a href=\"newsgroups.php?art_group=".urlencode($_SESSION["newsgroup"])."&article_id=".$message_info->nntp_message_id."\">";
 			    $end_tag = "</a></b>";
 			} elseif (($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id)) {
@@ -608,7 +620,7 @@
 			} else {
 			    $start_tag = "<b>";
 			    $end_tag = $messages_ini["text"]["current_msg"]."</b>";
-			    saw($message_info->message_id,$message_info->date);
+			    saw($message_info);
 			}
 			echo $start_tag.htmlescape(utf8(chop_str($message_info->subject, $subject_length_limit - $level*3))).$end_tag;
 			echo "</font></td>\r\n";

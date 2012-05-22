@@ -134,6 +134,14 @@
 			} else {
 				$_SESSION["newsgroups_list"][] = $group;
 			}
+			$query=mysql_query("SELECT * FROM post WHERE id='".$group."' AND user_id='".$_SESSION['id']."' ORDER BY date DESC")or die(mysql_error());
+			if($data=mysql_fetch_assoc($query)){
+				$_SESSION['read_all'][$group]=$data['date'];
+				$_SESSION['read_all_id'][$group]=$data['group_id'];
+			}else{
+				$_SESSION['read_all'][$group]=0;
+				$_SESSION['read_all_id'][$group]=0;
+			}
 		}		
 	}
 	$newsgroups_list = $_SESSION["newsgroups_list"];
@@ -156,6 +164,36 @@
 		}
 	} else if (is_requested("preferences")) {
 		$content_page = "webnews/preferences.php";
+	}else if (is_requested("portal")){
+		$content_page = "webnews/portal.php";
+		foreach($newsgroups_list as $group){
+			if(!isset($_SESSION['unread'][$group])||is_requested("unread")){
+				if(!isset($saw)){
+					$saw=array();
+					$query=mysql_query("SELECT * FROM post WHERE user_id='".$_SESSION["id"]."'");
+					while($data=mysql_fetch_assoc($query)){
+						$saw[$data['group']][$data['group_id']]=true;
+					}
+				}
+				$nntp->connect();
+				$array=$nntp->get_article_list($group);
+				$i=0;
+				for($j=sizeof($array)-1;isset($array[$j]);$j--){
+					if(isset($_SESSION['read_all_id'][$group])&&$array[$j]<=$_SESSION['read_all_id'][$group]){
+						break;
+					}
+					if(!isset($saw[$group][$array[$j]])){
+						$i++;
+					}
+				}
+				$_SESSION['unread'][$group]=$i;
+			}
+		}
+		if(is_requested("unread")){
+			$url=preg_replace('/(\?|&)unread=1/','',$_SERVER['REQUEST_URI']);
+			header("Location: ".$url);
+			die();
+		}
 	} else {
 		$renew = 0;
 		if (is_requested("group") 
@@ -190,6 +228,9 @@
 			}
 		}
 	}
+	
+	
+	
 
 	include ($template);
 ?>
