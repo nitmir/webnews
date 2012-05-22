@@ -21,7 +21,7 @@
 	$mysql_db="news";
 
 	// NNTP Server setting
-	$nntp_server = "127.0.0.1";
+	$nntp_server = "news";
 	$user = "Vivelapa";
 	$pass = "ranoia!";
 	$signature = '';
