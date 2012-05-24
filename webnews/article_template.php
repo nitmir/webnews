@@ -100,8 +100,8 @@
 			echo "<tr><td colspan=\"2\"><font size=\"$font_size\"><br>";
 			$body = decode_message_content($part);
 			$body = htmlescape($body);
-			$body = preg_replace(array("/\r\n/", "/(^&gt;.*)/m", "/\t/", "/  /"),
-										array("<br>\r\n", "<i>$1</i>", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", "&nbsp;&nbsp;"),
+			$body = preg_replace(array("/\n-- \r\n(.*)/s","/\r\n/", "/(^&gt;.*)/m", "/\t/", "/  /"),
+										array("\n<font color=\"grey\">--\r\n$1</font>","<br>\r\n", "<i>$1</i>", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", "&nbsp;&nbsp;"),
 										add_html_links($body));
 			echo utf8($body)."<br></td></tr>";
 		} elseif (preg_match("/^image\/(gif|jpeg|pjpeg)/i", $part["header"]["content-type"])) {

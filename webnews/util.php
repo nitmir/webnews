@@ -449,6 +449,18 @@
 		return $search_pat;
 	}
 	
+
+	function init_read_all($group){
+                        $query=mysql_query("SELECT * FROM post WHERE id='".$group."' AND user_id='".$_SESSION['id']."' ORDER BY date DESC")or die(mysql_error());
+                        if($data=mysql_fetch_assoc($query)){
+                                $_SESSION['read_all'][$group]=$data['date'];
+                                $_SESSION['read_all_id'][$group]=$data['group_id'];
+                        }else{
+                                $_SESSION['read_all'][$group]=0;
+                                $_SESSION['read_all_id'][$group]=0;
+                        }
+}
+
 	function is_saw($message_info){
 		global $sawafter;
 		//~ $query=mysql_query("SELECT * FROM post WHERE id='".$message_id."'");
@@ -484,7 +496,7 @@
 		$_SESSION['read_all_id'][$_SESSION["newsgroup"]]=$id;
 		mysql_query("DELETE FROM post WHERE id='".$_SESSION["newsgroup"]."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
 		mysql_query("INSERT INTO post (id,date,user_id,group_id,`group`) VALUES ('".$_SESSION["newsgroup"]."','".$_SESSION['read_all'][$_SESSION["newsgroup"]]."','".$_SESSION['id']."','".$id."','".$_SESSION["newsgroup"]."')")or die(mysql_error());
-		$query=mysql_query("DELETE FROM post WHERE date<'".$_SESSION['read_all'][$_SESSION["newsgroup"]]."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
+		$query=mysql_query("DELETE FROM post WHERE date<'".$_SESSION['read_all'][$_SESSION["newsgroup"]]."' AND `group`='".$_SESSION['newsgroup']."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
 		$_SESSION['unread'][$_SESSION["newsgroup"]]=0;
 		
 	}

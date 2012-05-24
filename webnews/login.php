@@ -33,7 +33,10 @@
 	
 	
 	function validate_mail($token){
-		$query=mysql_query("SELECT * FROM users WHERE url='".mysql_real_escape_string($token)."'");
+		$time=time() - 24*3600;
+                mysql_query("DELETE FROM users WHERE valid='non' AND inscription<".$time)or die(mysql_error());
+		if($token==''){return false;}
+		$query=mysql_query("SELECT * FROM users WHERE valid='non' AND url='".mysql_real_escape_string($token)."'");
 		if(mysql_num_rows($query)<1){
 			return false;
 		}else{
@@ -105,6 +108,9 @@ Le Web-news
 				$_SESSION['nom']=$data['nom'];
 				$_SESSION['id']=$data['id'];
 				$_SESSION['mail']=$data['mail'];
+				mysql_query("UPDATE users SET last_login='".time()."' WHERE id='".$_SESSION['id']."'")or die(mysql_error());
+				$time=time() - 24*3600;
+				mysql_query("DELETE FROM users WHERE valid='non' AND inscription<".$time)or die(mysql_error());
 				return true;
 			}else{
 				return false;

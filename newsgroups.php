@@ -134,17 +134,10 @@
 			} else {
 				$_SESSION["newsgroups_list"][] = $group;
 			}
-			$query=mysql_query("SELECT * FROM post WHERE id='".$group."' AND user_id='".$_SESSION['id']."' ORDER BY date DESC")or die(mysql_error());
-			if($data=mysql_fetch_assoc($query)){
-				$_SESSION['read_all'][$group]=$data['date'];
-				$_SESSION['read_all_id'][$group]=$data['group_id'];
-			}else{
-				$_SESSION['read_all'][$group]=0;
-				$_SESSION['read_all_id'][$group]=0;
-			}
 		}		
 	}
 	$newsgroups_list = $_SESSION["newsgroups_list"];
+	array_map('init_read_all',$newsgroups_list);
 
 	if (is_requested("cancel")) {
 		// Back to show header
