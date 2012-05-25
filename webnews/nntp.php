@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	This PHP script is licensed under the GPL
 
@@ -193,9 +193,9 @@
 		}
 		
 		
-		function get_article_list($group) {
+		function get_article_list($group,$range='') {
 			if ($this->nntp) {			
-				$buf = $this->send_request("listgroup ".$group);
+				$buf = $this->send_request("listgroup ".$group.(($range!='')?' ':'').$range);
 				
 				$response = $this->parse_response($buf);
 				if ($response["status"] == GROUP_SELECTED) {

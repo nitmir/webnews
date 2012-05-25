@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	This PHP script is licensed under the GPL
 
@@ -7,7 +7,7 @@
 	Homepage: http://web-news.sourceforge.net
 */
 ?>
-<?
+<?php
 //	$nntp = new NNTP($nntp_server, $user, $pass);
 	$reply_references = "";
 
@@ -125,11 +125,11 @@
 						<tr>
 							<td nowrap="true">
 									<input type="hidden" name="renew" value="1">
-									<input type="submit" value="<? echo $messages_ini["control"]["return"]; ?>" style="<? echo $form_style_bold; ?>"></td>
+									<input type="submit" value="<?php echo $messages_ini["control"]["return"]; ?>" style="<?php echo $form_style_bold; ?>"></td>
 						</tr>
 					</table>
 				</font>
-<?
+<?php
 				// Save the name and email in the session
 				$_SESSION["wn_name"] = $name;
 				$_SESSION["wn_email"] = $email;
@@ -148,7 +148,7 @@
 			}
 ?>
 			</form>
-<?
+<?php
 		}
 		if (is_requested("add_file") || (isset($error_messages)&&sizeof($error_messages) != 0)) {
 			$subject = htmlescape($subject);

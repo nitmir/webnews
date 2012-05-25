@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	This PHP script is licensed under the GPL
 
@@ -72,7 +72,7 @@
 				if ($group_info["count"] > 0) {
 					$_SESSION["article_list"] = $nntp->get_article_list($_SESSION["newsgroup"]);
 					
-					$i=0;
+					/*$i=0;
 					$query=mysql_query("SELECT * FROM post WHERE user_id='".$_SESSION["id"]."' AND `group`='".$_SESSION["newsgroup"]."'")or die(mysql_error());
 					while($data=mysql_fetch_assoc($query)){
 						$saw[$data['group_id']]=true;
@@ -84,7 +84,7 @@
 						if(!isset($saw[$_SESSION["article_list"][$j]])){
 							$i++;
 						}
-					}
+					}*/
 					if ($_SESSION["article_list"] === FALSE) {
 						unset($_SESSION["article_list"]);
 						echo "<b>".$messages_ini["error"]["group_fail"].$_SESSION["newsgroup"]." </b><br>";
@@ -208,17 +208,17 @@
 ?>
 
 <form action="newsgroups.php">
-<font face="<? echo $font_family; ?>">
+<font face="<?php echo $font_family; ?>">
 
 <table cellspacing="2" cellpadding="0" border="0" width="100%">
 	<tr>
 		<td nowrap="true" width="1%">
-			<font size="<? echo $font_size; ?>"><b><? echo $messages_ini["text"]["search"]; ?>:&nbsp;</b></font>
+			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["search"]; ?>:&nbsp;</b></font>
 		</td>
 		<td nowrap="true" align="left">
-			<input type="text" size="40" name="search_txt" style="<?echo $form_style; ?>" value="<? echo isset($_SESSION["search_txt"])?$_SESSION["search_txt"]:""; ?>">
-			<input type="submit" name="search" value="<? echo $messages_ini["control"]["search"]; ?>" style="<? echo $form_style_bold; ?>">
-<?
+			<input type="text" size="40" name="search_txt" style="<?php echo $form_style; ?>" value="<?php echo isset($_SESSION["search_txt"])?$_SESSION["search_txt"]:""; ?>">
+			<input type="submit" name="search" value="<?php echo $messages_ini["control"]["search"]; ?>" style="<?php echo $form_style_bold; ?>">
+<?php
 /*
 			if ($_SESSION["sch_option"]) {
 				echo "<font size=\"($font_size - 1)\"><a href=\"newsgroups.php?sch_option=1\">Hide Search Options</a></font>";
@@ -232,7 +232,7 @@
 			&nbsp;
 		</td>
 		<td align="right" valign="top" rowspan="2">
-			<img src="<? echo $image_base."webnews.gif"; ?>" border="0" width="40" height="40">
+			<img src="<?php echo $image_base."webnews.gif"; ?>" border="0" width="40" height="40">
 		</td>
 		<td align="right" valign="top" nowrap="true" rowspan="2"><font size="-2">
 			Web-News v.1.6.3<br>by <a href="http://web-news.sourceforge.net/webnews.html" target="new">Terence Yim</a></font></br>
@@ -241,11 +241,11 @@
 	</tr>
 	<tr>
 		<td nowrap="true" width="1%">
-			<font size="<? echo $font_size; ?>"><b><? echo $messages_ini["text"]["newsgroup"]; ?>:&nbsp;</b></font>
+			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["newsgroup"]; ?>:&nbsp;</b></font>
 		</td>
 		<td nowrap="true" align="left">
-			<select name="group" style="<? echo $form_style_bold; ?>">
-				<?
+			<select name="group" style="<?php echo $form_style_bold; ?>">
+				<?php
 					while (list($key, $value) = each($newsgroups_list)) {
 						echo "<option value=\"$value\"";
 						if (strcmp($value, $_SESSION["newsgroup"]) == 0) {
@@ -256,22 +256,22 @@
 					reset($newsgroups_list);
 				?>
 			</select>
-			<input type="submit" value="<? echo $messages_ini["control"]["go"]; ?>" style="<? echo $form_style_bold; ?>"> <a href="?portal"><font size="<?php echo $font_size; ?>">voir toute la liste</font></a>
+			<input type="submit" value="<?php echo $messages_ini["control"]["go"]; ?>" style="<?php echo $form_style_bold; ?>"> <a href="?portal"><font size="<?php echo $font_size; ?>">voir toute la liste</font></a>
 		</td>
 		<td width="100%">
 			&nbsp;
 		</td>
 	</tr>
-<?
+<?php
 	if (isset($_SESSION["more_option"])&&$_SESSION["more_option"]) {
 ?>
 	<tr>
 		<td nowrap="true" width="1%">
-			<font size="<? echo $font_size; ?>"><b><? echo $messages_ini["text"]["language"]; ?>:&nbsp;</b></font>
+			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["language"]; ?>:&nbsp;</b></font>
 		</td>
 		<td colspan="4" width="100%">
-			<select name="language" style="$_SESSION["more_option"]<? echo $form_style_bold; ?>">
-<?
+			<select name="language" style="$_SESSION["more_option"]<?php echo $form_style_bold; ?>">
+<?php
 			foreach ($locale_list as $key=>$value) {
 				echo "<option value=\"$key\"";
 				if (strcmp($_COOKIE["wn_pref_lang"], $key) == 0) {
@@ -283,9 +283,9 @@
 ?>
 			</select>
 			&nbsp;
-			<font size="<? echo $font_size; ?>"><b><? echo $messages_ini["text"]["messages_per_page"]; ?>:&nbsp;</b></font>
-			<select name="msg_per_page" style="<? echo $form_style_bold; ?>">
-<?
+			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["messages_per_page"]; ?>:&nbsp;</b></font>
+			<select name="msg_per_page" style="<?php echo $form_style_bold; ?>">
+<?php
 				foreach ($message_per_page_choice as $i) {
 					echo "<option value=\"$i\"";
 					if (strcmp($message_per_page, $i) == 0) {
@@ -299,16 +299,16 @@
 				}
 ?>
 			</select>
-			<input type="submit" name="set" value="<? echo $messages_ini["control"]["set"]; ?>" style="<? echo $form_style_bold; ?>">
+			<input type="submit" name="set" value="<?php echo $messages_ini["control"]["set"]; ?>" style="<?php echo $form_style_bold; ?>">
 		</td>
 	</tr>
-<?
+<?php
 	}
 ?>
 	<tr>
 		<td nowrap="true" colspan="2">
-			<font size="<? echo $font_size; ?>">
-<?
+			<font size="<?php echo $font_size; ?>">
+<?php
 				if (isset($_SESSION["search_txt"])) {
 					echo "<a href=\"newsgroups.php?renew=1\" title=\"".$messages_ini["help"]["return"]."\">".$messages_ini["control"]["return"]."</a>";
 				} else {
@@ -316,19 +316,19 @@
 				}
 ?>
 				|
-				<a href="newsgroups.php?compose=1" title="<? echo $messages_ini["help"]["compose"]; ?>"><? echo $messages_ini["control"]["compose"]; ?></a>
+				<a href="newsgroups.php?compose=1" title="<?php echo $messages_ini["help"]["compose"]; ?>"><?php echo $messages_ini["control"]["compose"]; ?></a>
 				|
-				<a href="newsgroups.php?expand=1" title="<? echo $messages_ini["help"]["expand"]; ?>"><? echo $messages_ini["control"]["expand"]; ?></a>
+				<a href="newsgroups.php?expand=1" title="<?php echo $messages_ini["help"]["expand"]; ?>"><?php echo $messages_ini["control"]["expand"]; ?></a>
 				|
-				<a href="newsgroups.php?collapse=1" title="<? echo $messages_ini["help"]["collapse"]; ?>"><? echo $messages_ini["control"]["collapse"]; ?></a>
+				<a href="newsgroups.php?collapse=1" title="<?php echo $messages_ini["help"]["collapse"]; ?>"><?php echo $messages_ini["control"]["collapse"]; ?></a>
 				|
-				<a href="newsgroups.php?sawall=1" title="<? echo $messages_ini["help"]["sawall"]; ?>"><? echo $messages_ini["control"]["sawall"]; ?></a>
+				<a href="newsgroups.php?sawall=1" title="<?php echo $messages_ini["help"]["sawall"]; ?>"><?php echo $messages_ini["control"]["sawall"]; ?></a>
 				|
-				<a href="newsgroups.php?rss_feed=<? echo $message_per_page; ?>&group=<? echo urlencode($_SESSION["newsgroup"]); ?>" target="_blank" title="<? echo $messages_ini["help"]["rss_feed"]; ?>">
-					<? echo $messages_ini["control"]["rss_feed"]; ?></a>
+				<a href="newsgroups.php?rss_feed=<?php echo $message_per_page; ?>&group=<?php echo urlencode($_SESSION["newsgroup"]); ?>" target="_blank" title="<?php echo $messages_ini["help"]["rss_feed"]; ?>">
+					<?php echo $messages_ini["control"]["rss_feed"]; ?></a>
 				|
 				<a href="newsgroups.php?option=1" 
-<?
+<?php
 				if (isset($_SESSION["more_option"])&&$_SESSION["more_option"]) {
 					echo "title=\"".$messages_ini["help"]["less_option"]."\">".$messages_ini["control"]["less_option"]."</a>";
 				} else {
@@ -338,19 +338,19 @@
 			</font>
 		</td>
 		<td colspan="3" align="right">
-<?
+<?php
 	/*if (($auth_level > 1) && $_SESSION["auth"]) {
 ?>
-			<b><font size="<? echo $font_size; ?>"><?echo $messages_ini["text"]["login"].$user; ?>.</font></b>
-			<input type="submit" name="logout" value="<? echo $messages_ini["control"]["logout"]; ?>" style="<? echo $form_style_bold; ?>">
-<?
+			<b><font size="<?php echo $font_size; ?>"><?php echo $messages_ini["text"]["login"].$user; ?>.</font></b>
+			<input type="submit" name="logout" value="<?php echo $messages_ini["control"]["logout"]; ?>" style="<?php echo $form_style_bold; ?>">
+<?php
 	} else {*/
 		echo "&nbsp;";		
 	//~ }
 ?>
 		</td>
 	</tr>
-<?
+<?php
 	if (isset($info_msg["msg"])&&strlen($info_msg["msg"]) != 0) {
 		echo "<tr><td colspan=\"5\" align=\"center\" colspan=\"5\">";
 		echo "<b><font size=\"".$font_size."\"";
@@ -364,10 +364,10 @@
 ?>
 </table>
 
-<? // Begin tree display section ?>
+<?php // Begin tree display section ?>
 <table cellpadding="0" cellspacing="1" border="0" width="100%">
-<tr bgcolor="<? echo $primary_color; ?>">
-	<?
+<tr bgcolor="<?php echo $primary_color; ?>">
+	<?php
 		if ($_SESSION["sort_asc"]) {
 			$arrow_img = $image_base."sort_arrow_up.gif";
 		} else {
@@ -397,10 +397,10 @@
 	?>
 </tr>
 <tr>
-	<td colspan="3"><font size="<? echo ($font_size-1); ?>">&nbsp;</font></td>
+	<td colspan="3"><font size="<?php echo ($font_size-1); ?>">&nbsp;</font></td>
 </tr>
 
-<?
+<?php
 		if (is_requested("expand")) {
 			$_SESSION["expand_all"] = TRUE;
 			$need_expand = TRUE;
@@ -452,16 +452,16 @@
 	}
 	if (($page_count != 0) && (($start_page != 1) || ($start_page != $end_page))) {
 ?>
-		<tr bgcolor="#<? echo $tertiary_color; ?>">
+		<tr bgcolor="#<?php echo $tertiary_color; ?>">
 			<td colspan="3">&nbsp;</td>
 		</tr>
 
-		<tr bgcolor="#<? echo $tertiary_color; ?>">
+		<tr bgcolor="#<?php echo $tertiary_color; ?>">
 			<td colspan="4" align="center">
-				<font size="<? echo $font_size; ?>">
-					<b><?echo $messages_ini["text"]["page"]; ?></b>
+				<font size="<?php echo $font_size; ?>">
+					<b><?php echo $messages_ini["text"]["page"]; ?></b>
 	
-	<?		
+	<?php		
 		if ($page != 1) {
 			echo "<a href=\"newsgroups.php?page=".($page - 1)."\"><img src=\"".$image_base."previous_arrow.gif\" align=\"absmiddle\" border=\"0\"></a>";
 		}
@@ -492,7 +492,7 @@
 	?>
 			</font></td>
 		</tr>
-<?
+<?php
 	}
 ?>
 

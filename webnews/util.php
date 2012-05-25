@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	This PHP script is licensed under the GPL
 
@@ -451,14 +451,19 @@
 	
 
 	function init_read_all($group){
+		if(!isset($_SESSION['read_all'][$group])||!isset($_SESSION['read_all_id'][$group])||!isset($_SESSION['unread_id'][$group])){
                         $query=mysql_query("SELECT * FROM post WHERE id='".$group."' AND user_id='".$_SESSION['id']."' ORDER BY date DESC")or die(mysql_error());
                         if($data=mysql_fetch_assoc($query)){
                                 $_SESSION['read_all'][$group]=$data['date'];
                                 $_SESSION['read_all_id'][$group]=$data['group_id'];
+				$_SESSION['unread_id'][$group]=$data['group_id'];
                         }else{
                                 $_SESSION['read_all'][$group]=0;
                                 $_SESSION['read_all_id'][$group]=0;
+				$_SESSION['unread_id'][$group]=0;
+				saw_all($group);
                         }
+		}
 }
 
 	function is_saw($message_info){
@@ -483,22 +488,26 @@
 			$query=mysql_query("INSERT INTO post (id, date,user_id,group_id,`group`) VALUES ('".$message_info->message_id."', '".$message_info->date."','".$_SESSION['id']."','".$message_info->nntp_message_id."','".$_SESSION["newsgroup"]."')")or die(mysql_error());
 			$query=mysql_query("DELETE FROM post WHERE date<'".$limit."'")or die(mysql_error());
 			$_SESSION['unread'][$_SESSION["newsgroup"]]--;
+			if($_SESSION['unread'][$_SESSION["newsgroup"]]==0){
+                                saw_all($_SESSION["newsgroup"]);
+                        }
 		}
 		return true;
 	}
 	
 	
-	function saw_all($nodes){
+	function saw_all($group){
 		global $nntp;
-		$_SESSION['read_all'][$_SESSION["newsgroup"]]=time();
+		$_SESSION['read_all'][$group]=time();
 		$nntp->connect();
-		$id=max($nntp->get_article_list($_SESSION["newsgroup"]));
-		$_SESSION['read_all_id'][$_SESSION["newsgroup"]]=$id;
-		mysql_query("DELETE FROM post WHERE id='".$_SESSION["newsgroup"]."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
-		mysql_query("INSERT INTO post (id,date,user_id,group_id,`group`) VALUES ('".$_SESSION["newsgroup"]."','".$_SESSION['read_all'][$_SESSION["newsgroup"]]."','".$_SESSION['id']."','".$id."','".$_SESSION["newsgroup"]."')")or die(mysql_error());
-		$query=mysql_query("DELETE FROM post WHERE date<'".$_SESSION['read_all'][$_SESSION["newsgroup"]]."' AND `group`='".$_SESSION['newsgroup']."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
-		$_SESSION['unread'][$_SESSION["newsgroup"]]=0;
-		
+		$info=$nntp->join_group($group);
+		$id=max($nntp->get_article_list($group,$info['end_id'].'-'));
+		mysql_query("DELETE FROM post WHERE id='".$group."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
+		mysql_query("INSERT INTO post (id,date,user_id,group_id,`group`) VALUES ('".$group."','".$_SESSION['read_all'][$group]."','".$_SESSION['id']."','".$id."','".$group."')")or die(mysql_error());
+		$query=mysql_query("DELETE FROM post WHERE date<'".$_SESSION['read_all'][$group]."' AND `group`='".$group."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
+		$_SESSION['unread'][$group]=0;
+		$_SESSION['read_all_id'][$group]=$id;
+		$_SESSION['unread_id'][$group]=$id;
 	}
 	
 	function is_utf8($str) {
@@ -550,7 +559,7 @@
 		dbconn();
 		//~ print_r($nodes);
 		if($_SESSION["sawall"]){
-			saw_all($nodes);
+			saw_all($_SESSION["newsgroup"]);
 			$_SESSION["sawall"]=false;
 			$url=preg_replace('/(\?|&)sawall=1/','',$_SERVER['REQUEST_URI']);
 			header("Location: ".$url);

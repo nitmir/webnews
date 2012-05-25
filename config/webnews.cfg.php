@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	Web-News v.1.6.3 NNTP<->WWW gateway
 	
@@ -26,6 +26,7 @@
 	$pass = "ranoia!";
 	$signature = '';
 	$sawafter=3600*24*30*6; // 6 month, put 0 for never, déconseillé car empêche la purge de la base de donnée.
+	$maxunread=500; // Nombre maximal de messages à rechercher pour les marquer non lu
 	
 	// Proxy Server settings. Set it to empty string for not using it
 	$proxy_server = "";
@@ -116,7 +117,7 @@
 	$default_expanded = TRUE;
 	
 	// TRUE if posting across several subscribed newsgroups is allowed
-	$allow_cross_post = FALSE;
+	$allow_cross_post = TRUE;
 
 	// Upload file size limit
 	$upload_file_limit = 10*1048576;	//10M
@@ -131,12 +132,13 @@
 	// Number of messages to search through for showing threads in read article
 	// If set to <= 0, no threads would be show
 	// The larger the number, the more complete would be the thread tree, but takes longer time to load
-	$thread_search_size = 100;      // Actual search window size would be $thread_search_size*2 + 1
+	$thread_search_size = 200;      // Actual search window size would be $thread_search_size*2 + 1
 
+	$delete_account_after=24*3600; //on supprime les comptes non validé après 24h
 	
 /******************************************************************/
-/*	COLOUR AND FONT SETTINGS                                      */
-/*	This part set the colour scheme and the font style            */
+/*	COLOUR AND FONT SETTINGS                                  */
+/*	This part set the colour scheme and the font style        */
 /******************************************************************/
 	// Notice that the background color, text, link, active link and visited link color are controlled 
 	// in the <BODY> tag of template.php. They are not set in here

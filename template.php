@@ -1,4 +1,4 @@
-<?
+<?php
 /*		
 	This PHP script is licensed under the GPL
 
@@ -13,22 +13,22 @@
 <head>
 	<style type="text/css">
 		A {text-decoration: none; }
-		A:hover {text-decoration: underline; color: <? echo $over_link_color; ?>;}
+		A:hover {text-decoration: underline; color: <?php echo $over_link_color; ?>;}
 	</style>
-	<title><? echo $messages_ini["text"]["title"]?></title>
+	<title><?php echo $messages_ini["text"]["title"]?></title>
 </head>
-<body bgcolor="#ffffff" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" <? if (isset($on_load_script)) {echo "onLoad=\"$on_load_script\"";} ?>>
+<body bgcolor="#ffffff" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" <?php if (isset($on_load_script)) {echo "onLoad=\"$on_load_script\"";} ?>>
 <table cellpadding="0" border="0" align="center" width="95%">
-	<tr bgcolor="<? echo $primary_color; ?>">
+	<tr bgcolor="<?php echo $primary_color; ?>">
 		<th>
-			<font face="<? echo $font_family; ?>" size="+1"><? echo $messages_ini["text"]["header1"]; ?>
+			<font face="<?php echo $font_family; ?>" size="+1"><?php echo $messages_ini["text"]["header1"]; ?>
 			<br></font>
-			<font face="<? echo $font_family; ?>" size="<? echo $font_size; ?>"><? echo $messages_ini["text"]["header2"]; ?></font>
+			<font face="<?php echo $font_family; ?>" size="<?php echo $font_size; ?>"><?php echo $messages_ini["text"]["header2"]; ?></font>
 		</th>
 	</tr>
 	<tr>
 		<td>
-<?
+<?php
 		//~ echo $content_page;
 		include($content_page);
 ?>
@@ -38,6 +38,6 @@
 </body>
 </html>
 
-<?
+<?php
 	ob_end_flush();
 ?>

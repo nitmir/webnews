@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	This PHP script is licensed under the GPL
 
@@ -7,39 +7,39 @@
 	Homepage: http://web-news.sourceforge.net
 */
 ?>
-<font face="<? echo $font_family; ?>">
+<font face="<?php echo $font_family; ?>">
 <table cellspacing="2" cellpadding="2" border="0" width="100%">
 	<tr>
-<?
+<?php
                 if (!is_requested("art_group") || (strcmp(get_request("art_group"), $_SESSION["newsgroup"]) == 0)) {
 ?>
 		<td nowrap="true">
 			<form action="newsgroups.php">
 				<input type="hidden" name="compose" value="reply">
-				<input type="hidden" name="mid" value="<? echo $article_id ?>">
-				<input type="submit" value="<? echo $messages_ini["control"]["reply"]; ?>" style="<? echo $form_style_bold; ?>"></form></td>
-<?
+				<input type="hidden" name="mid" value="<?php echo $article_id ?>">
+				<input type="submit" value="<?php echo $messages_ini["control"]["reply"]; ?>" style="<?php echo $form_style_bold; ?>"></form></td>
+<?php
 		}
 ?>
 		<td nowrap="true" width="100%">
 			<form action="newsgroups.php">
-				<input type="hidden" name="mid" value="<? echo $article_id; ?>">
+				<input type="hidden" name="mid" value="<?php echo $article_id; ?>">
 				<input type="hidden" name="renew" value="0">
-<?
+<?php
 				if (isset($_SESSION["search_txt"])) {
 ?>
-				<input type="submit" value="<? echo $messages_ini["control"]["return_search"]; ?>" style="<? echo $form_style_bold; ?>"></form></td>
-<?
+				<input type="submit" value="<?php echo $messages_ini["control"]["return_search"]; ?>" style="<?php echo $form_style_bold; ?>"></form></td>
+<?php
 				} else {
 ?>
-				<input type="submit" value="<? echo $messages_ini["control"]["return"]; ?>" style="<? echo $form_style_bold; ?>"></form></td>
-<?
+				<input type="submit" value="<?php echo $messages_ini["control"]["return"]; ?>" style="<?php echo $form_style_bold; ?>"></form></td>
+<?php
 				}
 ?>
 	</tr>
 </table>
 
-<?
+<?php
 //	$nntp = new NNTP($nntp_server, $user, $pass);
 	
 	if (!$nntp->connect()) {
