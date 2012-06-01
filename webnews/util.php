@@ -488,9 +488,9 @@
 			$query=mysql_query("INSERT INTO post (id, date,user_id,group_id,`group`) VALUES ('".$message_info->message_id."', '".$message_info->date."','".$_SESSION['id']."','".$message_info->nntp_message_id."','".$_SESSION["newsgroup"]."')")or die(mysql_error());
 			$query=mysql_query("DELETE FROM post WHERE date<'".$limit."'")or die(mysql_error());
 			$_SESSION['unread'][$_SESSION["newsgroup"]]--;
-			if($_SESSION['unread'][$_SESSION["newsgroup"]]==0){
+			/*if($_SESSION['unread'][$_SESSION["newsgroup"]]==0){
                                 saw_all($_SESSION["newsgroup"]);
-                        }
+                        }*/
 		}
 		return true;
 	}
@@ -501,10 +501,10 @@
 		$_SESSION['read_all'][$group]=time();
 		$nntp->connect();
 		$info=$nntp->join_group($group);
-		$id=max($nntp->get_article_list($group,$info['end_id'].'-'));
+		$id=$info['end_id'];
 		mysql_query("DELETE FROM post WHERE id='".$group."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
 		mysql_query("INSERT INTO post (id,date,user_id,group_id,`group`) VALUES ('".$group."','".$_SESSION['read_all'][$group]."','".$_SESSION['id']."','".$id."','".$group."')")or die(mysql_error());
-		$query=mysql_query("DELETE FROM post WHERE date<'".$_SESSION['read_all'][$group]."' AND `group`='".$group."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
+		mysql_query("DELETE FROM post WHERE date<'".$_SESSION['read_all'][$group]."' AND `group`='".$group."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
 		$_SESSION['unread'][$group]=0;
 		$_SESSION['read_all_id'][$group]=$id;
 		$_SESSION['unread_id'][$group]=$id;

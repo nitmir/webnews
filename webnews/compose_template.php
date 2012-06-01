@@ -100,8 +100,9 @@ display:block;/* pour effectivement centrer ! *//*
 				<?php
 					if ($allow_cross_post) {
 						$count = 1;
+						echo '<table><tr>';
 						while (list($key, $value) = each($newsgroups_list)) {
-							echo "<input name=\"groups[]\" type=\"checkbox\" value=\"$value\"";
+							echo "<td><input name=\"groups[]\" type=\"checkbox\" value=\"$value\"";
 							if (isset($groups)) {
 								if (in_array($value, $groups)) {
 									echo "checked";
@@ -109,11 +110,12 @@ display:block;/* pour effectivement centrer ! *//*
 							} elseif (strcmp($value,$_SESSION["newsgroup"]) == 0) {
 								echo " checked";
 							}
-							echo "><font face=\"$font_family\" size=\"-1\"><b>$value</b></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+							echo "><font face=\"$font_family\" size=\"-1\"><b>$value</b></font></td>";
 							if (($count++ % 2) == 0) {
-								echo "<br>";
+								echo "</tr><tr>";
 							}
 						}
+						echo '</tr></table>';
 						reset($newsgroups_list);
 					} else {
 						echo "<input name=\"groups[]\" type=\"radio\" value=\"".$_SESSION["newsgroup"]."\" checked>";

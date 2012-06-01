@@ -15,10 +15,12 @@
 /******************************************************************/
 
 	//Mysql Server setting
-	$mysql_host="127.0.0.1";
-	$mysql_user="news";
-	$mysql_pass="amlrm";
-	$mysql_db="news";
+	//$mysql_host="127.0.0.1";
+	//$mysql_user="news";
+	//$mysql_pass="pass";
+	//$mysql_db="news";
+	include('mysql.conf.php'); //contient les même quatres champs que ci-dessus avec le bon mot de passe
+
 
 	// NNTP Server setting
 	$nntp_server = "news";
@@ -56,7 +58,9 @@
                                                 "tac.dpt.*",
                                                 "tac.bde",
 						"tac.crous",
-                                                "crans.test");
+                                                "crans.test",
+						"tac.test"
+						);
         $default_group = "crans.general";
 
 
@@ -117,7 +121,7 @@
 	$default_expanded = TRUE;
 	
 	// TRUE if posting across several subscribed newsgroups is allowed
-	$allow_cross_post = TRUE;
+	$allow_cross_post = FALSE;
 
 	// Upload file size limit
 	$upload_file_limit = 10*1048576;	//10M

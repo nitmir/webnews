@@ -170,14 +170,15 @@
 				}
 				$nntp->connect();
 				$info=$nntp->join_group($group);
+				if($info['end_id']< $_SESSION['unread_id'][$group]){
+					continue;
+				}
 				$range=max(0,$info['end_id'] - $maxunread,isset($_SESSION['unread_id'][$group])?$_SESSION['unread_id'][$group]:0).'-';
 				if(!$array=$nntp->get_article_list($group,$range)){
 					continue;
 				}
 				$size=count($array);
-				if($size>0&&$array[0]!=''){
-					$_SESSION['unread_id'][$group]=$array[count($array) - 1] + 1;
-				}
+				$_SESSION['unread_id'][$group]=$array[count($array) - 1] + 1;
 				$i=0;
 				for($j=$size -1;isset($array[$j]);$j--){
 					if(isset($_SESSION['read_all_id'][$group])&&$array[$j]<=$_SESSION['read_all_id'][$group]){
@@ -192,10 +193,10 @@
 				}else{
 					$_SESSION['unread'][$group]=$i;
 				}
+				if($_SESSION['unread'][$group]==0&&$_SESSION['unread_id'][$group]!=$_SESSION['read_all_id'][$group]){
+					saw_all($group);
+                		}
 			}
-			if($_SESSION['unread'][$group]==0&&$_SESSION['unread_id'][$group]!=$_SESSION['read_all_id'][$group]){
-				saw_all($group);
-                	}
 		}
 		if(is_requested("unread")){
 			$url=preg_replace('/(\?|&)unread=1/','',$_SERVER['REQUEST_URI']);
