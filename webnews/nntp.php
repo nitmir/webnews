@@ -265,7 +265,7 @@
 				$buf = fgets($this->nntp, 4096);
 				while (!preg_match("/^\.\s*$/", $buf)) {
 					$elements = preg_split("/\t/", $buf);
-					$elements[1] = decode_MIME_header($elements[1]);	// Decode subject
+					$elements[1] = decode_MIME_header(str_replace('?= =?','?==?',$elements[1]));	// Decode subject
 					$elements[2] = decode_MIME_header($elements[2]);	// Decode from
 					if (preg_match($reg_pat, $elements[1]) || preg_match($reg_pat, $elements[2])) {
 						$message_info = new MessageInfo();
@@ -316,7 +316,7 @@
 					$elements = preg_split("/\t/", $buf);
 
 					$nntp_id = $elements[0];
-					$result[$nntp_id]["subject"] = decode_MIME_header($elements[1]);
+					$result[$nntp_id]["subject"] = decode_MIME_header(str_replace('?= =?','?==?',$elements[1]));
 
 					$from = decode_sender(decode_MIME_header($elements[2]));
 					$result[$nntp_id]["from_name"] = $from["name"];
@@ -360,7 +360,7 @@
 				$buf = fgets($this->nntp, 4096);
 				while (!preg_match("/^\.\s*$/", $buf)) {
 					$elements = preg_split("/\t/", $buf);
-					$elements[1] = decode_MIME_header($elements[1]);	// Decode subject
+					$elements[1] = decode_MIME_header(str_replace('?= =?','?==?',$elements[1]));	// Decode subject
 					$elements[2] = decode_MIME_header($elements[2]);	// Decode from
 										
 					if ((strpos($elements[4], $root_ref) !== FALSE) || (strpos($elements[5], $root_ref) !== FALSE)) {

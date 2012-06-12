@@ -71,7 +71,7 @@
 					//~ $result .= $str{$i};
 				//~ }
 			//~ }
-			$result .= base64_encode($str);
+			$result .= base64_encode(utf8($str));
 			$result .= "?=";
 		} else {
 			$result = $str;
@@ -100,7 +100,7 @@
 
 	function chop_str($str, $len) {
 		if (strlen($str) > $len) {
-			$str = substr($str, 0, $len - 3)."...";
+			$str = mb_substr($str, 0, $len - 3,'UTF-8')."...";
 		}
 		
 		return $str;
@@ -472,7 +472,7 @@
 		if((time()-$message_info->date)>$sawafter||$message_info->date<$_SESSION['read_all'][$_SESSION["newsgroup"]]){
 			return true;
 		} else {
-			$query=mysql_query("SELECT * FROM post WHERE id='".$message_info->message_id."' AND date='".$message_info->date."'  AND user_id='".$_SESSION['id']."'")or die(mysql_error());
+			$query=mysql_query("SELECT * FROM post WHERE id='".$message_info->message_id."' AND date='".$message_info->date."'  AND `group`='".$_SESSION["newsgroup"]."' AND group_id='".$message_info->nntp_message_id."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
 			if(mysql_num_rows($query)==1){
 				return true;
 			} else {
@@ -643,7 +643,7 @@
 			    $end_tag = $messages_ini["text"]["current_msg"]."</b>";
 			    saw($message_info);
 			}
-			echo $start_tag.htmlescape(utf8(chop_str($message_info->subject, $subject_length_limit - $level*3))).$end_tag;
+			echo $start_tag.htmlescape(chop_str(utf8($message_info->subject), $subject_length_limit - $level*3)).$end_tag;
 			echo "</font></td>\r\n";
 					
 			echo "<td nowrap=\"true\"><font size=\"$font_size\">\r\n";

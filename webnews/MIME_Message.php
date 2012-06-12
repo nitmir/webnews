@@ -66,7 +66,6 @@
 			$header_want = "/^(From|Subject|Date|Newsgroups|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
 			
 			$headers = split("\r\n", $headers);
-
 			// Parse the header
 			for ($line_count = 0; $line_count < sizeof($headers);$line_count++) {
 				$line = $headers[$line_count];
@@ -74,7 +73,7 @@
 				if (preg_match($header_want, $line, $header)) {
 					while (preg_match("/.+;\s*$/", $header[2])|| (isset($headers[$line_count + 1])&&substr($headers[$line_count + 1],0,1)==' ')) {
 						if (strpos($headers[$line_count + 1], ":") === FALSE) {
-							$header[2] .= str_replace("\r\n", "", $headers[++$line_count]);
+							$header[2] .= substr(str_replace("\r\n", "", $headers[++$line_count]),1);
 						} else {
 							break;
 						}
