@@ -456,7 +456,7 @@
                         if($data=mysql_fetch_assoc($query)){
                                 $_SESSION['read_all'][$group]=$data['date'];
                                 $_SESSION['read_all_id'][$group]=$data['group_id'];
-				$_SESSION['unread_id'][$group]=$data['group_id'];
+				$_SESSION['unread_id'][$group]=$data['group_id'] - 1;
                         }else{
                                 $_SESSION['read_all'][$group]=0;
                                 $_SESSION['read_all_id'][$group]=0;

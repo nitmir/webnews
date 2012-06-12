@@ -171,7 +171,7 @@
 				}
 				$nntp->connect();
 				$info=$nntp->join_group($group);
-				if($info['end_id']< $_SESSION['unread_id'][$group]){
+				if($info['end_id']<= $_SESSION['unread_id'][$group]){
 					if($_SESSION['unread'][$group]==0&&$_SESSION['unread_id'][$group]!=$_SESSION['read_all_id'][$group]){
 	                                        saw_all($group);
         	                        }

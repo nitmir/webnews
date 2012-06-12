@@ -136,8 +136,7 @@
 				
 				if ($MIME_Message = $nntp->post_article($subject, $name, $email, $news, $reply_references, $message, $files)) {
 					echo "<center><font face=\"".$font_family."\" size=\"$font_size\"><b>".$messages_ini["text"]["posted"]."</b></font></center><br>";
-
-                    $message_node = NULL;
+                    			$message_node = NULL;
 					include("webnews/article_template.php");
 				} else {
 					echo "<font face=\"".$font_family."\"><b>".$messages_ini["error"]["post_fail"]."</b><br>";
