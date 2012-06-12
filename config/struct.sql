@@ -28,7 +28,7 @@ CREATE TABLE `post` (
   `user_id` int(11) NOT NULL,
   `group_id` int(32) NOT NULL,
   `group` varchar(65) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`,`date`,`user_id`),
+  PRIMARY KEY (`id`,`user_id`,`group_id`,`group`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -52,7 +52,7 @@ CREATE TABLE `users` (
   `url` varchar(42) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mail` (`mail`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -64,4 +64,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-06-01  6:55:32
+-- Dump completed on 2012-06-12 12:05:16
