@@ -256,7 +256,7 @@
 					reset($newsgroups_list);
 				?>
 			</select>
-			<input type="submit" value="<?php echo $messages_ini["control"]["go"]; ?>" style="<?php echo $form_style_bold; ?>"> <a href="?portal"><font size="<?php echo $font_size; ?>">voir toute la liste</font></a>
+			<input type="submit" value="<?php echo $messages_ini["control"]["go"]; ?>" style="<?php echo $form_style_bold; ?>"> <a href="?portal" title="<?php echo $messages_ini["help"]["portal"]; ?>"><font size="<?php echo $font_size; ?>"><?php echo $messages_ini["control"]["portal"]; ?></font></a>
 		</td>
 		<td width="100%">
 			&nbsp;

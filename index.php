@@ -24,6 +24,10 @@ if(is_loged()){
 		A:hover {text-decoration: underline; color: FF0000;}
 	</style>
 	<title>Web-News v.1.6.3</title>
+        <style type="text/css">
+                a {color: #0044B3;}
+                a:visited {color: #0044B3;}
+        </style>
 </head>
 <body bgcolor="#ffffff" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" 
         bottommargin="0" marginwidth="0" marginheight="0" 

@@ -105,9 +105,9 @@
 
 	$locale_list = array("fr_fr" => "Français",
 				"en_us" => "English (US)",
-				"zh_tw" => "Chinese (Traditional)",
-				"zh_cn" => "Chinese (Simplified)",
-				"it_it" => "Italian"
+				//"zh_tw" => "Chinese (Traditional)",
+				//"zh_cn" => "Chinese (Simplified)",
+				//"it_it" => "Italian"
 			);
 	// Filter the javascript or jscript
 	$filter_script = true;

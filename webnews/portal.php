@@ -1,6 +1,6 @@
 <?php
 	$display_counter=0;
-	echo '<table><tr><td colspan="2" align="center">== <a href="?portal&unread=1"><small>rafraîchir</small></a> ==</td></tr>';
+	echo '<table><tr><td colspan="2" align="center">== <a href="?portal&unread=1" title="'.$messages_ini["help"]["refresh"].'"><small>'.$messages_ini["control"]["refresh"].'</small></a> ==</td></tr>';
 	foreach($newsgroups_list as $group){
 		if (($display_counter % 2) == 0) {
                               echo "<tr bgcolor=\"#".$secondary_color."\">\r\n";

@@ -616,8 +616,8 @@
 			    $start_tag = "<a href=\"newsgroups.php?art_group=".urlencode($_SESSION["newsgroup"])."&article_id=".$message_info->nntp_message_id."\">";
 			    $end_tag = "</a>";
 			} else {
-			    $start_tag = "<b>";
-			    $end_tag = $messages_ini["text"]["current_msg"]."</b>";
+			    $start_tag = "<b><font color=\"black\">";
+			    $end_tag = $messages_ini["text"]["current_msg"]."</font></b>";
 			    saw($message_info);
 			}
 			echo $start_tag.htmlescape(chop_str(utf8($message_info->subject), $subject_length_limit - $level*3)).$end_tag;

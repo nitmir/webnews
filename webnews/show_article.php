@@ -37,7 +37,7 @@
 				}
 ?>
 		<td nowrap="true" width="100%">
-			<a href="newsgroups.php?art_group=<?php echo get_request('art_group') ?>&article_id=<?php echo $article_id ?>&raw=1"><small>source</small></a>
+			<a href="newsgroups.php?art_group=<?php echo get_request('art_group') ?>&article_id=<?php echo $article_id ?>&raw=1" title="<?php echo $messages_ini["help"]["source"]; ?>"><small><?php echo $messages_ini["control"]["source"]; ?></small></a>
 		</td>
 	</tr>
 </table>
