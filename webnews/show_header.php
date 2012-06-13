@@ -370,28 +370,30 @@
 	<?php
 		if ($_SESSION["sort_asc"]) {
 			$arrow_img = $image_base."sort_arrow_up.gif";
+			$arrow_alt = '▲';
 		} else {
 			$arrow_img = $image_base."sort_arrow_down.gif";
+			$arrow_alt = '▼';
 		}
 
 		echo "<td width=\"65%\"><font size=\"$font_size\" nowrap=\"true\"><b>";
 		echo "<a href=\"newsgroups.php?renew=0&sort=0\">".$messages_ini["text"]["subject"]."</a>";
 		if ($_SESSION["sort_by"] == 0) {
-			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" align=\"absbottom\">";
+			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" align=\"absbottom\" alt=\"$arrow_alt\">";
 		}
 		echo "</b></font></td>";
 
 		echo "<td width=\"23%\"><font size=\"$font_size\" nowrap=\"true\"><b>";
 		echo "<a href=\"newsgroups.php?renew=0&sort=1\">".$messages_ini["text"]["sender"]."</a>";
 		if ($_SESSION["sort_by"] == 1) {
-			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" align=\"absbottom\">";
+			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" align=\"absbottom\" alt=\"$arrow_alt\">";
 		}
 		echo "</b></font></td>";
 
 		echo "<td width=\"12%\"><font size=\"$font_size\" nowrap=\"true\"><b>";
 		echo "<a href=\"newsgroups.php?renew=0&sort=2\">".$messages_ini["text"]["date"]."</a>";
 		if ($_SESSION["sort_by"] == 2) {
-			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" align=\"absbottom\">";
+			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" align=\"absbottom\" alt=\"$arrow_alt\">";
 		}
 		echo "</b></font></td>";
 	?>
@@ -463,7 +465,7 @@
 	
 	<?php		
 		if ($page != 1) {
-			echo "<a href=\"newsgroups.php?page=".($page - 1)."\"><img src=\"".$image_base."previous_arrow.gif\" align=\"absmiddle\" border=\"0\"></a>";
+			echo "<a href=\"newsgroups.php?page=".($page - 1)."\"><img src=\"".$image_base."previous_arrow.gif\" align=\"absmiddle\" border=\"0\" alt=\"◀\"></a>";
 		}
 		echo "&nbsp;";
 
@@ -477,7 +479,7 @@
 		}
 		
 		if ($page != $page_count) {
-			echo "<a href=\"newsgroups.php?page=".($page + 1)."\"><img src=\"".$image_base."next_arrow.gif\" align=\"absmiddle\" border=\"0\"></a>";
+			echo "<a href=\"newsgroups.php?page=".($page + 1)."\"><img src=\"".$image_base."next_arrow.gif\" align=\"absmiddle\" border=\"0\" alt=\"▶\"></a>";
 		}
 	
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;";

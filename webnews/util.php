@@ -43,41 +43,17 @@
 
 
 
-	
-	function decode_MIME_header($str) {
-		while (preg_match("/(.*)=\?.*\?q\?(.*)\?=(.*)/i", $str, $matches)) {
-			$str = str_replace("_", " ", $matches[2]);
-			$str = $matches[1].quoted_printable_decode($str).$matches[3];
-		}
-		while (preg_match("/=\?.*\?b\?.*\?=/i", $str)) {
-			$str = preg_replace("/(.*)=\?.*\?b\?(.*)\?=(.*)/ie", "'$1'.base64_decode('$2').'$3'", $str);
-		}
-
-		return $str;
+	function x_webnews($str) {
+		global $x_webnews;
+		return sha1($x_webnews.$str);
 	}
 	
+	function decode_MIME_header($str) {
+		return utf8(str_replace("_", " ",mb_decode_mimeheader($str)));
+	}
 	
-	function encode_MIME_header($str) {
-		if (is_non_ASCII($str)) {
-			//~ $result = "=?ISO-8859-1?Q?";
-			$result = "=?UTF-8?B?";
-			//~ for ($i = 0;$i < strlen($str);$i++) {
-				//~ $ascii = ord($str{$i});
-				//~ if ($ascii == 0x20) {	// Space
-					//~ $result .= "_";
-				//~ } else if (($ascii == 0x3D) || ($ascii == 0x3F) || ($ascii == 0x5F) || ($ascii > 0x7F)) {	// =, ?, _, 8 bit
-					//~ $result .= "=".dechex($ascii);
-				//~ } else {
-					//~ $result .= $str{$i};
-				//~ }
-			//~ }
-			$result .= base64_encode(utf8($str));
-			$result .= "?=";
-		} else {
-			$result = $str;
-		}
-		
-		return $result;
+	function encode_MIME_header($str,$header='Subject') {
+		return mb_encode_mimeheader(utf8($str),'UTF-8','Q',"\r\n",strlen($header));
 	}
 	
 	

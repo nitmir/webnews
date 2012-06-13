@@ -63,7 +63,7 @@
 		
 
 		function decode_header($headers) {
-			$header_want = "/^(From|Subject|Date|Newsgroups|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
+			$header_want = "/^(From|Subject|Date|Newsgroups|X-Webnews|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
 			
 			$headers = split("\r\n", $headers);
 			// Parse the header
@@ -73,7 +73,7 @@
 				if (preg_match($header_want, $line, $header)) {
 					while (preg_match("/.+;\s*$/", $header[2])|| (isset($headers[$line_count + 1])&&substr($headers[$line_count + 1],0,1)==' ')) {
 						if (strpos($headers[$line_count + 1], ":") === FALSE) {
-							$header[2] .= substr(str_replace("\r\n", "", $headers[++$line_count]),1);
+							$header[2] .= $headers[++$line_count];
 						} else {
 							break;
 						}

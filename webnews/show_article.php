@@ -63,7 +63,6 @@
 				echo $nntp->get_error_message()."<br>";
 			} else {
 			    $message_node = NULL;
-
 			    if ($thread_search_size > 0) {
     			    $header = $MIME_Message->get_main_header();
 	    		    if (!isset($header["references"]) || (strlen($header["references"]) == 0)) {

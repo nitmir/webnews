@@ -414,6 +414,24 @@
 			return NULL;
 		}
 		
+		function validate_article($message_id,$hash){
+			$response = $this->parse_response($this->send_request("body ".$message_id));
+                                                
+                        if (($response["status"] == ARTICLE_BODY) || ($response["status"] == ARTICLE_HEAD_BODY)) {
+                                $message = "";
+                                $buf = fgets($this->nntp, 4096);
+                                while (!preg_match("/^\.\s*$/", $buf)) {
+                                        $message .= $buf;
+                                        $buf = fgets($this->nntp, 4096);
+                                }
+
+                                return x_webnews(substr($message,0,-2))==$hash;
+                        }
+
+                        $this->error_number = $response["status"];
+                        $this->error_message = $response["message"];
+                        return NULL;
+                }
 
 
 		function get_article($message_id) {
@@ -439,8 +457,10 @@
 		function post_article($subject, $name, $email, $newsgroups, $references, $message, $files) {
 			global $messages_ini;
 			
-			$from = encode_MIME_header($name)." <".$email.">";
+			$from = encode_MIME_header($name,'From: ')." <".$email.">";
 			$groups = "";
+			$subject=encode_MIME_header($subject,'Subject: ');
+			$host=gethostbyaddr($_SERVER['REMOTE_ADDR']);
 			foreach ($newsgroups as $news) {
 				$groups = $groups.",".$news;
 			}
@@ -451,34 +471,38 @@
 				$response = $this->parse_response($this->send_request("post"));
 				
 				if ($response["status"] == ARTICLE_POST_READY) {
-					$send_message = "";
+					$end_headers="";
+                                        if (sizeof($files) != 0) {      // Handling uploaded files
+                                                srand();
+                                                $boundary = "----------".rand().time();
+                                                $end_headers .= "Content-Type: multipart/mixed; boundary=\"".$boundary."\"\r\n";
+                                                $boundary = "--".$boundary;
+                                        } else {
+                                                $boundary = "";
+                                                $end_headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+                                        }
 
+                                        if ($references && (strlen($references) != 0)) {
+                                                $end_headers .= "References: ".$references."\r\n";
+                                        }
+
+					$body=create_message_body($message, $files, $boundary);
+					$send_message = "";
 					// Send the header
-					$send_message .= "Subject: ".encode_MIME_header($subject)."\r\n";
+					$subject=encode_MIME_header($subject,'Subject: ');
+					$send_message .= "Subject: ".$subject."\r\n";
 					$send_message .= "From: ".$from."\r\n";
 					$send_message .= "Newsgroups: ".$groups."\r\n";
 					$send_message .= "Date: ".$current_time."\r\n";
-					$send_message .= "User-Agent: Web-News v.1.6.3 (by Terence Yim), Modifié par Valentin\r\n";
+					$send_message .= "User-Agent: Web-News v.1.6.3 (by Terence Yim), ModifiÃ© par Valentin pour le Cr@ns\r\n";
+					$send_message .= "X-NNTP-Posting-Host: ".$host."\r\n";
+					$send_message .= "X-Webnews: ".x_webnews($body)."\r\n";
 					$send_message .= "Mime-Version: 1.0\r\n";
-					
-					if (sizeof($files) != 0) {	// Handling uploaded files
-						srand();
-						$boundary = "----------".rand().time();
-						$send_message .= "Content-Type: multipart/mixed; boundary=\"".$boundary."\"\r\n";
-						$boundary = "--".$boundary;
-					} else {
-						$boundary = "";
-						$send_message .= "Content-Type: text/plain; charset=UTF-8\r\n";
-					}
 
-					if ($references && (strlen($references) != 0)) {
-						$send_message .= "References: ".$references."\r\n";
-					}
+					$send_message .= $end_headers."\r\n";	// Header body separator
 
-					$send_message .= "\r\n";	// Header body separator
+					$send_message .= $body;
 
-					$send_message .= create_message_body($message, $files, $boundary);
-					
 					// Send the body
 					fputs($this->nntp, $send_message);
 

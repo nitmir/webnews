@@ -19,7 +19,8 @@
 	//$mysql_user="news";
 	//$mysql_pass="pass";
 	//$mysql_db="news";
-	include('mysql.conf.php'); //contient les même quatres champs que ci-dessus avec le bon mot de passe
+	//$x_webnews="secret" //ne pas modifier, est utilisé pour générer le hash du header X-Webnews
+	include('mysql.conf.php'); //contient les même cinq champs que ci-dessus avec le bon mot de passe
 
 
 	// NNTP Server setting

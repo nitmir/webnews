@@ -9,7 +9,6 @@
 
 	$header = $MIME_Message->get_main_header();
 	$parts = $MIME_Message->get_all_parts();
-	
 	if (is_requested("art_group")) {
 		$group = get_request("art_group");
 	} else {
@@ -33,7 +32,11 @@
 		echo htmlescape(utf8($header["from"]["name"]));
 		
 		if (is_requested("post") || $_SESSION["auth"]) {
-			echo htmlescape(" <".$header["from"]["email"].">")."</a>";
+			echo htmlescape(" <".utf8($header["from"]["email"]).">")."</a>";
+		}
+
+		if($nntp->validate_article($_GET['article_id'],$header['x-webnews'])){
+			echo ' (depuis le webnews)';
 		}
 ?>
 		</td>
@@ -78,7 +81,7 @@
 
 	$count = 0;
 	
-	
+
 	foreach ($parts as $part) {
 		if (stristr($part["header"]["content-type"], "text/html")) {	// HTML
 			$body = filter_html(decode_message_content($part));
@@ -113,7 +116,6 @@
 		}
 		$count++;
 	}	
-
     if ($message_node) {
 ?>
 <tr><td colspan=2">
