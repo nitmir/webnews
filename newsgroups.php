@@ -225,7 +225,11 @@
 			$content_page = "webnews/rss.php";
 		} else if (is_requested("article_id")) {
 			$article_id = get_request("article_id");
-			$content_page = "webnews/show_article.php";
+			if (is_requested("raw")) {
+				$content_page = "webnews/raw.php";
+			}else{
+				$content_page = "webnews/show_article.php";
+			}
 		} else {
 			$content_page = "webnews/show_header.php";
 

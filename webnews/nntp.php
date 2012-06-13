@@ -434,6 +434,27 @@
                 }
 
 
+
+                function get_raw_article($message_id) {
+                        $response = $this->parse_response($this->send_request("article ".$message_id));
+                                                
+                        if (($response["status"] == ARTICLE_BODY) || ($response["status"] == ARTICLE_HEAD_BODY)) {
+                                $message = "";
+                                $buf = fgets($this->nntp, 4096);
+                                while (!preg_match("/^\.\s*$/", $buf)) {
+                                        $message .= $buf;
+                                        $buf = fgets($this->nntp, 4096);
+                                }
+
+                                return $message;
+                        }
+
+                        $this->error_number = $response["status"];
+                        $this->error_message = $response["message"];
+                        return NULL;
+                }
+
+
 		function get_article($message_id) {
 			$response = $this->parse_response($this->send_request("article ".$message_id));
 						

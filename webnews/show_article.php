@@ -36,6 +36,9 @@
 <?php
 				}
 ?>
+		<td nowrap="true" width="100%">
+			<a href="newsgroups.php?art_group=<?php echo get_request('art_group') ?>&article_id=<?php echo $article_id ?>&raw=1"><small>source</small></a>
+		</td>
 	</tr>
 </table>
 
