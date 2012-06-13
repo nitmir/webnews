@@ -599,7 +599,8 @@
 			if (($display_counter % 2) == 0) {
 				echo "<tr bgcolor=\"#".$secondary_color."\">\r\n";
 			} else {
-				echo "<tr bgcolor=\"#".$tertiary_color."\">\r\n";
+				//echo "<tr bgcolor=\"#".$tertiary_color."\">\r\n";
+                                echo "<tr>\r\n";
 			}
 			$display_counter++;
 //			echo "<tr>\r\n";

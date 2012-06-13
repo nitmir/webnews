@@ -25,7 +25,11 @@ if(is_loged()){
 	</style>
 	<title>Web-News v.1.6.3</title>
 </head>
-<body bgcolor="#ffffff" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" >
+<body bgcolor="#ffffff" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" 
+        bottommargin="0" marginwidth="0" marginheight="0" 
+        style="background: #fff url(<?php echo $image_base ?>fond.png) no-repeat center center;background-attachment: fixed; min-height: 500px;"
+>
+
 <table cellpadding="0" border="0" align="center" width="95%">
 	<tr bgcolor="C1DFFA">
 		<th>
