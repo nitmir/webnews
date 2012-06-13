@@ -49,7 +49,7 @@
 	}
 	
 	function decode_MIME_header($str) {
-		return utf8(str_replace("_", " ",mb_decode_mimeheader($str)));
+		return (str_replace("_", " ",mb_decode_mimeheader($str)));
 	}
 	
 	function encode_MIME_header($str,$header='Subject') {
@@ -161,7 +161,9 @@
 
 	function decode_message_content($part) {
 		$encoding = $part["header"]["content-transfer-encoding"];
-		
+		$charset = explode('; ',$part["header"]['content-type']);
+		$charset = explode('=',$charset[1]);
+		$charset = $charset[1];
 		if (stristr($encoding, "quoted-printable")) {
 			return quoted_printable_decode($part["body"]);
 		} else if (stristr($encoding, "base64")) {
@@ -169,7 +171,7 @@
 		} else if (stristr($encoding, "uuencode")) {
 			return uudecode($part["body"]);
 		} else {	// No need to decode
-			return $part["body"];
+			return utf8($part["body"],$charset);
 		}
 	}
 	
@@ -512,9 +514,13 @@
 	    return true;
 	}
 	
-	function utf8($str){
+	function utf8($str,$charset=''){
 		if(!is_utf8($str)){
+			if($charset==''){
 			return utf8_encode($str);
+			}else{
+				return iconv($charset,'UTF-8',$str);
+			}
 		}else{
 			return $str;
 		}
@@ -620,14 +626,14 @@
 			    $end_tag = $messages_ini["text"]["current_msg"]."</font></b>";
 			    saw($message_info);
 			}
-			echo $start_tag.htmlescape(chop_str(utf8($message_info->subject), $subject_length_limit - $level*3)).$end_tag;
+			echo $start_tag.htmlescape(chop_str(($message_info->subject), $subject_length_limit - $level*3)).$end_tag;
 			echo "</font></td>\r\n";
 					
 			echo "<td nowrap=\"true\"><font size=\"$font_size\">\r\n";
 			if ($_SESSION["auth"]) {
-				echo "<a href=\"mailto:".htmlescape(utf8($message_info->from["email"]))."\">";
+				echo "<a href=\"mailto:".htmlescape(($message_info->from["email"]))."\">";
 			}
-			echo htmlescape(utf8(chop_str($message_info->from["name"], $sender_length_limit)));
+			echo htmlescape((chop_str($message_info->from["name"], $sender_length_limit)));
 			if ($_SESSION["auth"]) {
 				echo "</a>";
 			}

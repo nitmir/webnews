@@ -40,7 +40,7 @@
 				$message = wordwrap($message, 75, "\r\n", true);
                                 $message = preg_replace("/\n-- \r\n(.*)/s","\n",$message);
 				$message = preg_replace("/(.*\r\n)/", "&gt; $1", htmlescape($message));
-				$message = utf8($header["from"]["name"])." ".$messages_ini["text"]["wrote"].":\r\n\r\n".utf8($message);
+				$message = ($header["from"]["name"])." ".$messages_ini["text"]["wrote"].":\r\n\r\n".($message);
 			}
 			// Quit sooner to release resources		
 			$nntp->quit();

@@ -20,19 +20,19 @@
 <table cellpadding="5" cellspacing="0" border="0" align="left" width="100%">
 	<tr>
 		<td bgcolor="<?php echo $primary_color; ?>" width="15%" valign="top"><font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["subject"]; ?></b></font></td>
-		<td bgcolor="<?php echo $secondary_color; ?>"><font size="<?php echo $font_size; ?>"><?php echo htmlescape(utf8($header["subject"]));?></td>
+		<td bgcolor="<?php echo $secondary_color; ?>"><font size="<?php echo $font_size; ?>"><?php echo htmlescape(($header["subject"]));?></td>
 	</tr>
 	<tr>
 		<td bgcolor="<?php echo $primary_color; ?>" width="15%" valign="top"><font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["from"]; ?></b></font></td>
 		<td bgcolor="<?php echo $secondary_color; ?>"><font size="<?php echo $font_size; ?>">
 <?php
 		if (is_requested("post") || $_SESSION["auth"]) {
-			echo "<a href=\"mailto:".htmlescape(utf8($header["from"]["email"]))."\">";
+			echo "<a href=\"mailto:".htmlescape(($header["from"]["email"]))."\">";
 		}
-		echo htmlescape(utf8($header["from"]["name"]));
+		echo htmlescape(($header["from"]["name"]));
 		
 		if (is_requested("post") || $_SESSION["auth"]) {
-			echo htmlescape(" <".utf8($header["from"]["email"]).">")."</a>";
+			echo htmlescape(" <".($header["from"]["email"]).">")."</a>";
 		}
 
 		if($nntp->validate_article($_GET['article_id'],$header['x-webnews'])){
@@ -47,7 +47,7 @@
 	</tr>
 	<tr>
 		<td bgcolor="<?php echo $primary_color; ?>" width="15%" valign="top"><font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["newsgroups"]; ?></b></font></td>
-		<td bgcolor="<?php echo $secondary_color; ?>"><font size="<?php echo $font_size; ?>"><?php echo utf8($header["newsgroups"]); ?></td>
+		<td bgcolor="<?php echo $secondary_color; ?>"><font size="<?php echo $font_size; ?>"><?php echo ($header["newsgroups"]); ?></td>
 	</tr>
 <!--
 	<tr>
@@ -85,7 +85,6 @@
 	foreach ($parts as $part) {
 		if (stristr($part["header"]["content-type"], "text/html")) {	// HTML
 			$body = filter_html(decode_message_content($part));
-
 			// Replace the image link for internal resources
 			$content_map = $MIME_Message->get_content_map();
 			$search_array = array();
@@ -106,7 +105,7 @@
 			$body = preg_replace(array("/\n-- \r\n(.*)/s","/\r\n/", "/(^&gt;.*)/m", "/\t/", "/  /"),
 										array("\n<font color=\"grey\">--\r\n$1</font>","<br>\r\n", "<i>$1</i>", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", "&nbsp;&nbsp;"),
 										add_html_links($body));
-			echo utf8($body)."<br></td></tr>";
+			echo $body."<br></td></tr>";
 		} elseif (preg_match("/^image\/(gif|jpeg|pjpeg)/i", $part["header"]["content-type"])) {
 			echo "<tr><td colspan=\"2\" align=\"center\">";
 			echo "<hr width=\"100%\"><br>";

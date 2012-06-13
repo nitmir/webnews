@@ -65,6 +65,8 @@
         $default_group = "crans.general";
 
 
+	mb_internal_encoding("UTF-8");
+
 /******************************************************************/
 /*	SECURITY SETTINGS                                             */
 /*	This part configurate the security settings                   */

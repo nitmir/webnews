@@ -53,7 +53,7 @@ display:block;/* pour effectivement centrer ! *//*
 ?>
 		<tr>
 			<td width="12%"><font size="-1"><b><?php echo $messages_ini["text"]["subject"]; ?>:</b></font></td>
-			<td><input type="text" name="subject" size="60" value="<?php echo utf8($subject); ?>" style="<?php echo $form_style; ?>"></td>
+			<td><input type="text" name="subject" size="60" value="<?php echo ($subject); ?>" style="<?php echo $form_style; ?>"></td>
 		</tr>
 		<tr>
 			<td><font size="-1"><b><?php echo $messages_ini["text"]["name"]; ?>:</b></font></td>
