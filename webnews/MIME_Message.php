@@ -63,7 +63,7 @@
 		
 
 		function decode_header($headers) {
-			$header_want = "/^(From|Subject|Date|Newsgroups|X-Webnews|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
+			$header_want = "/^(From|Subject|Date|Newsgroups|Followup-To|X-Webnews|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
 			
 			$headers = split("\r\n", $headers);
 			// Parse the header

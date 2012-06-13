@@ -98,6 +98,11 @@ display:block;/* pour effectivement centrer ! *//*
 			<td valign="top"><font size="-1"><b><?php echo $messages_ini["text"]["newsgroups"]; ?>:</b></font></td>
 			<td>
 				<?php
+					if(isset($header['followup-to'])){
+						$to=$header['followup-to'];
+					}else{
+						$to=$_SESSION["newsgroup"];
+					}
 					if ($allow_cross_post) {
 						$count = 1;
 						echo '<table><tr>';
@@ -107,7 +112,7 @@ display:block;/* pour effectivement centrer ! *//*
 								if (in_array($value, $groups)) {
 									echo "checked";
 								}
-							} elseif (strcmp($value,$_SESSION["newsgroup"]) == 0) {
+							} elseif (strcmp($value,$to) == 0) {
 								echo " checked";
 							}
 							echo "><font face=\"$font_family\" size=\"-1\"><b>$value</b></font></td>";
@@ -118,8 +123,8 @@ display:block;/* pour effectivement centrer ! *//*
 						echo '</tr></table>';
 						reset($newsgroups_list);
 					} else {
-						echo "<input name=\"groups[]\" type=\"radio\" value=\"".$_SESSION["newsgroup"]."\" checked>";
-						echo "<font face=\"$font_family\" size=\"-1\"><b>".$_SESSION["newsgroup"]."</b></font>";
+						echo "<input name=\"groups[]\" type=\"radio\" value=\"".$to."\" checked>";
+						echo "<font face=\"$font_family\" size=\"-1\"><b>".$to."</b></font>";
 					}
 				?>
 			</td>
