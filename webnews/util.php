@@ -148,10 +148,11 @@
 	
 	
 	function validate_email($email) {
+		global $restrict_mail_domain;
 		$email = strtolower($email);
 		$parts = explode("@", $email);
 		$domain = array_pop($parts);
-		if (in_array($domain, array("crans.org", "ens-cachan.fr", "crans.ens-cachan.fr"))) {
+		if (!isset($restrict_mail_domain)||in_array($domain, $restrict_mail_domain)) {
 			return preg_match("/[\w\-=!#$%^*'+\\.={}|?~]+@[\w\-=!#$%^*'+\\.={}|?~]+[\w\-=!#$%^*'+\\={}|?~]/", $email);
 		} else {
 			return FALSE;

@@ -87,7 +87,12 @@ if(is_loged()){
 						echo '<font color="red">Mot de passe trop court</font></br>';
 					}
 				}else{
-					echo '<font color="red">Email invalide&nbsp;: doit être un email @crans.org ou @ens-cachan.fr</font></br>';
+					echo '<font color="red">Email invalide&nbsp;: doit être un email ';
+					for($i=0;isset($restrict_mail_domain[$i]);$i++){
+						echo '@'.$restrict_mail_domain[$i];
+						if(isset($restrict_mail_domain[$i+1])){echo ' ou ';}
+					}
+					echo '</font></br>';
 				
 				}
 			}

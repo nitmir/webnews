@@ -86,7 +86,7 @@
 	// Realm to be used in the user authetication
 	$realm = "Web-News";
 	
-
+	$restrict_mail_domain=array("crans.org", "ens-cachan.fr", "crans.ens-cachan.fr"); //seul ces domaines sont acceptés pour les adresses mail à l'inscription, commenter pour désactiver
 
 /******************************************************************/
 /*	PAGE DISPLAY SETTINGS                                         */
