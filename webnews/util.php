@@ -87,6 +87,44 @@
 	}
 	
 	
+	function quote_format($str){
+		global $quote_colors;
+		$color_n=count($quote_colors);
+		$cmp=0;
+		$str=htmlentities($str,ENT_COMPAT | ENT_HTML401,mb_internal_encoding());
+		$str=preg_replace(array('/ /',"/\t/"),array('&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'),$str);
+		$array=explode("\r\n",$str);
+		$message="";
+		$signed=false;
+		for($i=0;isset($array[$i]);$i++){
+			if(strlen($array[$i])>=(4*($cmp+1))&&substr($array[$i],4*$cmp,4)=='&gt;'){
+				$cmp++;
+				$message .= '<div style="border-left:2px solid '.$quote_colors[min(($cmp-1),$color_n-1)].';border-right:2px solid '.$quote_colors[min($cmp-1,$color_n-1)].';padding:0px 7px 0px 7px">'."\n".$array[$i]."<br/>\n";
+			}
+			elseif($cmp>0&&strlen($array[$i])>=(4*($cmp-1))&&substr($array[$i],4*($cmp-1),4)!='&gt;'){
+				$cmp--;
+				$message .= "</div>\n".$array[$i]."<br/>\n";
+			}elseif(!$signed&&$array[$i]=='--&nbsp;'){
+				$signed=true;
+				$message .='<font color="grey">'.$array[$i]."<br/>\n";
+			}else{
+				$message .=$array[$i]."<br/>\n";
+			}
+		}
+		if($signed){
+			$message .="</font>";
+		}
+		for($i=$cmp;$i>0;$i--){
+			$message .= '</div>';
+		}
+		if(!preg_match('/w3m/i',$_SERVER['HTTP_USER_AGENT'])){
+			$message = preg_replace(array("/\n((&gt;)*)((&nbsp;)?)/"),array("\n"),$message);
+		}
+		$message = add_html_links($message);
+		return  $message;
+
+	}
+
 	function format_date($date) {
 		global $today_color;
 		global $week_color;

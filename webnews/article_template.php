@@ -101,10 +101,7 @@
 		} elseif (stristr($part["header"]["content-type"], "text")) {	// Treat all other form of text as plain text
 			echo "<tr><td colspan=\"2\"><font size=\"$font_size\"><br>";
 			$body = decode_message_content($part);
-			$body = htmlescape($body);
-			$body = preg_replace(array("/\n-- \r\n(.*)/s","/\r\n/", "/(^&gt;.*)/m", "/\t/", "/  /"),
-										array("\n<font color=\"grey\">--\r\n$1</font>","<br>\r\n", "<i>$1</i>", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", "&nbsp;&nbsp;"),
-										add_html_links($body));
+			$body = quote_format($body);
 			echo $body."<br></td></tr>";
 		} elseif (preg_match("/^image\/(gif|jpeg|pjpeg)/i", $part["header"]["content-type"])) {
 			echo "<tr><td colspan=\"2\" align=\"center\">";

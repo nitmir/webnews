@@ -166,7 +166,7 @@
 	$form_style = "font-family: ".$font_family."; font-size: 75%";
 	$form_style_bold = $form_style."; font-weight: bold";
 
-
+	$quote_colors=array('#729fcf','#ad7fa8','#8ae234','#ff5842','#fcaf3e','#e9b96e','#f8e5c6');
 
 /******************************************************************/
 /*	TEMPLATE SETTINGS                                             */
