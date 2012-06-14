@@ -123,7 +123,7 @@
 				<font face="Tahoma, Sans-Serif">
 					<table cellspacing="2" cellpadding="2" border="0" width="95%">
 						<tr>
-							<td nowrap="true">
+							<td nowrap="nowrap">
 									<input type="hidden" name="renew" value="1">
 									<input type="submit" value="<?php echo $messages_ini["control"]["return"]; ?>" style="<?php echo $form_style_bold; ?>"></td>
 						</tr>

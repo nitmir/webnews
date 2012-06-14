@@ -44,14 +44,13 @@ if(is_loged()){
 	<tr>
 		<td>
 
-<font face="Tahoma, Sans-Serif">
-
+<div style="font-family: <?php echo $font_family; ?>">
 <table cellspacing="2" cellpadding="0" border="0" width="100%">
 	<tr>
-		<td nowrap="true" width="1%">
+		<td nowrap="nowrap" width="1%">
 			
 		</td>
-		<td nowrap="true" align="left">
+		<td nowrap="nowrap" align="left">
 		<?php
 			dbconn();
 			if(isset($_GET['confirm'])){
@@ -144,15 +143,14 @@ if(is_loged()){
 		<td align="right" valign="top" rowspan="2">
 			<img src="images/webnews/webnews.gif" border="0" width="40" height="40">
 		</td>
-		<td align="right" valign="top" nowrap="true" rowspan="2"><font size="-2">
+		<td align="right" valign="top" nowrap="nowrap" rowspan="2"><font size="-2">
 			Web-News v.1.6.3<br>by <a href="http://web-news.sourceforge.net/webnews.html" target="new">Terence Yim</a></font>
 		</td>
 	</tr>
 	
 	
 </table>
-</font>
-		</td>
+</div>		</td>
 	</tr>
 </table>
 </body>

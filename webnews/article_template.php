@@ -16,7 +16,7 @@
 	}
 ?>
 
-<font face="<?php echo $font_family; ?>">
+<div style="font-family: <?php echo $font_family; ?>">
 <table cellpadding="5" cellspacing="0" border="0" align="left" width="100%">
 	<tr>
 		<td bgcolor="<?php echo $primary_color; ?>" width="15%" valign="top"><font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["subject"]; ?></b></font></td>
@@ -137,4 +137,3 @@
 ?>
 </table>
 </font>
-<br><br>

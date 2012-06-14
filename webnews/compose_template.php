@@ -16,7 +16,7 @@ margin:left; /* exemple pour centrer *//*
 display:block;/* pour effectivement centrer ! *//*
 }*//*
 </style>*/?>
-<font face="<?php echo $font_family; ?>">
+<div style="font-family: <?php echo $font_family; ?>">
 <?php
 	if (is_requested("group")) {
 		$group = get_request("group");
@@ -155,4 +155,4 @@ display:block;/* pour effectivement centrer ! *//*
 		</tr>
 	</table>
 </form>
-</font>
+</div>

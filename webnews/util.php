@@ -535,20 +535,20 @@
 			if ($node->count_children() == 0) {
 				if ($is_first && $is_last) {
 					if ($level == 0) {
-						$sign = "<img src=\"".$image_base."white.gif\" width=\"15\" height=\"19\" align=\"absbottom\" alt=\".\">";
+						$sign = "<img src=\"".$image_base."white.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" alt=\".\">";
 					} else {
-						$sign = "<img src=\"".$image_base."bar_L.gif\" width=\"15\" height=\"19\" align=\"absbottom\" alt=\"\\\">";
+						$sign = "<img src=\"".$image_base."bar_L.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" alt=\"\\\">";
 					}
 				} elseif ($is_first) {
 					if ($level == 0) {
-						$sign = "<img src=\"".$image_base."bar_7.gif\" width=\"15\" height=\"19\" align=\"absbottom\" alt=\"*\">";
+						$sign = "<img src=\"".$image_base."bar_7.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" alt=\"*\">";
 					} else {
-						$sign = "<img src=\"".$image_base."bar_F.gif\" width=\"15\" height=\"19\" align=\"absbottom\" alt=\"|\">";
+						$sign = "<img src=\"".$image_base."bar_F.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" alt=\"|\">";
 					}
 				} elseif ($is_last) {
-					$sign = "<img src=\"".$image_base."bar_L.gif\" width=\"15\" height=\"19\" align=\"absbottom\" alt=\"\\\">";
+					$sign = "<img src=\"".$image_base."bar_L.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" alt=\"\\\">";
 				} else {
-					$sign = "<img src=\"".$image_base."bar_F.gif\" width=\"15\" height=\"19\" align=\"absbottom\" alt=\"|\">";
+					$sign = "<img src=\"".$image_base."bar_F.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" alt=\"|\">";
 				}
 			} else {
 				if ($node->is_show_children()) {
@@ -560,20 +560,20 @@
 				}
 
 				if ($expandable) {
-				    $link = "<a href=\"newsgroups.php?renew=0&mid=".$message_info->nntp_message_id."&sign=".$sign."\">";
+				    $link = "<a href=\"newsgroups.php?renew=0&amp;mid=".$message_info->nntp_message_id."&sign=".$sign."\">";
 				    $end_tag = "</a>";
 				} else {
 				    $link = "";
 				    $end_tag = "";
 				}
 				if ($is_first && $is_last && ($level == 0)) {
-					$sign = $link."<img src=\"".$image_base."sign_".$sign."_single.gif\" width=\"15\" height=\"19\" align=\"absbottom\" border=\"0\" alt=\"".$alt."\">";
+					$sign = $link."<img src=\"".$image_base."sign_".$sign."_single.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" border=\"0\" alt=\"".$alt."\">";
 				} elseif (($is_first) && ($level == 0)) {
-					$sign = $link."<img src=\"".$image_base."sign_".$sign."_first.gif\" width=\"15\" height=\"19\" align=\"absbottom\" border=\"0\" alt=\"".$alt."\">";
+					$sign = $link."<img src=\"".$image_base."sign_".$sign."_first.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" border=\"0\" alt=\"".$alt."\">";
 				} elseif ($is_last) {
-					$sign = $link."<img src=\"".$image_base."sign_".$sign."_last.gif\" width=\"15\" height=\"19\" align=\"absbottom\" border=\"0\" alt=\"".$alt."\">";
+					$sign = $link."<img src=\"".$image_base."sign_".$sign."_last.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" border=\"0\" alt=\"".$alt."\">";
 				} else {
-					$sign = $link."<img src=\"".$image_base."sign_".$sign.".gif\" width=\"15\" height=\"19\" align=\"absbottom\" border=\"0\" alt=\"".$alt."\">";
+					$sign = $link."<img src=\"".$image_base."sign_".$sign.".gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" border=\"0\" alt=\"".$alt."\">";
 				}
 				$sign .= $end_tag;
 			}
@@ -585,44 +585,43 @@
                                 echo "<tr>\r\n";
 			}
 			$display_counter++;
-//			echo "<tr>\r\n";
-			echo "<td nowrap=\"true\"><font size=\"$font_size\">\r\n";
-			echo "<a name=\"".$message_info->nntp_message_id."\">";
+			echo "<td nowrap=\"nowrap\">\r\n";
+			echo "<span id=\"m".$message_info->nntp_message_id."\">";
 			echo $old_indent;
-			echo $sign."<img src=\"".$image_base."message.gif\" width=\"13\" height=\"13\" border=\"0\" align=\"absmiddle\" alt=\"#\">&nbsp;";
+			echo $sign."<img src=\"".$image_base."message.gif\" width=\"13\" height=\"13\" border=\"0\" style=\"vertical-align:middle\" alt=\"#\">&nbsp;";
 			
 			if ((($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id))&&!is_saw($message_info)) {
-			    $start_tag = "<b><a href=\"newsgroups.php?art_group=".urlencode($_SESSION["newsgroup"])."&article_id=".$message_info->nntp_message_id."\">";
-			    $end_tag = "</a></b>";
+			    $start_tag = "<b><a href=\"newsgroups.php?art_group=".urlencode($_SESSION["newsgroup"])."&amp;article_id=".$message_info->nntp_message_id."\"><font size=\"$font_size\">";
+			    $end_tag = "</font></a></b>";
 			} elseif (($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id)) {
-			    $start_tag = "<a href=\"newsgroups.php?art_group=".urlencode($_SESSION["newsgroup"])."&article_id=".$message_info->nntp_message_id."\">";
-			    $end_tag = "</a>";
+			    $start_tag = "<a href=\"newsgroups.php?art_group=".urlencode($_SESSION["newsgroup"])."&amp;article_id=".$message_info->nntp_message_id."\"><font size=\"$font_size\">";
+			    $end_tag = "</font></a>";
 			} else {
-			    $start_tag = "<b><font color=\"black\">";
+			    $start_tag = "<b><font size=\"$font_size\" color=\"black\">";
 			    $end_tag = $messages_ini["text"]["current_msg"]."</font></b>";
 			    saw($message_info);
 			}
 			echo $start_tag.htmlescape(chop_str(($message_info->subject), $subject_length_limit - $level*3)).$end_tag;
-			echo "</font></td>\r\n";
+			echo "</span></td>\r\n";
 					
-			echo "<td nowrap=\"true\"><font size=\"$font_size\">\r\n";
+			echo "<td nowrap=\"nowrap\">\r\n";
 			if ($_SESSION["auth"]) {
-				echo "<a href=\"mailto:".htmlescape(($message_info->from["email"]))."\">";
+				echo "<a href=\"mailto:".htmlescape(($message_info->from["email"]))."\"><font size=\"$font_size\">";
 			}
 			echo htmlescape((chop_str($message_info->from["name"], $sender_length_limit)));
 			if ($_SESSION["auth"]) {
-				echo "</a>";
+				echo "</font></a>";
 			}
-			echo "</font></td>\r\n";
+			echo "</td>\r\n";
 
-			echo "<td nowrap=\"true\"><font size=\"$font_size\">".format_date($message_info->date)."</font></td>\r\n";
+			echo "<td nowrap=\"nowrap\"><font size=\"$font_size\">".format_date($message_info->date)."</font></td>\r\n";
 
 			echo "</tr>\r\n";
 
 			if ($is_last) {
-				$indent = $old_indent."<img src=\"".$image_base."white.gif\" width=\"15\" height=\"19\" align=\"absbottom\" alt=\".\">";
+				$indent = $old_indent."<img src=\"".$image_base."white.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" alt=\".\">";
 			} else {
-				$indent = $old_indent."<img src=\"".$image_base."bar_1.gif\" width=\"15\" height=\"19\" align=\"absbottom\" alt=\"|\">";
+				$indent = $old_indent."<img src=\"".$image_base."bar_1.gif\" width=\"15\" height=\"19\" style=\"vertical-align:bottom\" alt=\"|\">";
 			}
 
 			if ($node->is_show_children() && ($node->count_children() != 0)) {

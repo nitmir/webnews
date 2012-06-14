@@ -7,13 +7,13 @@
 	Homepage: http://web-news.sourceforge.net
 */
 ?>
-<font face="<?php echo $font_family; ?>">
+<div style="font-family: <?php echo $font_family; ?>">
 <table cellspacing="2" cellpadding="2" border="0" width="100%">
 	<tr>
 <?php
                 if (!is_requested("art_group") || (strcmp(get_request("art_group"), $_SESSION["newsgroup"]) == 0)) {
 ?>
-		<td nowrap="true">
+		<td nowrap="nowrap">
 			<form action="newsgroups.php">
 				<input type="hidden" name="compose" value="reply">
 				<input type="hidden" name="mid" value="<?php echo $article_id ?>">
@@ -21,7 +21,7 @@
 <?php
 		}
 ?>
-		<td nowrap="true" width="100%">
+		<td nowrap="nowrap" width="100%">
 			<form action="newsgroups.php">
 				<input type="hidden" name="mid" value="<?php echo $article_id; ?>">
 				<input type="hidden" name="renew" value="0">
@@ -36,7 +36,7 @@
 <?php
 				}
 ?>
-		<td nowrap="true" width="100%">
+		<td nowrap="nowrap" width="100%">
 			<a href="newsgroups.php?art_group=<?php echo get_request('art_group') ?>&article_id=<?php echo $article_id ?>&raw=1" title="<?php echo $messages_ini["help"]["source"]; ?>"><small><?php echo $messages_ini["control"]["source"]; ?></small></a>
 		</td>
 	</tr>
@@ -87,4 +87,4 @@
 	}
 ?>
 
-</font>
+</div>

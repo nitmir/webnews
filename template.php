@@ -9,6 +9,7 @@
 
 	ob_start();
 ?>
+<!DOCTYPE HTML SYSTEM>
 <html>
 <head>
 	<style type="text/css">
@@ -21,8 +22,7 @@
 		a:visited {color: #0044B3;}
 	</style>
 </head>
-<body bgcolor="#ffffff" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" 
-	bottommargin="0" marginwidth="0" marginheight="0" 
+<body bgcolor="#ffffff" text="#000000" 
 	<?php if (isset($on_load_script)) {echo "onLoad=\"$on_load_script\"";} ?>
 	style="background: #fff url(<?php echo $image_base ?>fond.png) no-repeat center center;background-attachment: fixed; min-height: 413px;"
 >

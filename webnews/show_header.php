@@ -207,15 +207,15 @@
 		}
 ?>
 
+<div style="font-family: <?php echo $font_family; ?>">
 <form action="newsgroups.php">
-<font face="<?php echo $font_family; ?>">
 
 <table cellspacing="2" cellpadding="0" border="0" width="100%">
 	<tr>
-		<td nowrap="true" width="1%">
+		<td nowrap="nowrap" width="1%">
 			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["search"]; ?>:&nbsp;</b></font>
 		</td>
-		<td nowrap="true" align="left">
+		<td nowrap="nowrap" align="left">
 			<input type="text" size="40" name="search_txt" style="<?php echo $form_style; ?>" value="<?php echo isset($_SESSION["search_txt"])?$_SESSION["search_txt"]:""; ?>">
 			<input type="submit" name="search" value="<?php echo $messages_ini["control"]["search"]; ?>" style="<?php echo $form_style_bold; ?>">
 <?php
@@ -232,18 +232,18 @@
 			&nbsp;
 		</td>
 		<td align="right" valign="top" rowspan="2">
-			<img src="<?php echo $image_base."webnews.gif"; ?>" border="0" width="40" height="40">
+			<img src="<?php echo $image_base."webnews.gif"; ?>" border="0" width="40" height="40" alt="webnews">
 		</td>
-		<td align="right" valign="top" nowrap="true" rowspan="2"><font size="-2">
-			Web-News v.1.6.3<br>by <a href="http://web-news.sourceforge.net/webnews.html" target="new">Terence Yim</a></font></br>
+		<td align="right" valign="top" nowrap="nowrap" rowspan="2"><font size="-2">
+			Web-News v.1.6.3<br>by <a href="http://web-news.sourceforge.net/webnews.html" target="new">Terence Yim</a></font><br/>
 			<a href="?logout=true">logout</a>
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true" width="1%">
+		<td nowrap="nowrap" width="1%">
 			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["newsgroup"]; ?>:&nbsp;</b></font>
 		</td>
-		<td nowrap="true" align="left">
+		<td nowrap="nowrap" align="left">
 			<select name="group" style="<?php echo $form_style_bold; ?>">
 				<?php
 					while (list($key, $value) = each($newsgroups_list)) {
@@ -266,7 +266,7 @@
 	if (isset($_SESSION["more_option"])&&$_SESSION["more_option"]) {
 ?>
 	<tr>
-		<td nowrap="true" width="1%">
+		<td nowrap="nowrap" width="1%">
 			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["language"]; ?>:&nbsp;</b></font>
 		</td>
 		<td colspan="4" width="100%">
@@ -306,7 +306,7 @@
 	}
 ?>
 	<tr>
-		<td nowrap="true" colspan="2">
+		<td nowrap="nowrap" colspan="2">
 			<font size="<?php echo $font_size; ?>">
 <?php
 				if (isset($_SESSION["search_txt"])) {
@@ -324,7 +324,7 @@
 				|
 				<a href="newsgroups.php?sawall=1" title="<?php echo $messages_ini["help"]["sawall"]; ?>"><?php echo $messages_ini["control"]["sawall"]; ?></a>
 				|
-				<a href="newsgroups.php?rss_feed=<?php echo $message_per_page; ?>&group=<?php echo urlencode($_SESSION["newsgroup"]); ?>" target="_blank" title="<?php echo $messages_ini["help"]["rss_feed"]; ?>">
+				<a href="newsgroups.php?rss_feed=<?php echo $message_per_page; ?>&amp;group=<?php echo urlencode($_SESSION["newsgroup"]); ?>" target="_blank" title="<?php echo $messages_ini["help"]["rss_feed"]; ?>">
 					<?php echo $messages_ini["control"]["rss_feed"]; ?></a>
 				|
 				<a href="newsgroups.php?option=1" 
@@ -376,24 +376,24 @@
 			$arrow_alt = '▼';
 		}
 
-		echo "<td width=\"65%\"><font size=\"$font_size\" nowrap=\"true\"><b>";
-		echo "<a href=\"newsgroups.php?renew=0&sort=0\">".$messages_ini["text"]["subject"]."</a>";
+		echo "<td width=\"65%\" nowrap=\"nowrap\"><font size=\"$font_size\"><b>";
+		echo "<a href=\"newsgroups.php?renew=0&amp;sort=0\">".$messages_ini["text"]["subject"]."</a>";
 		if ($_SESSION["sort_by"] == 0) {
-			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" align=\"absbottom\" alt=\"$arrow_alt\">";
+			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" style=\"vertical-align:bottom\" alt=\"$arrow_alt\">";
 		}
 		echo "</b></font></td>";
 
-		echo "<td width=\"23%\"><font size=\"$font_size\" nowrap=\"true\"><b>";
-		echo "<a href=\"newsgroups.php?renew=0&sort=1\">".$messages_ini["text"]["sender"]."</a>";
+		echo "<td width=\"23%\" nowrap=\"nowrap\"><font size=\"$font_size\"><b>";
+		echo "<a href=\"newsgroups.php?renew=0&amp;sort=1\">".$messages_ini["text"]["sender"]."</a>";
 		if ($_SESSION["sort_by"] == 1) {
-			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" align=\"absbottom\" alt=\"$arrow_alt\">";
+			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" style=\"vertical-align:bottom\" alt=\"$arrow_alt\">";
 		}
 		echo "</b></font></td>";
 
-		echo "<td width=\"12%\"><font size=\"$font_size\" nowrap=\"true\"><b>";
-		echo "<a href=\"newsgroups.php?renew=0&sort=2\">".$messages_ini["text"]["date"]."</a>";
+		echo "<td width=\"12%\" nowrap=\"nowrap\"><font size=\"$font_size\"><b>";
+		echo "<a href=\"newsgroups.php?renew=0&amp;sort=2\">".$messages_ini["text"]["date"]."</a>";
 		if ($_SESSION["sort_by"] == 2) {
-			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" align=\"absbottom\" alt=\"$arrow_alt\">";
+			echo "&nbsp;<img src=\"$arrow_img\" border=\"0\" style=\"vertical-align:bottom\" alt=\"$arrow_alt\">";
 		}
 		echo "</b></font></td>";
 	?>
@@ -465,7 +465,7 @@
 	
 	<?php		
 		if ($page != 1) {
-			echo "<a href=\"newsgroups.php?page=".($page - 1)."\"><img src=\"".$image_base."previous_arrow.gif\" align=\"absmiddle\" border=\"0\" alt=\"◀\"></a>";
+			echo "<a href=\"newsgroups.php?page=".($page - 1)."\"><img src=\"".$image_base."previous_arrow.gif\" style=\"vertical-align:middle\" border=\"0\" alt=\"◀\"></a>";
 		}
 		echo "&nbsp;";
 
@@ -479,7 +479,7 @@
 		}
 		
 		if ($page != $page_count) {
-			echo "<a href=\"newsgroups.php?page=".($page + 1)."\"><img src=\"".$image_base."next_arrow.gif\" align=\"absmiddle\" border=\"0\" alt=\"▶\"></a>";
+			echo "<a href=\"newsgroups.php?page=".($page + 1)."\"><img src=\"".$image_base."next_arrow.gif\" style=\"vertical-align:middle\" border=\"0\" alt=\"▶\"></a>";
 		}
 	
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -500,4 +500,4 @@
 
 </table>
 </form>
-</font>
+</div>

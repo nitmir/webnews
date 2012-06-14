@@ -241,7 +241,7 @@
 
 			if (is_requested("mid")) {
 				$mid = get_request("mid");
-				$on_load_script = "location = '#".$mid."';";
+				$on_load_script = "location = '#m".$mid."';";
 			}
 		}
 	}
