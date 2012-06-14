@@ -500,7 +500,7 @@
                                                 $boundary = "--".$boundary;
                                         } else {
                                                 $boundary = "";
-                                                $end_headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+                                                $end_headers .= "Content-Type: text/plain; charset=".mb_internal_encoding()."\r\n";
                                         }
 
                                         if ($references && (strlen($references) != 0)) {
@@ -510,7 +510,6 @@
 					$body=create_message_body($message, $files, $boundary);
 					$send_message = "";
 					// Send the header
-					$subject=encode_MIME_header($subject,'Subject: ');
 					$send_message .= "Subject: ".$subject."\r\n";
 					$send_message .= "From: ".$from."\r\n";
 					$send_message .= "Newsgroups: ".$groups."\r\n";

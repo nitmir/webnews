@@ -39,7 +39,7 @@
 	ob_clean();
 	header("Content-Type: application/xml");
 	/*echo '<?xml version="1.0" encoding="ISO-8859-1" ?>'."\n";*/
-	echo '<?xml version="1.0" encoding="UTF-8" ?>'."\n";
+	echo '<?xml version="1.0" encoding="'.mb_internal_encoding().'" ?>'."\n";
 ?>
 <rss version="2.0">
 	<channel>

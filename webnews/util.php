@@ -49,11 +49,15 @@
 	}
 	
 	function decode_MIME_header($str) {
-		return (str_replace("_", " ",mb_decode_mimeheader($str)));
+		if(mb_detect_encoding($str)==mb_internal_encoding()){
+			return $str;
+		}else{
+			return (str_replace("_", " ",mb_decode_mimeheader($str)));
+		}
 	}
 	
 	function encode_MIME_header($str,$header='Subject') {
-		return mb_encode_mimeheader(utf8($str),'UTF-8','Q',"\r\n",strlen($header));
+		return mb_encode_mimeheader(encode($str),mb_internal_encoding(),'Q',"\r\n",strlen($header));
 	}
 	
 	
@@ -76,7 +80,7 @@
 
 	function chop_str($str, $len) {
 		if (strlen($str) > $len) {
-			$str = mb_substr($str, 0, $len - 3,'UTF-8')."...";
+			$str = mb_substr($str, 0, $len - 3, mb_internal_encoding())."...";
 		}
 		
 		return $str;
@@ -162,9 +166,11 @@
 
 	function decode_message_content($part) {
 		$encoding = $part["header"]["content-transfer-encoding"];
-		$charset = explode('; ',$part["header"]['content-type']);
-		$charset = explode('=',$charset[1]);
-		$charset = $charset[1];
+		if(preg_match(':charset=([a-zA-Z0-9/-]*):i',$part["header"]['content-type'],$match)==1){
+			$charset = $match[1];
+		}else{
+			$charset=false;
+		}
 		if (stristr($encoding, "quoted-printable")) {
 			return quoted_printable_decode($part["body"]);
 		} else if (stristr($encoding, "base64")) {
@@ -172,7 +178,7 @@
 		} else if (stristr($encoding, "uuencode")) {
 			return uudecode($part["body"]);
 		} else {	// No need to decode
-			return utf8($part["body"],$charset);
+			return encode($part["body"],$charset);
 		}
 	}
 	
@@ -204,7 +210,7 @@
 			$counter = 0;
 			$message_body .= "This is a multi-part message in MIME format\r\n";
 			$message_body .= $boundary."\r\n";
-			$message_body .= "Content-Type: text/plain; charset=UTF-8\r\n";
+			$message_body .= "Content-Type: text/plain; charset=".mb_internal_encoding()."\r\n";
 			$message_body .= "\r\n";
 			$message_body .= $message;
 			$message_body .= "\r\n\r\n";
@@ -489,42 +495,11 @@
 		$_SESSION['unread_id'][$group]=$id;
 	}
 	
-	function is_utf8($str) {
-	    $c=0; $b=0;
-	    $bits=0;
-	    $len=strlen($str);
-	    for($i=0; $i<$len; $i++){
-		$c=ord($str[$i]);
-		if($c > 128){
-		    if(($c >= 254)) return false;
-		    elseif($c >= 252) $bits=6;
-		    elseif($c >= 248) $bits=5;
-		    elseif($c >= 240) $bits=4;
-		    elseif($c >= 224) $bits=3;
-		    elseif($c >= 192) $bits=2;
-		    else return false;
-		    if(($i+$bits) > $len) return false;
-		    while($bits > 1){
-			$i++;
-			$b=ord($str[$i]);
-			if($b < 128 || $b > 191) return false;
-			$bits--;
-		    }
+	function encode($str,$charset=false){
+		if(!$charset){
+			$charset=mb_detect_encoding($str);
 		}
-	    }
-	    return true;
-	}
-	
-	function utf8($str,$charset=''){
-		if(!is_utf8($str)){
-			if($charset==''){
-			return utf8_encode($str);
-			}else{
-				return iconv($charset,'UTF-8',$str);
-			}
-		}else{
-			return $str;
-		}
+		return iconv($charset,mb_internal_encoding(),$str);
 	}
 	
 	// Need to setup the following entries in $config array
