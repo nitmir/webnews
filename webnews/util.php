@@ -86,6 +86,13 @@
 		return $str;
 	}
 	
+	function count_quote($str){
+		$tmp=explode('&gt;',$str);
+		$n=count($tmp);
+		for($i=0;$i<$n-1&&$tmp[$i]=='';$i++);
+		return $i;
+	}
+
 	
 	function quote_format($str){
 		global $quote_colors;
@@ -97,19 +104,20 @@
 		$message="";
 		$signed=false;
 		for($i=0;isset($array[$i]);$i++){
-			if(strlen($array[$i])>=(4*($cmp+1))&&substr($array[$i],4*$cmp,4)=='&gt;'){
+			$count=count_quote($array[$i]);
+			while($cmp<$count){
+				$message .= '<div style="border-left:2px solid '.$quote_colors[min(($cmp),$color_n-1)].';border-right:2px solid '.$quote_colors[min($cmp,$color_n-1)].';padding:4px 7px 4px 7px">'."\n";
 				$cmp++;
-				$message .= '<div style="border-left:2px solid '.$quote_colors[min(($cmp-1),$color_n-1)].';border-right:2px solid '.$quote_colors[min($cmp-1,$color_n-1)].';padding:0px 7px 0px 7px">'."\n".$array[$i]."<br/>\n";
 			}
-			elseif($cmp>0&&strlen($array[$i])>=(4*($cmp-1))&&substr($array[$i],4*($cmp-1),4)!='&gt;'){
+			while($cmp>$count){
+				$message .= "</div>"."\n";
 				$cmp--;
-				$message .= "</div>\n".$array[$i]."<br/>\n";
-			}elseif(!$signed&&$array[$i]=='--&nbsp;'){
-				$signed=true;
-				$message .='<font color="grey">'.$array[$i]."<br/>\n";
-			}else{
-				$message .=$array[$i]."<br/>\n";
 			}
+			if(!$signed&&$array[$i]=='--&nbsp;'){
+				$signed=true;
+				$message .='<font color="grey">';
+			}
+			$message .=$array[$i]."<br/>\n";
 		}
 		if($signed){
 			$message .="</font>";
@@ -117,7 +125,7 @@
 		for($i=$cmp;$i>0;$i--){
 			$message .= '</div>';
 		}
-		if(!preg_match('/w3m/i',$_SERVER['HTTP_USER_AGENT'])){
+		if(!preg_match('/w3m|lynx/i',$_SERVER['HTTP_USER_AGENT'])){
 			$message = preg_replace(array("/\n((&gt;)*)((&nbsp;)?)/"),array("\n"),$message);
 		}
 		$message = add_html_links($message);
@@ -144,7 +152,7 @@
 			// Within one week
 			return "<font color=\"#".$week_color."\">".strftime("%a %H:%M", $date)."</font>";
 		} else {
-			return strftime("%d %b %Y %H:%M", $date);
+			return strftime("%d %b %Y, %H:%M", $date);
 		}
 	}
 	
