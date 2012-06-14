@@ -43,7 +43,7 @@
 	</tr>
 	<tr>
 		<td bgcolor="<?php echo $primary_color; ?>" width="15%" valign="top"><font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["date"]; ?></b></font></td>
-		<td bgcolor="<?php echo $secondary_color; ?>"><font size="<?php echo $font_size; ?>"><?php echo $header["date"]; ?></td>
+		<td bgcolor="<?php echo $secondary_color; ?>"><font size="<?php echo $font_size; ?>"><?php echo strftime('%c',strtotime($header["date"])); ?></td>
 	</tr>
 	<tr>
 		<td bgcolor="<?php echo $primary_color; ?>" width="15%" valign="top"><font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["newsgroups"]; ?></b></font></td>

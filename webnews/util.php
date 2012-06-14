@@ -128,7 +128,8 @@
 	function format_date($date) {
 		global $today_color;
 		global $week_color;
-		
+		global $messages_ini;
+
 		$current = time();
 		$current_date = getdate($current);
 		
@@ -138,12 +139,12 @@
 
 		if ($date >= $today) {
 			// Today
-			return "<font color=\"#".$today_color."\">"."Today ".date("H:i", $date)."</font>";
+			return "<font color=\"#".$today_color."\">".$messages_ini['text']['today']." ".date("H:i", $date)."</font>";
 		} elseif ($date >= $last_week) {
 			// Within one week
-			return "<font color=\"#".$week_color."\">".date("D, H:i", $date)."</font>";
+			return "<font color=\"#".$week_color."\">".strftime("%a %H:%M", $date)."</font>";
 		} else {
-			return date("d-M-Y H:i", $date);
+			return strftime("%d %b %Y %H:%M", $date);
 		}
 	}
 	

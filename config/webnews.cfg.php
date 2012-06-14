@@ -98,18 +98,18 @@
 	$message_per_page_choice = array(25, 30, 50, 75, 100, 1000);
 	$pages_per_page = 20;
 
-// 	Default language
+// 	Default language and time
 	$text_ini = "config/messages_fr_fr.ini";
-//	$text_ini = "config/messages_zh_tw.ini";
-//	$text_ini = "config/messages_zh_tw_utf8.ini";
-//	$text_ini = "config/messages_zh_cn.ini";
-//	$text_ini = "config/messages_zh_cn_utf8.ini";
+	setlocale (LC_TIME, 'fr_FR.utf8'); 
 
 	$locale_list = array("fr_fr" => "Français",
 				"en_us" => "English (US)",
 				//"zh_tw" => "Chinese (Traditional)",
 				//"zh_cn" => "Chinese (Simplified)",
 				//"it_it" => "Italian"
+			);
+	$locale_time_list = array('fr_fr' => 'fr_FR.utf8',
+					'en_us' =>'en_US.utf8' 
 			);
 	// Filter the javascript or jscript
 	$filter_script = true;
