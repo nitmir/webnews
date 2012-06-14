@@ -49,7 +49,7 @@
 	}
 	
 	function decode_MIME_header($str) {
-		if(mb_detect_encoding($str)==mb_internal_encoding()){
+		if(mb_detect_encoding($str,mb_list_encodings())==mb_internal_encoding()){
 			return $str;
 		}else{
 			return (str_replace("_", " ",mb_decode_mimeheader($str)));
@@ -98,7 +98,7 @@
 		global $quote_colors;
 		$color_n=count($quote_colors);
 		$cmp=0;
-		$str=htmlentities($str,ENT_COMPAT | ENT_HTML401,mb_internal_encoding());
+		$str=htmlentities($str,ENT_COMPAT ,mb_internal_encoding());
 		$str=preg_replace(array('/ /',"/\t/"),array('&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'),$str);
 		$array=explode("\r\n",$str);
 		$message="";
@@ -212,8 +212,8 @@
 
 
 	function decode_message_content($part) {
-		$encoding = $part["header"]["content-transfer-encoding"];
-		if(preg_match(':charset=([a-zA-Z0-9/-]*):i',$part["header"]['content-type'],$match)==1){
+		$encoding = isset($part["header"]["content-transfer-encoding"])?$part["header"]["content-transfer-encoding"]:'';
+		if(isset($part["header"]['content-type'])&&preg_match(':charset=([a-zA-Z0-9/-]*):i',$part["header"]['content-type'],$match)==1){
 			$charset = $match[1];
 		}else{
 			$charset=false;
@@ -376,7 +376,7 @@
 		$url = "";
 		$mark = FALSE;
 		
-		if (!$result["scheme"]) {
+		if (!isset($result["scheme"])||!$result["scheme"]) {
 			if ($_SERVER["HTTPS"] != "on") {
 				$url = "http";
 			} else {
@@ -387,37 +387,37 @@
 		}
 		$url .= "://";
 		
-		if ($result["user"]) {
+		if (isset($result["user"])&&$result["user"]) {
 			$url .= $result["user"];
 			$mark = TRUE;
 		}
 		
-		if ($result["pass"]) {
+		if (isset($result["user"])&&$result["user"]) {
 			$url .= ":".$result["pass"];
 			$mark = TRUE;
 		}
 		
-		if ($mark) {
+		if (isset($mark)&&$mark) {
 			$url .= "@";
 		}
 		
-		if ($result["host"]) {
+		if (isset($result["host"])&&$result["host"]) {
 			$url .= $result["host"];
 		} else {
 			$url .= $_SERVER['HTTP_HOST'];
 		}
 		
-		if ($result["path"][0] != '/') {			
+		if (!isset($result["path"][0])||$result["path"][0] != '/') {			
 			$url .= dirname($_SERVER['REQUEST_URI'])."/";
 		}
 		
 		$url .= $result["path"];
 		
-		if ($result["query"]) {
+		if (isset($result["query"])&&$result["query"]) {
 			$url .= "?".$result["query"];
 		}
 		
-		if ($result["fragment"]) {
+		if (isset($result["fragment"])&&$result["fragment"]) {
 			$url .= "#".$result["fragment"];
 		}
 		
@@ -544,7 +544,7 @@
 	
 	function encode($str,$charset=false){
 		if(!$charset){
-			$charset=mb_detect_encoding($str);
+			$charset=mb_detect_encoding($str,mb_list_encodings());
 		}
 		return iconv($charset,mb_internal_encoding(),$str);
 	}

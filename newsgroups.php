@@ -212,7 +212,8 @@
 		$renew = 0;
 		if (is_requested("group") 
 				&& in_array(get_request("group"), $newsgroups_list) 
-				&& strcmp(get_request("group"), $_SESSION["newsgroup"])) {
+				&& isset($_SESSION["newsgroup"])
+				&&strcmp(get_request("group"), $_SESSION["newsgroup"])) {
 			$_SESSION["newsgroup"] = get_request("group");
 			$renew = 1;
 		} else {
