@@ -70,28 +70,27 @@
 				$renew = 1;
 				$_SESSION["result"] = null;
 				if ($group_info["count"] > 0) {
-					$_SESSION["article_list"] = $nntp->get_article_list($_SESSION["newsgroup"]);
-					
-					/*$i=0;
-					$query=mysql_query("SELECT * FROM post WHERE user_id='".$_SESSION["id"]."' AND `group`='".$_SESSION["newsgroup"]."'")or die(mysql_error());
-					while($data=mysql_fetch_assoc($query)){
-						$saw[$data['group_id']]=true;
+					if ((strcmp($message_per_page, "all") == 0) || (isset($do_search)&&$do_search)) {
+						// Search through all messages
+						$start_id = $group_info['start_id'];
+						$end_id = $group_info['end_id'];
+					} else {
+						$end_id = $group_info['end_id'] - $message_per_page*($page - 1);
+						$start_id = $end_id - $message_per_page*2;
 					}
-					for($j=sizeof($_SESSION["article_list"])-1;isset($_SESSION["article_list"][$j]);$j--){
-						if(isset($_SESSION['read_all_id'][$_SESSION["newsgroup"]])&&$_SESSION["article_list"][$j]<=$_SESSION['read_all_id'][$_SESSION["newsgroup"]]){
-							break;
-						}
-						if(!isset($saw[$_SESSION["article_list"][$j]])){
-							$i++;
-						}
-					}*/
+					if ($start_id < 0) {
+						$start_id = 0;
+					}
+					if($end_id <0){
+						$end_id = 0;
+					}
+					$_SESSION["article_list"] = $nntp->get_article_list($_SESSION["newsgroup"],$start_id.'-'.$end_id);
 					if ($_SESSION["article_list"] === FALSE) {
 						unset($_SESSION["article_list"]);
 						echo "<b>".$messages_ini["error"]["group_fail"].$_SESSION["newsgroup"]." </b><br>";
 						echo $nntp->get_error_message()."<br>";
 						exit;
-					}				
-					
+					}
 					if (isset($do_search)&&$do_search) {
 						$search_txt = get_request("search_txt");
 						if (get_magic_quotes_gpc()) {
@@ -109,15 +108,17 @@
 					if ((strcmp($message_per_page, "all") == 0) || (isset($do_search)&&$do_search)) {
 						// Search through all messages
 						$start_id = 0;
-						$end_id = sizeof($_SESSION["article_list"]) - 1;
+						$end_id = count($_SESSION["article_list"]) - 1;
 					} else {
-						$end_id = sizeof($_SESSION["article_list"]) - $message_per_page*($page - 1) - 1;
+						$end_id = count($_SESSION["article_list"]) - 1;
 						$start_id = $end_id - $message_per_page + 1;
 					}
 					if ($start_id < 0) {
 						$start_id = 0;
 					}
-
+					if($end_id <0){
+						$end_id = 0;
+					}
 					$result = $nntp->get_message_summary($_SESSION["article_list"][$start_id], $_SESSION["article_list"][$end_id], $search_pat, $flat_tree);
 					if (isset($result)&&$result) {
 						$result[0]->compact_tree();						
@@ -437,12 +438,11 @@
 	}
 
 // Pagination number generation
-
 	if (strcasecmp($message_per_page, "all") != 0) {
 		if (isset($_SESSION["search_txt"])) {		// Count from the number of search results
 			$page_count = ceil((float)sizeof($root_node->get_children())/(float)$message_per_page);
 		} else {
-			$page_count = ceil((float)sizeof($_SESSION["article_list"])/(float)$message_per_page);
+			$page_count = ceil((float)$group_info['count']/(float)$message_per_page);
 		}
 		$start_page = (ceil($page/$pages_per_page) - 1)*$pages_per_page + 1;
 		$end_page = $start_page + $pages_per_page - 1;
