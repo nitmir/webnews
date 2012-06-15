@@ -93,7 +93,7 @@
 							$start_id_group = $group_info['start_id'];
 							$end_id_group = $group_info['end_id'];
 						} else {
-							$end_id_group = $group_info['end_id'] - $message_per_page*($page - 1);
+							$end_id_group = $group_info['end_id'];
 							$start_id_group = $end_id_group - $message_per_page*$_SESSION['mult'][$_SESSION["newsgroup"]];
 						}
 						if ($start_id_group < 0) {
@@ -114,7 +114,7 @@
 							$start_id = 0;
 							$end_id = count($_SESSION["article_list"]) - 1;
 						} else {
-							$end_id = count($_SESSION["article_list"]) - 1;
+							$end_id = count($_SESSION["article_list"]) - $message_per_page*($page - 1) - 1;
 							$start_id = $end_id - $message_per_page + 1;
 						}
 						if ($start_id < 0) {
