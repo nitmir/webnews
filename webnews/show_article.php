@@ -76,9 +76,14 @@
 			        }
 			    
                     // Search through +/- n messages only
-			        $message_node = $nntp->get_message_thread($article_id - $thread_search_size, $article_id + $thread_search_size, $ref);
-			        $message_node->set_show_all_children(TRUE);
-			        $message_node->compact_tree();
+			        $message_node = $nntp->get_message_thread(max(0,$article_id - $thread_search_size), $article_id + $thread_search_size, $ref);
+				if(!$message_node){
+					echo ($nntp->get_error_message());
+					echo ': '. ($article_id - $thread_search_size) .'-'. ($article_id + $thread_search_size);
+				}else{
+			        	$message_node->set_show_all_children(TRUE);
+			        	$message_node->compact_tree();
+				}
 			    }
 
 				include("webnews/article_template.php");				
