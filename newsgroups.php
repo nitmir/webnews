@@ -26,8 +26,6 @@
 	if(isset($_GET['logout'])){
 		logout();
 	}
-	//~ print_r($_POST);
-	//~ die();
 	if(isset($_POST['mail'])&&isset($_POST['pass'])){
 		if(login($_POST['mail'],$_POST['pass'])){
 			header("Location: ".$_SERVER['PHP_SELF']);
@@ -72,43 +70,6 @@
 		header("Location: ".construct_url($logout_url));
 		exit;
 	} 
-	//~ else if (isset($_SESSION["auth"]) && $_SESSION["auth"]) {
-		//~ $user = $_SERVER['PHP_AUTH_USER'];
-		//~ $pass = $_SERVER['PHP_AUTH_PW'];
-		//~ $user = "Vivelapa";
-		//~ $pass = "ranoia!";
-
-	//~ }
-
-	//~ if ($auth_level > 1) {
-		//~ if (($auth_level == 3) || (is_requested("compose") && ($auth_level == 2))) {
-			//~ // Do HTTP Basic authentication
-			//~ if ($_SESSION["logout"] || !isset($_SERVER['PHP_AUTH_USER'])) {
-				//~ unset($_SESSION["logout"]);
-				//~ header('WWW-Authenticate: Basic realm="'.$realm.'"');
-				//~ header('HTTP/1.0 401 Unauthorized');
-				//~ echo $messages_ini["authorization"]["login"];
-				//~ exit;
-			//~ } else {
-				//~ // $_SESSION["auth"] must be checked firsr to avoid making too many connections
-				//~ if ($_SESSION["auth"] || verify_login($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
-					//~ $user = $_SERVER['PHP_AUTH_USER'];
-					//~ $pass = $_SERVER['PHP_AUTH_PW'];
-					//~ $_SESSION["auth"] = TRUE;
-				//~ } else {
-					//~ header('WWW-Authenticate: Basic realm="'.$realm.'"');
-					//~ header('HTTP/1.0 401 Unauthorized');
-					//~ echo $messages_ini["authorization"]["login"];
-					//~ exit;
-				//~ }
-			//~ }
-			//~ // Authentication done
-		//~ }
-	//~ } else {
-		$user = "Vivelapa";
-		$pass = "ranoia!";
-		//~ $_SESSION["auth"] = TRUE;
-	//~ }
 
 	// Create the NNTP object
 	$nntp = new NNTP($nntp_server, $user, $pass, $proxy_server, $proxy_port, $proxy_user, $proxy_pass);
@@ -126,7 +87,6 @@
 					echo $nntp->get_error_message()."<br>";
 					exit;
 				}				
-
 				$group_list = $nntp->get_group_list($group);
 				if ($group_list !== FALSE) {
 					sort($group_list);
@@ -157,57 +117,10 @@
 		} else {
 			$content_page = "webnews/compose_message.php";
 		}
-	} else if (is_requested("preferences")) {
-		$content_page = "webnews/preferences.php";
+	} else if (is_requested("settings")) {
+		$content_page = "webnews/settings.php";
 	}else if (is_requested("portal")){
 		$content_page = "webnews/portal.php";
-		foreach($newsgroups_list as $group){
-			if(!isset($_SESSION['unread'][$group])||is_requested("unread")){
-				if(!isset($saw)){
-					$saw=array();
-					$query=mysql_query("SELECT * FROM post WHERE user_id='".$_SESSION["id"]."'");
-					while($data=mysql_fetch_assoc($query)){
-						$saw[$data['group']][$data['group_id']]=true;
-					}
-				}
-				$nntp->connect();
-				$info=$nntp->join_group($group);
-				if($info['end_id']<= $_SESSION['unread_id'][$group]){
-					if($_SESSION['unread'][$group]==0&&$_SESSION['unread_id'][$group]!=$_SESSION['read_all_id'][$group]){
-	                                        saw_all($group);
-        	                        }
-					continue;
-				}
-				$range=max(0,$info['end_id'] - $maxunread,isset($_SESSION['unread_id'][$group])?$_SESSION['unread_id'][$group]:0).'-';
-				if(!$array=$nntp->get_article_list($group,$range)){
-					continue;
-				}
-				$size=count($array);
-				$_SESSION['unread_id'][$group]=$info['end_id'];
-				$i=0;
-				for($j=$size -1;isset($array[$j]);$j--){
-					if(isset($_SESSION['read_all_id'][$group])&&$array[$j]<=$_SESSION['read_all_id'][$group]){
-						break;
-					}
-					if(!isset($saw[$group][$array[$j]])){
-						$i++;
-					}
-				}
-				if(isset($_SESSION['unread'][$group])&&$_SESSION['unread'][$group]>0){
-					$_SESSION['unread'][$group]+=$i;
-				}else{
-					$_SESSION['unread'][$group]=$i;
-				}
-				if($_SESSION['unread'][$group]==0&&$_SESSION['unread_id'][$group]!=$_SESSION['read_all_id'][$group]){
-					saw_all($group);
-                		}
-			}
-		}
-		if(is_requested("unread")){
-			$url=preg_replace('/(\?|&)unread=1/','',$_SERVER['REQUEST_URI']);
-			header("Location: ".$url);
-			die();
-		}
 	} else {
 		$renew = 0;
 		if (is_requested("group") 
@@ -221,7 +134,6 @@
 				$renew = 1;
 			}
 		}
-
 		if (is_requested("rss_feed")) {
 			$content_page = "webnews/rss.php";
 		} else if (is_requested("article_id")) {
@@ -247,8 +159,5 @@
 		}
 	}
 	
-	
-	
-
 	include ($template);
 ?>

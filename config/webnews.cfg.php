@@ -24,7 +24,7 @@
 
 
 	// NNTP Server setting
-	$nntp_server = "news";
+	$nntp_server = "news.crans.org";
 	$user = "Vivelapa";
 	$pass = "ranoia!";
 	$signature = '';
