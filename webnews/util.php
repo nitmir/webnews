@@ -99,25 +99,25 @@
 		$color_n=count($quote_colors);
 		$cmp=0;
 		$str=htmlentities($str,ENT_COMPAT ,mb_internal_encoding());
-		$str=preg_replace(array('/ /',"/\t/"),array('&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'),$str);
+		$str=preg_replace(array('/ &gt;/','/ /',"/\t/"),array('&gt;','&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'),$str);
 		$array=explode("\r\n",$str);
 		$message="";
 		$signed=false;
 		for($i=0;isset($array[$i]);$i++){
 			$count=count_quote($array[$i]);
 			while($cmp<$count){
-				$message .= '<div style="border-left:2px solid '.$quote_colors[min(($cmp),$color_n-1)].';border-right:2px solid '.$quote_colors[min($cmp,$color_n-1)].';padding:4px 7px 4px 7px">'."\n";
+				$message .= str_repeat('	',$cmp).'<div style="border-left:2px solid '.$quote_colors[min(($cmp),$color_n-1)].';border-right:2px solid '.$quote_colors[min($cmp,$color_n-1)].';padding:4px 7px 4px 7px">'."\n";
 				$cmp++;
 			}
 			while($cmp>$count){
-				$message .= "</div>"."\n";
+				$message .= str_repeat('	',$cmp-1)."</div>"."\n";
 				$cmp--;
 			}
 			if(!$signed&&$array[$i]=='--&nbsp;'){
 				$signed=true;
 				$message .='<font color="grey">';
 			}
-			$message .=$array[$i]."<br/>\n";
+			$message .=str_repeat('	',$cmp).$array[$i]."<br/>\n";
 		}
 		if($signed){
 			$message .="</font>";
@@ -126,7 +126,7 @@
 			$message .= '</div>';
 		}
 		if(!preg_match('/w3m|lynx/i',$_SERVER['HTTP_USER_AGENT'])){
-			$message = preg_replace(array("/\n((&gt;)*)((&nbsp;)?)/"),array("\n"),$message);
+			$message = preg_replace(array("/\n(\t*)((&gt;)+)((&nbsp;)?)/"),array("\n$1"),$message);
 		}
 		$message = add_html_links($message);
 		return  $message;
