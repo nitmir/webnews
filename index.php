@@ -11,6 +11,12 @@ if(is_loged()){
 	exit;
 }
 
+if (isset($_COOKIE["wn_pref_lang"])) {
+        $text_ini = "config/messages_".$_COOKIE["wn_pref_lang"].".ini";
+        setlocale (LC_TIME, $locale_time_list[$_COOKIE["wn_pref_lang"]]);
+}
+$messages_ini = read_ini_file($text_ini, true);
+
 $content_page='webnews/index.php';
 include($template);
 ?>
