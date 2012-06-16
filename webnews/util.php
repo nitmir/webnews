@@ -47,6 +47,11 @@
 		global $x_webnews;
 		return sha1($x_webnews.$str);
 	}
+	function x_cancel_lock($str) {
+		$query = mysql_query("SELECT cancel_key  FROM users WHERE id='".$_SESSION['id']."'")or die(mysql_error());
+		$data=mysql_fetch_assoc($query);
+		return sha1($data['cancel_key'].$str);
+	}
 	
 	function decode_MIME_header($str) {
 		if(mb_detect_encoding($str,mb_list_encodings())==mb_internal_encoding()){
@@ -484,6 +489,7 @@
 
 	function init_read_all($group){
 		if(!isset($_SESSION['read_all'][$group])||!isset($_SESSION['read_all_id'][$group])||!isset($_SESSION['unread_id'][$group])){
+			mysql_query("UPDATE users SET cancel_key=MD5(RAND()) WHERE cancel_key=''")or die(mysql_error());
                         $query=mysql_query("SELECT * FROM post WHERE id='".$group."' AND user_id='".$_SESSION['id']."' ORDER BY date DESC")or die(mysql_error());
                         if($data=mysql_fetch_assoc($query)){
                                 $_SESSION['read_all'][$group]=$data['date'];

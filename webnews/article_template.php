@@ -35,7 +35,7 @@
 			echo htmlescape(" <".($header["from"]["email"]).">")."</a>";
 		}
 
-		if(isset($header['x-webnews'])&&$nntp->validate_article($_GET['article_id'],$header['x-webnews'])){
+		if(isset($header['x-webnews'])&&x_webnews($raw_body)==$header['x-webnews']){
 			echo ' (depuis le webnews)';
 		}
 ?>

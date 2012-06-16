@@ -121,6 +121,19 @@
 		$content_page = "webnews/settings.php";
 	}else if (is_requested("portal")){
 		$content_page = "webnews/portal.php";
+		
+	}elseif (is_requested("cancel_id")&&is_requested("cancel_group")){
+			$renew = 0;
+			if($nntp->connect()){
+				$message_id=get_request("cancel_id");
+				if($nntp->join_group(get_request("cancel_group"))){
+					if($nntp->cancel_article($message_id)){
+						$renew = 1;
+					}
+				}
+			}
+			$content_page = "webnews/show_header.php";
+			
 	} else {
 		$renew = 0;
 		if (is_requested("group") 

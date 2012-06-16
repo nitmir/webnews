@@ -413,8 +413,24 @@
 			$this->error_message = $response["message"];
 			return NULL;
 		}
-		
-		function validate_article($message_id,$hash){
+		function get_raw_header($message_id) {
+			$response = $this->parse_response($this->send_request("head ".$message_id));
+			if (($response["status"] == ARTICLE_HEAD) || ($response["status"] == ARTICLE_HEAD_BODY)) {
+				$header = "";
+				$buf = fgets($this->nntp, 4096);
+				while (!preg_match("/^\.\s*$/", $buf)) {
+					$header .= $buf;
+					$buf = fgets($this->nntp, 4096);
+				}
+				
+				return $header;
+			}
+			
+			$this->error_number = $response["status"];
+			$this->error_message = $response["message"];
+			return NULL;
+		}
+		function get_raw_body($message_id){
 			$response = $this->parse_response($this->send_request("body ".$message_id));
                                                 
                         if (($response["status"] == ARTICLE_BODY) || ($response["status"] == ARTICLE_HEAD_BODY)) {
@@ -425,12 +441,15 @@
                                         $buf = fgets($this->nntp, 4096);
                                 }
 
-                                return x_webnews(substr($message,0,-2))==$hash;
+                                return substr($message,0,-2);
                         }
 
                         $this->error_number = $response["status"];
                         $this->error_message = $response["message"];
                         return NULL;
+                }
+		function validate_article($message_id,$hash){
+			return x_webnews($this->get_raw_body($message_id))==$hash;
                 }
 
 
@@ -474,7 +493,34 @@
 			return NULL;
 		}
 		
-		
+		function cancel_article($message_id){
+			if($MIME_Message=$this->get_header($message_id)){
+				$header = $MIME_Message->get_main_header();
+				if($raw_body=$this->get_raw_body($message_id)){
+					if(x_cancel_lock($raw_body)==$header['x-cancel-lock']){
+						$message='';
+						$message.='From: '.$header['from']['email']."\r\n";
+						$message.='Newsgroups: '.$header['newsgroups']."\r\n";
+						$message.='Subject: cmsg cancel '.$header['message-id']."\r\n";
+						$message.='Control: cancel '.$header['message-id']."\r\n";
+						$message.="\r\n";
+						$response = $this->parse_response($this->send_request("post"));
+						if ($response["status"] == ARTICLE_POST_READY) {
+							fputs($this->nntp, $message);
+							$response = $this->parse_response($this->send_request("\r\n."));
+							if ($response["status"] == ARTICLE_POST_OK) {
+								return true;
+							}
+						}
+					}else{
+						$response["message"]="You only can cancel yours messages";
+					}
+				$this->error_number = $response["status"];
+				$this->error_message = $response["message"];
+				}
+			}
+			return NULL;
+		}
 		function post_article($subject, $name, $email, $newsgroups, $references, $message, $files) {
 			global $messages_ini;
 			
@@ -517,6 +563,7 @@
 					$send_message .= "User-Agent: Web-News v.1.6.3 (by Terence Yim), Modifié par Valentin pour le Cr@ns\r\n";
 					$send_message .= "X-NNTP-Posting-Host: ".$host."\r\n";
 					$send_message .= "X-Webnews: ".x_webnews($body)."\r\n";
+					$send_message .= "X-Cancel-Lock: ".x_cancel_lock($body)."\r\n";
 					$send_message .= "Mime-Version: 1.0\r\n";
 
 					$send_message .= $end_headers."\r\n";	// Header body separator

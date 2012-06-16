@@ -63,7 +63,7 @@
 		
 
 		function decode_header($headers) {
-			$header_want = "/^(From|Subject|Date|Newsgroups|Followup-To|X-Webnews|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
+			$header_want = "/^(From|Subject|Date|Newsgroups|Followup-To|X-Webnews|X-Cancel-Lock|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
 			
 			$headers = split("\r\n", $headers);
 			// Parse the header
@@ -87,7 +87,7 @@
 
 		// An article is a raw MIME message
 		function decode_article($article) {
-			list($header, $body) = split("\r\n\r\n", $article, 2);
+			@list($header, $body) = split("\r\n\r\n", $article, 2);
 						
 			$header = $this->decode_header($header);
 

@@ -38,6 +38,9 @@
 		<td>
 <?php
 		//~ echo $content_page;
+		if(isset($nntp->error_message)&&$nntp->error_message!=''){
+			echo '<center><font color="red">'.$nntp->error_message.'</font><center>';
+		}
 		include($content_page);
 ?>
 		</td>
