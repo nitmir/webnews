@@ -13,14 +13,12 @@
 <html>
 <head>
 	<style type="text/css">
-		A {text-decoration: none; }
-		A:hover {text-decoration: underline; color: <?php echo $over_link_color; ?>;}
+		a {text-decoration: none; color: #0044B3;}
+		a:hover {text-decoration: underline; color: <?php echo $over_link_color; ?>;}
+		a:visited {color: #0044B3;}
+		a:visited:hover {text-decoration: underline; color: <?php echo $over_link_color; ?>;}
 	</style>
 	<title><?php echo $messages_ini["text"]["title"]?></title>
-	<style type="text/css">
-		a {color: #0044B3;}
-		a:visited {color: #0044B3;}
-	</style>
 </head>
 <body bgcolor="#ffffff" text="#000000" 
 	<?php if (isset($on_load_script)) {echo "onLoad=\"$on_load_script\"";} ?>

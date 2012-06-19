@@ -43,7 +43,7 @@ foreach($newsgroups_list as $group){
 }
 if(is_requested("unread")){
 	$url=preg_replace('/(\?|&)unread=1/','',$_SERVER['REQUEST_URI']);
-	header("Location: ".$url);
+	header("Location: ".construct_url($url));
 	die();
 }
 

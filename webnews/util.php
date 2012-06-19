@@ -45,12 +45,12 @@
 
 	function x_webnews($str) {
 		global $x_webnews;
-		return sha1($x_webnews.$str);
+		return base64_encode(sha1($x_webnews.$str,true));
 	}
 	function x_cancel_lock($str) {
 		$query = mysql_query("SELECT cancel_key  FROM users WHERE id='".$_SESSION['id']."'")or die(mysql_error());
 		$data=mysql_fetch_assoc($query);
-		return sha1($data['cancel_key'].$str);
+		return base64_encode(sha1($data['cancel_key'].$str,true));
 	}
 	
 	function decode_MIME_header($str) {
@@ -412,8 +412,9 @@
 			$url .= $_SERVER['HTTP_HOST'];
 		}
 		
-		if (!isset($result["path"][0])||$result["path"][0] != '/') {			
-			$url .= dirname($_SERVER['REQUEST_URI'])."/";
+		if (!isset($result["path"][0])||$result["path"][0] != '/') {
+			$dir=dirname($_SERVER['REQUEST_URI']);
+			$url .= $dir.($dir=='/'?'':"/");
 		}
 		
 		$url .= $result["path"];
@@ -504,13 +505,13 @@
 		}
 }
 
-	function is_saw($message_info){
+	function is_saw($message_info,$group){
 		global $sawafter;
 		//~ $query=mysql_query("SELECT * FROM post WHERE id='".$message_id."'");
-		if((time()-$message_info->date)>$sawafter||$message_info->date<$_SESSION['read_all'][$_SESSION["newsgroup"]]){
+		if((time()-$message_info->date)>$sawafter||$message_info->date<$_SESSION['read_all'][$group]){
 			return true;
 		} else {
-			$query=mysql_query("SELECT * FROM post WHERE id='".$message_info->message_id."' AND date='".$message_info->date."'  AND `group`='".$_SESSION["newsgroup"]."' AND group_id='".$message_info->nntp_message_id."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
+			$query=mysql_query("SELECT * FROM post WHERE id='".$message_info->message_id."' AND date='".$message_info->date."'  AND `group`='".$group."' AND group_id='".$message_info->nntp_message_id."' AND user_id='".$_SESSION['id']."'")or die(mysql_error());
 			if(mysql_num_rows($query)==1){
 				return true;
 			} else {
@@ -519,16 +520,13 @@
 		}
 	}
 	
-	function saw($message_info){
+	function saw($message_info,$group){
 		global $sawafter;
-		if(!is_saw($message_info)){
+		if(!is_saw($message_info,$group)){
 			$limit=time()-$sawafter;
-			$query=mysql_query("INSERT INTO post (id, date,user_id,group_id,`group`) VALUES ('".$message_info->message_id."', '".$message_info->date."','".$_SESSION['id']."','".$message_info->nntp_message_id."','".$_SESSION["newsgroup"]."')")or die(mysql_error());
+			$query=mysql_query("INSERT INTO post (id, date,user_id,group_id,`group`) VALUES ('".$message_info->message_id."', '".$message_info->date."','".$_SESSION['id']."','".$message_info->nntp_message_id."','".$group."')")or die(mysql_error());
 			$query=mysql_query("DELETE FROM post WHERE date<'".$limit."'")or die(mysql_error());
-			$_SESSION['unread'][$_SESSION["newsgroup"]]--;
-			/*if($_SESSION['unread'][$_SESSION["newsgroup"]]==0){
-                                saw_all($_SESSION["newsgroup"]);
-                        }*/
+			$_SESSION['unread'][$group]--;
 		}
 		return true;
 	}
@@ -556,7 +554,7 @@
 	}
 	
 	// Need to setup the following entries in $config array
-	function display_tree($nodes, $level, $indent = "", $expandable = TRUE, $current_aid = FALSE) {
+	function display_tree($nodes, $level, $group, $indent = "", $expandable = TRUE, $current_aid = FALSE) {
 		global $image_base;
 		global $font_size;
 		global $primary_color;
@@ -570,7 +568,7 @@
 		dbconn();
 		//~ print_r($nodes);
 		if($_SESSION["sawall"]){
-			saw_all($_SESSION["newsgroup"]);
+			saw_all($group);
 			$_SESSION["sawall"]=false;
 			$url=preg_replace('/(\?|&)sawall=1/','',$_SERVER['REQUEST_URI']);
 			header("Location: ".$url);
@@ -584,7 +582,6 @@
 			$message_info = $node->get_message_info();
 			$is_first = ($count == 0)?1:0;
 			$is_last = ($count == $last_index)?1:0;
-			
 			if ($node->count_children() == 0) {
 				if ($is_first && $is_last) {
 					if ($level == 0) {
@@ -642,17 +639,17 @@
 			echo "<span id=\"m".$message_info->nntp_message_id."\">";
 			echo $old_indent;
 			echo $sign."<img src=\"".$image_base."message.gif\" width=\"13\" height=\"13\" border=\"0\" style=\"vertical-align:middle\" alt=\"#\">&nbsp;";
-			
-			if ((($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id))&&!is_saw($message_info)) {
-			    $start_tag = "<b><a href=\"newsgroups.php?art_group=".urlencode($_SESSION["newsgroup"])."&amp;article_id=".$message_info->nntp_message_id."\"><font size=\"$font_size\">";
+
+			if ((($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id))&&!is_saw($message_info,$group)) {
+			    $start_tag = "<b><a href=\"newsgroups.php?art_group=".urlencode($group)."&amp;article_id=".$message_info->nntp_message_id."\"><font size=\"$font_size\">";
 			    $end_tag = "</font></a></b>";
 			} elseif (($current_aid === FALSE) || ($current_aid != $message_info->nntp_message_id)) {
-			    $start_tag = "<a href=\"newsgroups.php?art_group=".urlencode($_SESSION["newsgroup"])."&amp;article_id=".$message_info->nntp_message_id."\"><font size=\"$font_size\">";
+			    $start_tag = "<a href=\"newsgroups.php?art_group=".urlencode($group)."&amp;article_id=".$message_info->nntp_message_id."\"><font size=\"$font_size\">";
 			    $end_tag = "</font></a>";
 			} else {
 			    $start_tag = "<b><font size=\"$font_size\" color=\"black\">";
 			    $end_tag = $messages_ini["text"]["current_msg"]."</font></b>";
-			    saw($message_info);
+			    saw($message_info,$group);
 			}
 			echo $start_tag.htmlescape(chop_str(($message_info->subject), $subject_length_limit - $level*3)).$end_tag;
 			echo "</span></td>\r\n";
@@ -678,7 +675,7 @@
 			}
 
 			if ($node->is_show_children() && ($node->count_children() != 0)) {
-				display_tree($node->get_children(), $level + 1, $indent, $expandable, $current_aid);
+				display_tree($node->get_children(), $level + 1, $group, $indent, $expandable, $current_aid);
 			}
 			$count++;
 		}

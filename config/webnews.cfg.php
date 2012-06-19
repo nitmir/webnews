@@ -81,7 +81,7 @@
 	// If protocol other than HTTP or HTTPS is used, please use absolute path
 	// You can also use the variable "$_SERVER['HTTP_HOST']" to extract the current host name
 	// e.g. $logout_url = "ftp://".$_SERVER['HTTP_HOST']."/mypath";
-	$logout_url = "index.php";
+	$logout_url = "";
 	
 	// Realm to be used in the user authetication
 	$realm = "Web-News";

@@ -445,9 +445,9 @@
 		$display_counter = 0;
 		if (isset($_SESSION["search_txt"]) && (strcasecmp($message_per_page, "all") != 0)) {
 			$nodes = array_slice($root_node->get_children(), ($page - 1)*$message_per_page, $message_per_page);
-			display_tree($nodes, 0);
+			display_tree($nodes, 0, $_SESSION["newsgroup"]);
 		} else {
-			display_tree($root_node->get_children(), 0);
+			display_tree($root_node->get_children(), 0, $_SESSION["newsgroup"]);
 		}
 	}
 

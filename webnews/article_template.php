@@ -125,7 +125,7 @@
     <td><font size="<?php echo ($font_size - 1);?>">&nbsp;</font></td>
 </tr>
 <?php
-        display_tree($message_node->get_children(), 0, "", FALSE, $article_id);
+        display_tree($message_node->get_children(), 0, $group, "", FALSE, $article_id);
 ?>
 </table>
 </td></tr>

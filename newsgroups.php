@@ -23,17 +23,26 @@
 	session_start();
 
 	dbconn();
-	if(isset($_GET['logout'])){
+	if(is_requested('logout')){
 		logout();
+                header("Location: ".construct_url($logout_url));
+		exit;
 	}
 	if(isset($_POST['mail'])&&isset($_POST['pass'])){
 		if(login($_POST['mail'],$_POST['pass'])){
-			header("Location: ".$_SERVER['PHP_SELF']);
+			header("Location: ".$_SERVER['PHP_SELF']."?portal=1");
 			exit;
 		}
 	}
 	if(!is_loged()){
+		$_SESSION['redirect']=$_SERVER['REQUEST_URI'];
 		header("Location: ".construct_url($logout_url));
+		exit;
+	}
+	if(isset($_SESSION['redirect'])){
+		$url=$_SESSION['redirect'];
+		unset($_SESSION['redirect']);
+		header("Location: ".$url);
 		exit;
 	}
 
@@ -96,7 +105,7 @@
 				$_SESSION["newsgroups_list"][] = $group;
 			}
 		}		
-	$_GET['portal']=1;
+	//$_GET['portal']=1;
 	}
 	$newsgroups_list = $_SESSION["newsgroups_list"];
 	array_map('init_read_all',$newsgroups_list);

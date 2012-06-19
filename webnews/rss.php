@@ -24,8 +24,8 @@
 				$rss_feed_count = $message_per_page;
 			}
 
-			$article_list = $nntp->get_article_list($_SESSION["newsgroup"]);
-			$end_id = sizeof($article_list) - 1;
+			$article_list = $nntp->get_article_list($_SESSION["newsgroup"], $group_info['end_id']- 2*get_request('rss_feed') .'-');
+			$end_id = count($article_list) - 1;
 			$start_id = $end_id - $rss_feed_count + 1;
 			if ($start_id < 0) {
 				$start_id = 0;

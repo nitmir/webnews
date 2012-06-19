@@ -76,7 +76,7 @@
 			<form action="newsgroups.php" name="cancel">
 				<input type="hidden" name="cancel_id" value="<?php echo $article_id ?>">
 				<input type="hidden" name="cancel_group" value="<?php echo get_request('art_group') ?>">
-				<input type="button" value="<?php echo $messages_ini["control"]["cancel_message"]; ?>" style="<?php echo $form_style_bold; ?>" onClick="check();">
+				<input type="button" value="<?php echo $messages_ini["control"]["cancel_message"]; ?>" style="<?php echo $form_style_bold; ?>" onclick="check();">
 			</form>
 		<?php } ?>
 		</td>
