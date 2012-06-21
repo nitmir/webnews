@@ -114,6 +114,7 @@
 	// Filter the javascript or jscript
 	$filter_script = true;
 
+
 	
 
 /******************************************************************/
@@ -183,6 +184,11 @@
 	//		echo "onLoad=\"$on_load_script\"";
 	//	}
 	$template = "template.php";
+	
+		$template_list = array(
+		'default' => 'template.php',
+		'list' => 'template_list.php',
+		);
 
 //	template2.php includes a fancy welcome header
 //	$template = "template2.php";

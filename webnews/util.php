@@ -567,7 +567,7 @@
 		
 		dbconn();
 		//~ print_r($nodes);
-		if($_SESSION["sawall"]){
+		if(isset($_SESSION["sawall"])&&$_SESSION["sawall"]){
 			saw_all($group);
 			$_SESSION["sawall"]=false;
 			$url=preg_replace('/(\?|&)sawall=1/','',$_SERVER['REQUEST_URI']);

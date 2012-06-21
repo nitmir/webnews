@@ -17,6 +17,11 @@
 			exit;
 		} else {
 			$message = $nntp->get_raw_article($article_id);
+			if($message == NULL) {
+				echo "<b>".$messages_ini["error"]["group_fail"].$_SESSION["newsgroup"]." </b><br>";
+				echo $nntp->get_error_message()."<br>";
+				exit;
+			}
 		}
 	}
 

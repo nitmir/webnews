@@ -9,7 +9,7 @@
 
 	$content = 4;
 	$title = "Newsgroup";
-
+	
 	// Import the NNTP Utility
 	require("webnews/nntp.php");
 	require("config/webnews.cfg.php");
@@ -50,14 +50,16 @@
 		$expire = 2147483647;	// Maximum integer
 		setcookie("wn_pref_lang", get_request("language"), $expire);
 		setcookie("wn_pref_mpp", get_request("msg_per_page"), $expire);
+		setcookie("wn_pref_template", get_request("template"), $expire);
 		
-		if ($_COOKIE["wn_pref_mpp"] != get_request("msg_per_page")) {
+		if (is_requested("msg_per_page")&&$_COOKIE["wn_pref_mpp"] != get_request("msg_per_page")) {
 			$change_mpp = TRUE;
 		} else {
 			$change_mpp = FALSE;
 		}
 
 		$_COOKIE["wn_pref_lang"] = get_request("language");
+		$_COOKIE["wn_pref_template"] = get_request("template");
 		$_COOKIE["wn_pref_mpp"] = get_request("msg_per_page");
 	}
 
@@ -65,6 +67,9 @@
 	if (isset($_COOKIE["wn_pref_lang"])) {
 		$text_ini = "config/messages_".$_COOKIE["wn_pref_lang"].".ini";
 		setlocale (LC_TIME, $locale_time_list[$_COOKIE["wn_pref_lang"]]);
+	}
+	if(isset($_COOKIE["wn_pref_template"])){
+		$template=$_COOKIE["wn_pref_template"];
 	}
 	$messages_ini = read_ini_file($text_ini, true);
 

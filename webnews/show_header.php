@@ -44,6 +44,9 @@
 */
 	if (is_requested("option")) {
 		$_SESSION["more_option"] = !(isset($_SESSION["more_option"])?$_SESSION["more_option"]:false);
+		$url=preg_replace('/(\?|&)option=1/','',$_SERVER['REQUEST_URI']);
+		header("Location: ".construct_url($url));
+		die();
 	}
 
 	if (isset($_COOKIE["wn_pref_mpp"])) {
@@ -223,7 +226,7 @@
 ?>
 
 <div style="font-family: <?php echo $font_family; ?>">
-<form action="newsgroups.php">
+<form action="newsgroups.php" method="post">
 
 <table cellspacing="2" cellpadding="0" border="0" width="100%">
 	<tr>
@@ -285,7 +288,7 @@
 			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["language"]; ?>:&nbsp;</b></font>
 		</td>
 		<td colspan="4" width="100%">
-			<select name="language" style="$_SESSION["more_option"]<?php echo $form_style_bold; ?>">
+			<select name="language" style="<?php echo $form_style_bold; ?>">
 <?php
 			foreach ($locale_list as $key=>$value) {
 				echo "<option value=\"$key\"";
@@ -298,7 +301,13 @@
 ?>
 			</select>
 			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["messages_per_page"]; ?>:&nbsp;</b></font>
+		</td>
+		<td colspan="4" width="100%">
 			<select name="msg_per_page" style="<?php echo $form_style_bold; ?>">
 <?php
 				foreach ($message_per_page_choice as $i) {
@@ -314,9 +323,32 @@
 				}
 ?>
 			</select>
-			<input type="submit" name="set" value="<?php echo $messages_ini["control"]["set"]; ?>" style="<?php echo $form_style_bold; ?>">
 		</td>
 	</tr>
+	<tr>
+		<td nowrap="nowrap" width="1%">
+			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["template"]; ?>:&nbsp;</b></font>
+		</td>
+		<td colspan="4">
+			<select name="template" style="<?php echo $form_style_bold; ?>">
+<?php
+				foreach ($template_list as $key=>$value) {
+					echo "<option value=\"$value\"";
+					if (strcmp($_COOKIE["wn_pref_template"], $value) == 0) {
+						echo "selected";
+					}
+					echo ">";
+					echo $key."\n";
+				}
+?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+	<td></td>
+	<td colspan="4">
+		<span style="padding-left:0px"><input type="submit" name="set" value="<?php echo $messages_ini["control"]["set"]; ?>" style="<?php echo $form_style_bold; ?>"></span>
+	</td>
 <?php
 	}
 ?>
@@ -421,14 +453,17 @@
 		if (is_requested("expand")) {
 			$_SESSION["expand_all"] = TRUE;
 			$need_expand = TRUE;
+			$url=preg_replace('/(\?|&)expand=1/','',$_SERVER['REQUEST_URI']);
 		} elseif (is_requested("collapse")) {
 			$_SESSION["expand_all"] = FALSE;
 			$need_expand = TRUE;
+			$url=preg_replace('/(\?|&)collapse=1/','',$_SERVER['REQUEST_URI']);
 		} elseif ($renew) {
 			$need_expand = TRUE;
 			if (!isset($_SESSION["expand_all"])) {
 				$_SESSION["expand_all"] = $default_expanded;
 			}
+			$url=preg_replace('/(\?|&)renew=1/','',$_SERVER['REQUEST_URI']);
 		}
 		if(is_requested("sawall")){
 			$_SESSION["sawall"]=true;
@@ -440,6 +475,7 @@
 		if (isset($need_expand)&&$need_expand) {
 			$root_node->set_show_all_children($_SESSION["expand_all"]);
 			$root_node->set_show_children(TRUE);
+			header("Location: ".construct_url($url));
 		}
 
 		$display_counter = 0;

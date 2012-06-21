@@ -48,7 +48,15 @@ if(is_requested("unread")){
 }
 
 	$display_counter=0;
-	echo '<table><tr><td colspan="2" align="center">== <a href="?portal&unread=1" title="'.$messages_ini["help"]["refresh"].'"><small>'.$messages_ini["control"]["refresh"].'</small></a> ==</td></tr>';
+	$get="";
+	$i=0;
+	if(count($_GET)>0){
+		foreach($_GET as $key => $value){
+			$get.=($i==0?'?':'&').$key.'='.$value;
+			$i++;
+		}
+	}	$get.=($i==0?'?':'&').'unread=1';
+	echo '<table><tr><td colspan="2" align="center">== <a href="'.$get.'" title="'.$messages_ini["help"]["refresh"].'"><small>'.$messages_ini["control"]["refresh"].'</small></a> ==</td></tr>';
 	foreach($newsgroups_list as $group){
 		if (($display_counter % 2) == 0) {
                               echo "<tr bgcolor=\"#".$secondary_color."\">\r\n";
