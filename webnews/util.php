@@ -91,18 +91,33 @@
 		return $str;
 	}
 	
-	function count_quote($str){
-		$tmp=explode('&gt;',$str);
+	function count_quote($str,$limit='&gt;'){
+		$tmp=explode($limit,$str);
 		$n=count($tmp);
 		for($i=0;$i<$n-1&&$tmp[$i]=='';$i++);
 		return $i;
 	}
 
-	
+	function wrap($str,$length=75,$quote=false){
+		$array=explode("\r\n",$str);
+		$msg='';
+		foreach($array as $line){
+			$count=count_quote($line,'>');
+			if($quote&&strlen($line)>=$length){
+				$len=$length-$count-1;
+			}else{
+				$len=$length;
+			}
+			$msg.=str_repeat('>',$count).wordwrap(substr($line,$count),$len,"\r\n".str_repeat('>',$count).' ',false)."\r\n";
+		}
+		return $msg;
+	}
+
 	function quote_format($str){
 		global $quote_colors;
 		$color_n=count($quote_colors);
 		$cmp=0;
+		$str=wrap($str,80);
 		$str=htmlentities($str,ENT_COMPAT ,mb_internal_encoding());
 		$str=preg_replace(array('/ &gt;/','/ /',"/\t/"),array('&gt;','&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'),$str);
 		$array=explode("\r\n",$str);

@@ -64,8 +64,7 @@
 		}
 		if (is_requested("message")) {
 			$message = get_request("message");
-			$message = $message."\n".$signature;
-			$message = wordwrap($message, 80, "\r\n", true);
+			$message = wrap($message, 75, true);
 		}
 		// Done
 
