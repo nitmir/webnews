@@ -33,8 +33,10 @@ foreach($newsgroups_list as $group){
 		}
 		if(isset($_SESSION['unread'][$group])&&$_SESSION['unread'][$group]>0){
 			$_SESSION['unread'][$group]+=$i;
+			$_SESSION['renews'][$group]=true;
 		}else{
 			$_SESSION['unread'][$group]=$i;
+			$_SESSION['renews'][$group]=true;
 		}
 		if($_SESSION['unread'][$group]==0&&$_SESSION['unread_id'][$group]!=$_SESSION['read_all_id'][$group]){
 			saw_all($group);

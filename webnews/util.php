@@ -119,7 +119,7 @@
 		$cmp=0;
 		$str=wrap($str,80);
 		$str=htmlentities($str,ENT_COMPAT ,mb_internal_encoding());
-		$str=preg_replace(array('/ &gt;/','/ /',"/\t/"),array('&gt;','&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'),$str);
+		$str=preg_replace(array('/ &gt;/',"/\t/"),array('&gt;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'),$str);
 		$array=explode("\r\n",$str);
 		$message="";
 		$signed=false;
@@ -133,7 +133,7 @@
 				$message .= str_repeat('	',$cmp-1)."</div>"."\n";
 				$cmp--;
 			}
-			if(!$signed&&$array[$i]=='--&nbsp;'){
+			if(!$signed&&$array[$i]=='-- '){
 				$signed=true;
 				$message .='<font color="grey">';
 			}
@@ -212,7 +212,7 @@
 		$str = preg_replace_callback("/((?:http|https|ftp|ftps|news):\/\/.*)?([\w\-=!#$%^*'+\\.={}|?~]+@[\w\-=!#$%^*'+\\.={}|?~]+[\w\-=!#$%^*'+\\={}|?~])/i", "replace_links", $str);
 
 		// Add link for web and newsgroup
-		$str = preg_replace("/(http|https|ftp|ftps|news)(:\/\/[\w;\/?:@&=+$,\-\.!~*'()%#&]+)/i", "<a href=\"$1$2\">$1$2</a>", $str);
+		$str = preg_replace("/(http|https|ftp|ftps|news)(:\/\/[\w;\/?:@&=+$,\-\.!~*'%#&]+)/i", "<a href=\"$1$2\" target=\"blank_\">$1$2</a>", $str);
 
 		return $str;
 	}

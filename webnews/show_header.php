@@ -475,7 +475,7 @@
 		if (isset($need_expand)&&$need_expand) {
 			$root_node->set_show_all_children($_SESSION["expand_all"]);
 			$root_node->set_show_children(TRUE);
-			header("Location: ".construct_url($url));
+			//header("Location: ".construct_url($url));
 		}
 
 		$display_counter = 0;

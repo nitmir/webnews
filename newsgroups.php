@@ -161,6 +161,10 @@
 				$renew = 1;
 			}
 		}
+		if(isset($_SESSION['renews'][$_SESSION["newsgroup"]])&&$_SESSION['renews'][$_SESSION["newsgroup"]]){
+			$renew = 1;
+			unset($_SESSION['renews'][$_SESSION["newsgroup"]]);
+		}
 		if (is_requested("rss_feed")) {
 			$content_page = "webnews/rss.php";
 		} else if (is_requested("article_id")) {
