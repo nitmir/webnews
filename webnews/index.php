@@ -11,7 +11,7 @@
 				if(validate_mail($_GET['confirm'])){
 					echo '<font color="green">Email validé avec succé, vous pouvez vous connecter</font></br>';
 				}else{
-					echo 'Lien invalide : vous avec peut être déjà validé votre mail ?</br>';
+					echo 'Lien invalide : vous avez peut être déjà validé votre mail ?</br>';
 				}
 			}
 			if(isset($_GET['inscription'])){
