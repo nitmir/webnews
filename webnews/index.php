@@ -9,7 +9,7 @@
 			dbconn();
 			if(isset($_GET['confirm'])){
 				if(validate_mail($_GET['confirm'])){
-					echo '<font color="green">Email validé avec succé, vous pouvez vous connecter</font></br>';
+					echo '<font color="green">Email validé avec succès, vous pouvez maintenant vous connecter.</font></br>';
 				}else{
 					echo 'Lien invalide : vous avez peut être déjà validé votre mail ?</br>';
 				}
