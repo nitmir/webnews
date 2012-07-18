@@ -56,6 +56,11 @@
 Pour confirmer cotre inscription et pouvoir vous connecter, merci de suivre le lien suivant : 
 http'.(isset($_SERVER['HTTPS'])&&$_SERVER['HTTPS']=='on'?'s':'').'://'.$_SERVER['HTTP_HOST'].'/?confirm='.$token.'
 
+NB: Les news du Cr@ns sont également accessibles via un lecteur externe
+(par ex. Thunderbird) à l\'aide des identitifants suivants:
+Utilisateur : Vivelapa
+Mot de passe : ranoia!
+
 -- 
 Le Web-news
      ';

@@ -43,6 +43,19 @@
 ?>
 		</td>
 	</tr>
+<?php if(is_loged()) { ?>
+    <tr id="alternative" style="background-color:<?php echo $secondary_color; ?>">
+        <td style="padding: 2px 2px 2px 2px;">
+            Les newsgroups du Cr@ns sont également accessibles via un lecteur externe
+            (par ex. Thunderbird) à l'aide des identifiants suivants :
+            <ul style="margin: 0;">
+                <li>Utilisateur : Vivelapa</li>
+                <li>Mot de passe : ranoia!</li>
+            </ul>
+
+        </td>
+    </tr>
+<?php } ?>
 </table>
 </body>
 </html>
