@@ -31,8 +31,11 @@
 	if(isset($_POST['mail'])&&isset($_POST['pass'])){
 		if(login($_POST['mail'],$_POST['pass'])){
 			header("Location: ".$_SERVER['PHP_SELF']."?portal=1");
-			exit;
 		}
+		else { 
+            header("Location: ".construct_url($logout_url.'?invalid'));
+        }
+        exit;
 	}
 	if(!is_loged()){
 		$_SESSION['redirect']=$_SERVER['REQUEST_URI'];

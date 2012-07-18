@@ -73,6 +73,9 @@
 		</form>
 			<?php }}
 			else{?>
+        <?php if( isset($_GET['invalid'] ) ) { ?>
+            <p style="color: red; font-weight: bold;">Identifiants incorrects</p>
+        <?php } //fin invalide ?>
 		<form action="newsgroups.php" method="post">
 		<table>
 			<tr>
