@@ -233,17 +233,17 @@
 
 	function decode_message_content($part) {
 		$encoding = isset($part["header"]["content-transfer-encoding"])?$part["header"]["content-transfer-encoding"]:'';
-		if(isset($part["header"]['content-type'])&&preg_match(':charset=([a-zA-Z0-9/-]*):i',$part["header"]['content-type'],$match)==1){
+		if(isset($part["header"]['content-type'])&&preg_match(':charset="?([a-zA-Z0-9/-]*)"?:i',$part["header"]['content-type'],$match)==1){
 			$charset = $match[1];
 		}else{
 			$charset=false;
 		}
 		if (stristr($encoding, "quoted-printable")) {
-			return quoted_printable_decode($part["body"]);
+			return encode(quoted_printable_decode($part["body"]),$charset);
 		} else if (stristr($encoding, "base64")) {
-			return base64_decode($part["body"]);
+			return encode(base64_decode($part["body"]),$charset);
 		} else if (stristr($encoding, "uuencode")) {
-			return uudecode($part["body"]);
+			return encode(convert_uudecode($part["body"]),$charset);
 		} else {	// No need to decode
 			return encode($part["body"],$charset);
 		}
@@ -258,7 +258,7 @@
 		} else if (stristr($encoding, "base64")) {
 			echo base64_decode($part["body"]);
 		} else if (stristr($encoding, "uuencode")) {
-			uudecode_output($part["body"]);
+			convert_uudecode($part["body"]);
 		} else {	// No need to decode
 			echo $part["body"];
 		}

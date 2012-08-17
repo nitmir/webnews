@@ -78,7 +78,11 @@
 							break;
 						}
 					}
-					$result[strtolower($header[1])] = decode_MIME_header($header[2]);
+					if(in_array($header[1],array('Content-Type'))){
+						$result[strtolower($header[1])] = $header[2];
+					}else{
+						$result[strtolower($header[1])] = decode_MIME_header($header[2]);
+					}
 				}
 			}
 			return $result;
@@ -109,7 +113,7 @@
 				// Extract boundary from the header
 				preg_match("/boundary=\"(.*?)\"/i", $header["content-type"], $boundary);
 				$boundary = "--".str_replace("\"", "", $boundary[1]);
-				$this->decode_multipart_message($body, $boundary);				
+				$this->decode_multipart_message($body, $boundary);
 			} else {
 				// Check for any UUEncoded attachment
 				if (preg_match("/^begin\s+[0-9][0-9][0-9]\s+(.+?)\s*\r?\n/m", $body)) {

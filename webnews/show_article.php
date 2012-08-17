@@ -64,7 +64,7 @@
 			    if ($thread_search_size > 0) {
     			    $header = $MIME_Message->get_main_header();
 			    if(isset($header['x-cancel-lock'])&&x_cancel_lock($raw_body)==$header['x-cancel-lock']){
-?>		
+?>
 			<script type="text/javascript">
 			function check(){
 			var ok = confirm('<?php echo $messages_ini["control"]["cancel_message_confirm"]; ?>');
