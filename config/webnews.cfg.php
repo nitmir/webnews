@@ -54,6 +54,7 @@
                                                 "crans.politique",
                                                 "crans.culture",
                                                 "crans.dino",
+                                                "crans.stages",
                                                 "crans.informatique",
                                                 "crans.informatique.*",
                                                 "tac.dpt.*",
@@ -87,6 +88,7 @@
 	$realm = "Web-News";
 	
 	$restrict_mail_domain=array("crans.org", "ens-cachan.fr", "crans.ens-cachan.fr"); //seul ces domaines sont acceptés pour les adresses mail à l'inscription, commenter pour désactiver
+	$password_min_length = 6;
 
 /******************************************************************/
 /*	PAGE DISPLAY SETTINGS                                         */

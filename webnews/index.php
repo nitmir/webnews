@@ -20,7 +20,7 @@
 				$_POST['mail']=trim($_POST['mail']);
 				$_POST['nom']=trim($_POST['nom']);
 				if(validate_email($_POST['mail'])){
-					if(strlen($_POST['pass'])>5){
+					if(strlen($_POST['pass'])>=$password_min_length){
 						if($_POST['pass']==$_POST['pass2']){
 							$query=mysql_query("SELECT * FROM users WHERE mail='".mysql_real_escape_string($_POST['mail'])."'");
 							if(mysql_num_rows($query)>0){
@@ -33,11 +33,11 @@
 								$valid=true;
 							}
 						}else{
-							echo '<font color="red">Les mots de passe ne concordent pas</font></br>';
+							echo '<font color="red">'.$messages_ini["text"]["password_nomatch"].'</font></br>';
 						}
 					
 					}else{
-						echo '<font color="red">Mot de passe trop court</font></br>';
+						echo '<font color="red">'.$messages_ini["text"]["password_too_short"].'</font></br>';
 					}
 				}else{
 					echo '<font color="red">Email invalide&nbsp;: doit être un email ';

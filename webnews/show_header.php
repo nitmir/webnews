@@ -345,6 +345,14 @@
 		</td>
 	</tr>
 	<tr>
+	<td nowrap="nowrap" width="1%">
+			<font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["name"]; ?>:&nbsp;</b></font>
+	</td>
+	<td colspan="4">
+	<input name="name" type="text" value="<?php echo $_SESSION['nom']?>">
+	</td>
+	</tr>
+	<tr>
 	<td></td>
 	<td colspan="4">
 		<span style="padding-left:0px"><input type="submit" name="set" value="<?php echo $messages_ini["control"]["set"]; ?>" style="<?php echo $form_style_bold; ?>"></span>
@@ -373,6 +381,8 @@
 				|
 				<a href="newsgroups.php?rss_feed=<?php echo $message_per_page; ?>&amp;group=<?php echo urlencode($_SESSION["newsgroup"]); ?>" target="_blank" title="<?php echo $messages_ini["help"]["rss_feed"]; ?>">
 					<?php echo $messages_ini["control"]["rss_feed"]; ?></a>
+				|
+				<a href="newsgroups.php?change_password=1" title="<?php echo $messages_ini["help"]["change_password"]; ?>"><?php echo $messages_ini["control"]["change_password"]; ?></a>
 				|
 				<a href="newsgroups.php?option=1" 
 <?php

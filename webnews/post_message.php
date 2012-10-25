@@ -64,7 +64,7 @@
 		}
 		if (is_requested("message")) {
 			$message = get_request("message");
-			$message = wrap($message, 75, true);
+			$message = wrap($message, 80, true);
 		}
 		// Done
 

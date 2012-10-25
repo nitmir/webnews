@@ -36,7 +36,7 @@
 						$message .= decode_message_content($part);
 					}
 				}
-				$message = wrap($message, 75);
+				$message = wrap($message, 80);
 				$message = preg_replace(array("/\n-- \r\n(.*)/s","/(\n)([^>])/","/(.*\r\n)/"),array("\n","$1 $2",">$1"),$message);
 				$message = htmlescape($message);
 				$message = date($messages_ini['text']['date_wrote_format'], strtotime($header['date'])).($header["from"]["name"])." ".$messages_ini["text"]["wrote"].":\r\n".($message);

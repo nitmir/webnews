@@ -64,6 +64,11 @@
 		$_COOKIE["wn_pref_lang"] = get_request("language");
 		$_COOKIE["wn_pref_template"] = get_request("template");
 		$_COOKIE["wn_pref_mpp"] = get_request("msg_per_page");
+		
+		if(is_requested("name")&&$_SESSION['nom'] != get_request("name")){
+			mysql_query("UPDATE users SET nom='".mysql_real_escape_string(get_request("name"))."' WHERE id='".$_SESSION['id']."'")or die(mysql_error());
+			$_SESSION['nom']=get_request("name");
+		}
 	}
 
 	// Read the messages file
@@ -177,6 +182,8 @@
 			}else{
 				$content_page = "webnews/show_article.php";
 			}
+		}else if(is_requested("change_password")){
+			$content_page = "webnews/password.php";
 		} else {
 			$content_page = "webnews/show_header.php";
 

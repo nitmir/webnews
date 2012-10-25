@@ -103,7 +103,7 @@
 			$body = decode_message_content($part);
 			$body = quote_format($body);
 			echo $body."<br></td></tr>";
-		} elseif (preg_match("/^image\/(gif|jpeg|pjpeg)/i", $part["header"]["content-type"])) {
+		} elseif (preg_match("/^image\/(gif|jpeg|pjpeg|png)/i", $part["header"]["content-type"])) {
 			echo "<tr><td colspan=\"2\" align=\"center\">";
 			echo "<hr width=\"100%\"><br>";
 			echo "<img src=\"newsgroups.php?art_group=".urlencode($group)."&message_id=$article_id&attachment_id=$count\" border=\"0\">";
