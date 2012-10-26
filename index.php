@@ -17,7 +17,11 @@ if (isset($_COOKIE["wn_pref_lang"])) {
 }
 $messages_ini = read_ini_file($text_ini, true);
 
-$content_page='webnews/index.php';
+if (is_requested("forget_password")) {
+	$content_page='webnews/mdp.php';
+}else{
+	$content_page='webnews/index.php';
+}
 include($template);
 ?>
 

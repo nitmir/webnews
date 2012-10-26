@@ -22,7 +22,7 @@
 	//$x_webnews="secret" //ne pas modifier, est utilisé pour générer le hash du header X-Webnews
 	include('mysql.conf.php'); //contient les même cinq champs que ci-dessus avec le bon mot de passe
 
-
+	$link_validity = 3600*6; //durée durant laquelle un lien pour générer un nouveau mot de passe en valide
 	// NNTP Server setting
 	$nntp_server = "news.crans.org";
 	$user = "Vivelapa";

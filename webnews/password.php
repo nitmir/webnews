@@ -1,4 +1,8 @@
 <?php
+if(is_requested("return")){
+	header("Location: newsgroups.php");
+	die();
+}
 if(is_requested("change_password_button")){
 	$query=mysql_query("SELECT * FROM users WHERE id='".$_SESSION['id']."'")or die(mysql_error());
 	$data=mysql_fetch_assoc($query);
@@ -43,7 +47,7 @@ if(isset($_GET['success'])&&$_GET['success']==1){
 				</tr>
 				<tr>
 					<td align="right"><input type="submit" name="change_password_button" value="<?php echo $messages_ini["control"]["set"]; ?>" style="<?php echo $form_style_bold; ?>"></td>
-					<td><input type="button" value="<?php echo $messages_ini["control"]["return"]; ?>" style="<?php echo $form_style_bold; ?>" onclick="document.location.href='newsgroups.php';"></td>
+					<td><input type="submit" name="return" value="<?php echo $messages_ini["control"]["return"]; ?>" style="<?php echo $form_style_bold; ?>"></td>
 				</tr>
 			</table>
 		</td>

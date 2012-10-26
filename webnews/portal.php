@@ -49,6 +49,13 @@ if(is_requested("unread")){
 	die();
 }
 
+if(is_requested("sawall_allgroups")){
+	$url=preg_replace('/(\?|&)sawall_allgroups=1/','',$_SERVER['REQUEST_URI']);
+	array_map('saw_all',$newsgroups_list);
+	header("Location: ".construct_url($url));
+	die();
+}
+
 	$display_counter=0;
 	$get="";
 	$i=0;
@@ -57,8 +64,8 @@ if(is_requested("unread")){
 			$get.=($i==0?'?':'&').$key.'='.$value;
 			$i++;
 		}
-	}	$get.=($i==0?'?':'&').'unread=1';
-	echo '<table><tr><td colspan="2" align="center">== <a href="'.$get.'" title="'.$messages_ini["help"]["refresh"].'"><small>'.$messages_ini["control"]["refresh"].'</small></a> ==</td></tr>';
+	}
+	echo '<table><tr><td colspan="2" align="center">== <a href="'.$get.($i==0?'?':'&').'unread=1'.'" title="'.$messages_ini["help"]["refresh"].'"><small>'.$messages_ini["control"]["refresh"].'</small></a> ==</td></tr>';
 	foreach($newsgroups_list as $group){
 		if (($display_counter % 2) == 0) {
                               echo "<tr bgcolor=\"#".$secondary_color."\">\r\n";
@@ -73,5 +80,5 @@ if(is_requested("unread")){
 		echo '</td><td>('.max(0,$_SESSION['unread'][$group]);
 		echo ")</td></tr>\n";
 		}
-	echo '</table>';
+	echo '<tr><td colspan="2" align="center">== <a href="'.$get.($i==0?'?':'&').'sawall_allgroups=1'.'" title="'.$messages_ini["help"]["sawall"].'"><small>'.$messages_ini["control"]["sawall"].'</small></a> ==</td></tr></table>';
 ?>

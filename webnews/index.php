@@ -88,7 +88,7 @@
 			<td colspan="2"><input type="Submit" name="Login" value="Login" style="font-family: Tahoma, Sans-Serif; font-size: 75%; font-weight: bold"></td>
 			</tr>
 			<tr>
-			<td colspan="2"><a href="?inscription">Inscription</a></td>
+			<td colspan="2"><a href="?inscription">Inscription</a> - <a href="?forget_password=1">Mot de passe oublié</a></td>
 			</tr>
 		</table>
 		</form>
