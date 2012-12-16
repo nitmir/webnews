@@ -17,15 +17,15 @@
 	} else {
 		if (is_requested("reply_id")) {	
 			$reply_id = get_request("reply_id");
-			if (isset($_SESSION["result"]) && $_SESSION["result"]) {				
-				$ref_list = $_SESSION["result"][1];
+			//~ if (isset($_SESSION["result"]) && $_SESSION["result"]) {				
+				//~ $ref_list = $_SESSION["result"][1];
 				
-				foreach ($ref_list[$reply_id][1] as $ref) {
-					$reply_references = $reply_references." ".$ref;
-				}
+				//~ foreach ($ref_list[$reply_id][1] as $ref) {
+					//~ $reply_references = $reply_references." ".$ref;
+				//~ }
 				
-				$reply_references = $reply_references." ".$ref_list[$reply_id][0];
-			} else {
+				//~ $reply_references = $reply_references." ".$ref_list[$reply_id][0];
+			//~ } else {
 				$group_info = $nntp->join_group($_SESSION["newsgroup"]);
 				
 				if ($group_info == NULL) {					
@@ -40,7 +40,7 @@
 						$reply_references = $header["references"]." ".$header["message-id"];
 					}	
 				}
-			}
+			//~ }
 			$reply_references = trim($reply_references);
 		}
 		

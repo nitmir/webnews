@@ -122,27 +122,23 @@ Choisir un nouveau mot de passe :
 </table>
 </form>
 	</div>
-</center>
-</body>
-</html>
 <?php
 	exit();
 
 	}else{
 ?>
-		<span style="color: red;">Ce lien n'est plus valide...</span><br/>
+		<span style="color: red;">Ce lien n'est plus valide...</span><br>
 		
 <?php
 	}
 }
 ?><div style="font-family: <?php echo $font_family; ?>">
-		Pour récupérer ton mot de passe, tape ton adresse email. </br>
+		Pour récupérer ton mot de passe, tape ton adresse email. <br>
 		<form method="post" action="index.php">
-			Mail : <input type="text" name="email" value=""/><br/>
-			<input type="hidden" name="mdp_request" value="ok"/>
-			<input type="hidden" name="forget_password" value="1"/>
-			<input type="submit" value="Envoyer"/>
-			<input type="submit" name="return" value="retour" style="<?php echo $form_style_bold; ?>"></td>
+			Mail : <input type="text" name="email" value=""><br>
+			<input type="hidden" name="mdp_request" value="ok">
+			<input type="hidden" name="forget_password" value="1">
+			<input type="submit" value="Envoyer" style="<?php echo $form_style_bold; ?>">
+			<input type="submit" name="return" value="retour" style="<?php echo $form_style_bold; ?>">
 		</form>
-	</div>
 </div>

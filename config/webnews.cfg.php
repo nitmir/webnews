@@ -22,7 +22,7 @@
 	//$x_webnews="secret" //ne pas modifier, est utilisé pour générer le hash du header X-Webnews
 	include('mysql.conf.php'); //contient les même cinq champs que ci-dessus avec le bon mot de passe
 
-	$link_validity = 3600*6; //durée durant laquelle un lien pour générer un nouveau mot de passe en valide
+	$link_validity = 1800; //durée durant laquelle un lien pour générer un nouveau mot de passe en valide
 	// NNTP Server setting
 	$nntp_server = "news.crans.org";
 	$user = "Vivelapa";
@@ -60,6 +60,7 @@
                                                 "tac.dpt.*",
                                                 "tac.bde",
 						"tac.crous",
+						"crans.club.*",
                                                 "crans.test",
 						"tac.test"
 						);
@@ -142,7 +143,7 @@
 	// Number of messages to search through for showing threads in read article
 	// If set to <= 0, no threads would be show
 	// The larger the number, the more complete would be the thread tree, but takes longer time to load
-	$thread_search_size = 200;      // Actual search window size would be $thread_search_size*2 + 1
+	$thread_search_size = 500;      // Actual search window size would be $thread_search_size*2 + 1
 
 	$delete_account_after=24*3600; //on supprime les comptes non validé après 24h
 	
@@ -165,7 +166,7 @@
 	$over_link_color = "FF0000";
 	
 	$font_family = "Tahoma, Sans-Serif";
-	$font_size = "-1";
+	$font_size = "3 ";
 	$form_style = "font-family: ".$font_family."; font-size: 75%";
 	$form_style_bold = $form_style."; font-weight: bold";
 

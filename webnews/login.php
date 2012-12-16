@@ -87,13 +87,14 @@ Le Web-news
 		$salt.=$base64_alphabet[rand(0,63)];
 	    }
 	    // return the crypt sha1 password
-	    return $salt.'$'.sha1($salt.'$'.$password);
+	    return $salt.'$'.base64_encode(sha1($salt.'$'.$password,true));
 	}
 	//~ echo  sha1crypt('salsa')."\n";
 	function validpass($pass,$passhash){
 		$salt=substr($passhash,0,13);
 		$calc=($salt.sha1($salt.$pass));
-		if($calc==$passhash){
+		$calc2=($salt.base64_encode(sha1($salt.$pass,true)));
+		if($calc==$passhash||$calc2==$passhash){
 			return true;
 		}else{
 			return false;
