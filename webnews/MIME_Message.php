@@ -159,7 +159,7 @@
 	
 	
 		function decode_multipart_message($message, $boundary) {
-			$parts = preg_split("/$boundary-?-?\s*/m", $message);
+			$parts = preg_split("/".preg_quote($boundary,'/')."-?-?\s*/m", $message);
 			
 			array_shift($parts);	// Drop the "This is a multi-part message in MIME format." message
 			array_pop($parts);		// Drop the last part after the boundary end
