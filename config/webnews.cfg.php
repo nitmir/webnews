@@ -60,6 +60,7 @@
                                                 "tac.dpt.*",
                                                 "tac.bde",
 						"tac.crous",
+						"crans.cns",
 						"crans.club.*",
                                                 "crans.test",
 						"tac.test"
@@ -90,6 +91,29 @@
 	
 	$restrict_mail_domain=array("crans.org", "ens-cachan.fr", "crans.ens-cachan.fr"); //seul ces domaines sont acceptés pour les adresses mail à l'inscription, commenter pour désactiver
 	$password_min_length = 6;
+    
+$phpcas_path = '../../source/';
+
+///////////////////////////////////////
+// Basic Config of the phpCAS client //
+///////////////////////////////////////
+
+// Full Hostname of your CAS Server
+$CAS=array(
+    'crans.org' => array( 
+        'host' => 'cas.crans.org', 
+        'context' => '/cas', 
+        'port' => 443, 
+        'root_cert' => '/etc/ssl/certs/cacert.org.pem'
+    ),
+    'ens-cachan.fr' => array( 
+        'host' => 'cas.ens-cachan.fr', 
+        'context' => '', 
+        'port' => 443, 
+        'root_cert' => '/etc/ssl/certs/UTN_USERFirst_Hardware_Root_CA.pem'
+    ),
+);
+
 
 /******************************************************************/
 /*	PAGE DISPLAY SETTINGS                                         */
@@ -195,4 +219,5 @@
 
 //	template2.php includes a fancy welcome header
 //	$template = "template2.php";
+
 ?>

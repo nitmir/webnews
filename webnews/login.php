@@ -1,4 +1,6 @@
 <?php
+require("config/webnews.cfg.php");
+require_once 'CAS.php';
 	function dbconn(){
 	    global $mysql_host, $mysql_user, $mysql_pass, $mysql_db;
 
@@ -30,8 +32,16 @@
 		}
 	}
 	
-	
-	
+//||phpCAS::checkAuthentication()	
+function init_cas(){
+    global $CAS;
+    if(isset($_SESSION['use_cas'])&&isset($_SESSION['cas'])&&$_SESSION['use_cas']){
+                phpCAS::setDebug();
+                phpCAS::client(SAML_VERSION_1_1, $CAS[$_SESSION['cas']]['host'], $CAS[$_SESSION['cas']]['port'], $CAS[$_SESSION['cas']]['context']);
+                phpCAS::setCasServerCACert($CAS[$_SESSION['cas']]['root_cert']);
+                phpCAS::handleLogoutRequests(true, $CAS[$_SESSION['cas']]['host']);
+    }        
+}
 	function validate_mail($token){
 		global $delete_account_after;
 		$time=time() - $delete_account_after;
@@ -101,36 +111,69 @@ Le Web-news
 		}
 	}
 	
-	function login($mail,$pass){
+	function login($mail,$pass,$use_cas=false){
 		global $delete_account_after;
 		if (is_loged()){
 			return true;
 		}
-		$query=mysql_query("SELECT * FROM users WHERE mail='".mysql_real_escape_string($mail)."' AND valid='oui'");
-		if(mysql_num_rows($query)!=1){
-			return false;
-		}else{
-			$data=mysql_fetch_assoc($query);
-			if(validpass($pass,$data['pass'])){
-				$_SESSION['auth']=true;
-				$_SESSION['nom']=$data['nom'];
-				$_SESSION['id']=$data['id'];
-				$_SESSION['mail']=$data['mail'];
-				mysql_query("UPDATE users SET last_login='".time()."' WHERE id='".$_SESSION['id']."'")or die(mysql_error());
-				$time=time() - $delete_account_after;
-				mysql_query("DELETE FROM users WHERE valid='non' AND inscription<".$time)or die(mysql_error());
-				return true;
-			}else{
-				return false;
-			}
+        if($use_cas){
+            init_cas();
+            phpCAS::forceAuthentication();
+            foreach (phpCAS::getAttributes() as $key => $value) {
+                $_SESSION[$key]=$value;
+            }
+            $where="mail='".phpCAS::getUser()."@".$_SESSION['cas']."' OR mail='".$_SESSION['mail']."'";
+            if(array_key_exists('mailAlias', $_SESSION)){
+                if (is_array($_SESSION['mailAlias'])) {
+                    foreach ($_SESSION['mailAlias'] as $mail){
+                        $where.=" OR mail='".$mail."'";
+                    }
+                }else{
+                    $where.=" OR mail='".$_SESSION['mailAlias']."'";
+                }
+            }
+            
+        }else{
+            $where="mail='".mysql_real_escape_string($mail)."' AND valid='oui'";
+        }
+		$query=mysql_query("SELECT * FROM users WHERE ".$where." ORDER BY mail")or die(mysql_error());
+		if(mysql_num_rows($query)<1){
+            if($use_cas&&phpCAS::checkAuthentication()){
+              mysql_query("INSERT INTO users (nom,mail,pass,inscription,url,valid) VALUES ('".mysql_real_escape_string($_SESSION['cn'])."','".mysql_real_escape_string(phpCAS::getUser()."@".$_SESSION['cas'])."','!','".time()."','','oui')")or die(mysql_error());  
+              $query=mysql_query("SELECT * FROM users WHERE ".$where." ORDER BY mail")or die(mysql_error());
+            }else{
+                return false;
+            }
 		}
+        $data=mysql_fetch_assoc($query);
+        if(validpass($pass,$data['pass'])||($use_cas&&phpCAS::checkAuthentication())){
+            $_SESSION['auth']=true;
+            $_SESSION['nom']=$data['nom'];
+            $_SESSION['id']=$data['id'];
+            $_SESSION['mail']=$data['mail'];
+            mysql_query("UPDATE users SET last_login='".time()."' WHERE id='".$_SESSION['id']."'")or die(mysql_error());
+            $time=time() - $delete_account_after;
+            mysql_query("DELETE FROM users WHERE valid='non' AND inscription<".$time)or die(mysql_error());
+            return true;
+        }else{
+            return false;
+        }
+		
 	}
 	
 	function logout(){
 		$_SESSION['auth']=false;
+        if(isset($_SESSION['use_cas'])&&$_SESSION['use_cas']){
+            $use_cas=true;
+            init_cas();
+        }
 		foreach($_SESSION as $key => $value){
 			unset($_SESSION[$key]);
 		}
+        if($use_cas){
+             phpCAS::logout();
+        }
+            
 	}
 	
 ?>

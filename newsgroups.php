@@ -23,6 +23,9 @@
 	session_start();
 
 	dbconn();
+    
+    $expire = 2147483647;	// Maximum integer
+    
 	if(is_requested('logout')){
 		logout();
                 header("Location: ".construct_url($logout_url));
@@ -31,12 +34,32 @@
 	if(isset($_POST['mail'])&&isset($_POST['pass'])){
 		if(login($_POST['mail'],$_POST['pass'])){
 			header("Location: ".$_SERVER['PHP_SELF']."?portal=1");
+            $_COOKIE["wn_use_cas"]=false;
+            setcookie("wn_use_cas", false, $expire);
+            $_SESSION['use_cas']=$_COOKIE["wn_use_cas"];
 		}
 		else { 
             header("Location: ".construct_url($logout_url.'?invalid'));
         }
         exit;
 	}
+
+    if(isset($_GET['cas'])&&array_key_exists($_GET['cas'], $CAS)){
+        $_COOKIE["wn_use_cas"]=true;
+        $_COOKIE["wn_cas"]=$_GET['cas'];
+        setcookie("wn_use_cas", true, $expire);
+        setcookie("wn_cas", $_GET['cas'], $expire);
+        $_SESSION['use_cas']=$_COOKIE["wn_use_cas"];
+        $_SESSION['cas']=$_COOKIE["wn_cas"];
+        if(login('','',true)){
+            header("Location: ".$_SERVER['PHP_SELF']."?portal=1");
+        }
+    }
+    if((isset($_COOKIE["wn_use_cas"])&&isset($_COOKIE["wn_cas"])&&$_COOKIE["wn_use_cas"]&&array_key_exists($_COOKIE["wn_cas"],$CAS))){
+        $_SESSION['use_cas']=$_COOKIE["wn_use_cas"];
+        $_SESSION['cas']=$_COOKIE["wn_cas"];
+        login('','',true);
+    }
 	if(!is_loged()){
 		$_SESSION['redirect']=$_SERVER['REQUEST_URI'];
 		header("Location: ".construct_url($logout_url));
@@ -60,7 +83,6 @@
 		} else {
 			$change_mpp = FALSE;
 		}
-
 		$_COOKIE["wn_pref_lang"] = get_request("language");
 		$_COOKIE["wn_pref_template"] = get_request("template");
 		$_COOKIE["wn_pref_mpp"] = get_request("msg_per_page");

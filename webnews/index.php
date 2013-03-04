@@ -14,71 +14,28 @@
 					echo 'Lien invalide : vous avez peut être déjà validé votre mail ?</br>';
 				}
 			}
-			if(isset($_GET['inscription'])){
-			//~ print_r($_POST);
-			if(isset($_POST['mail'])&&isset($_POST['pass'])&&isset($_POST['pass2'])&&isset($_POST['nom'])){
-				$_POST['mail']=trim($_POST['mail']);
-				$_POST['nom']=trim($_POST['nom']);
-				if(validate_email($_POST['mail'])){
-					if(strlen($_POST['pass'])>=$password_min_length){
-						if($_POST['pass']==$_POST['pass2']){
-							$query=mysql_query("SELECT * FROM users WHERE mail='".mysql_real_escape_string($_POST['mail'])."'");
-							if(mysql_num_rows($query)>0){
-								echo '<font color="red">Mail déjà utilisé</font></br>';
-							}else{
-								$token=sha1($_POST['mail'].time());
-								mysql_query("INSERT INTO users (nom,mail,pass,inscription,url) VALUES ('".mysql_real_escape_string($_POST['nom'])."','".mysql_real_escape_string($_POST['mail'])."','".sha1crypt($_POST['pass'])."','".time()."','".$token."')");
-								inscription_mail($_POST['mail'],$token,$_POST['nom']);
-								echo '<font color="green">Inscription effectuée avec succes, un mail de confirmation a été envoyé à l\'adresse '.$_POST['mail'].'. </font><a href="./">Retour<a></br>';
-								$valid=true;
-							}
-						}else{
-							echo '<font color="red">'.$messages_ini["text"]["password_nomatch"].'</font></br>';
-						}
-					
-					}else{
-						echo '<font color="red">'.$messages_ini["text"]["password_too_short"].'</font></br>';
-					}
-				}else{
-					echo '<font color="red">Email invalide&nbsp;: doit être un email ';
-					for($i=0;isset($restrict_mail_domain[$i]);$i++){
-						echo '@'.$restrict_mail_domain[$i];
-						if(isset($restrict_mail_domain[$i+1])){echo ' ou ';}
-					}
-					echo '</font></br>';
-				
-				}
-			}
-			if(!isset($valid)||!$valid){
-			?>
-		<form action="index.php?inscription" method="post">
-		<table style="white-space:nowrap;">
-			<tr>
-			<td>Email: </td><td><input type="text"  name="mail" style="font-family: Tahoma, Sans-Serif; font-size: 75%;font-weight: bold" value="<?php echo isset($_POST['mail'])?$_POST['mail']:''; ?>"></td><td>(Un mail de confirmation sera envoyé)</td>
-			</tr>
-			<tr>
-			<td>Nom: </td><td><input type="text" name="nom" value="<?php echo isset($_POST['nom'])?$_POST['nom']:''; ?>" style="font-family: Tahoma, Sans-Serif; font-size: 75%; font-weight: bold"></td><td>(nom à afficher pour l'expéditeur)</td>
-			</tr>
-			<tr>
-			<td>Pass: </td><td><input type="password" name="pass" value="<?php echo isset($_POST['pass'])?$_POST['pass']:''; ?>" style="font-family: Tahoma, Sans-Serif; font-size: 75%; font-weight: bold"></td><td></td>
-			</tr>
-			<tr>
-			<td>Pass 2:</td><td><input type="password" name="pass2" value="<?php echo isset($_POST['pass2'])?$_POST['pass2']:''; ?>" style="font-family: Tahoma, Sans-Serif; font-size: 75%; font-weight: bold"></td><td> (confirmation) </td>
-			</tr>
-			<tr>
-			<td colspan="3"><input type="Submit" name="Envoyer" value="Envoyer" style="font-family: Tahoma, Sans-Serif; font-size: 75%; font-weight: bold"></td>
-			</tr>
-			
-		</table>
-		</form>
-			<?php }}
 			else{?>
         <?php if( isset($_GET['invalid'] ) ) { ?>
             <p style="color: red; font-weight: bold;">Identifiants incorrects</p>
         <?php } //fin invalide ?>
 		<form action="newsgroups.php" method="post">
 		<table>
-			<tr>
+            <tr>
+            <td colspan="2">
+                Se connecter avec son compte : 
+                <ul>
+                <?php
+                foreach($CAS as $key => $value){
+                echo '<li><a href="newsgroups.php?cas='.$key.'">'.$key.'</a></li>';
+                }
+                ?>
+                </ul>
+            </td>
+            </tr>
+            <tr>
+            <td colspan="2" style="white-space:nowrap;">Ou utilisez l'ancienne authentification si vous aviez créé un compte : </td>
+            </tr>
+            <tr>
 			<td>Email: </td><td><input type="text" size="40" name="mail" style="font-family: Tahoma, Sans-Serif; font-size: 75%" value=""></td>
 			</tr>
 			<tr>
@@ -86,9 +43,6 @@
 			</tr>
 			<tr>
 			<td colspan="2"><input type="Submit" name="Login" value="Login" style="font-family: Tahoma, Sans-Serif; font-size: 75%; font-weight: bold"></td>
-			</tr>
-			<tr>
-			<td colspan="2"><a href="?inscription">Inscription</a> - <a href="?forget_password=1">Mot de passe oublié</a></td>
 			</tr>
 		</table>
 		</form>
