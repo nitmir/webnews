@@ -31,17 +31,19 @@ require_once 'CAS.php';
 			return false;
 		}
 	}
-	
-//||phpCAS::checkAuthentication()	
-function init_cas(){
-    global $CAS;
-    if(isset($_SESSION['use_cas'])&&isset($_SESSION['cas'])&&$_SESSION['use_cas']){
-                phpCAS::setDebug();
-                phpCAS::client(SAML_VERSION_1_1, $CAS[$_SESSION['cas']]['host'], $CAS[$_SESSION['cas']]['port'], $CAS[$_SESSION['cas']]['context']);
-                phpCAS::setCasServerCACert($CAS[$_SESSION['cas']]['root_cert']);
-                phpCAS::handleLogoutRequests(true, $CAS[$_SESSION['cas']]['host']);
-    }        
-}
+
+	function init_cas($use_cas=null, $cas=null){
+		global $CAS;
+		if($use_cas===null){$use_cas=isset($_SESSION['use_cas'])&&isset($_SESSION['cas'])&&$_SESSION['use_cas'];}
+		if($use_cas&&$cas===null){$cas=$_SESSION['cas'];}
+		if($use_cas){
+			phpCAS::setDebug();
+			phpCAS::client(SAML_VERSION_1_1, $CAS[$cas]['host'], $CAS[$cas]['port'], $CAS[$cas]['context']);
+			phpCAS::setCasServerCACert($CAS[$cas]['root_cert']);
+			phpCAS::handleLogoutRequests(true, array($CAS[$cas]['host']));
+		}
+	}
+
 	function validate_mail($token){
 		global $delete_account_after;
 		$time=time() - $delete_account_after;
@@ -174,6 +176,12 @@ Le Web-news
              phpCAS::logout();
         }
             
+
+	function LogoutRequest(){
+		if(isset($_POST['logoutRequest'])){
+			$cas=implode('.',array_slice(explode('.', gethostbyaddr($_SERVER['REMOTE_ADDR'])),1));
+			init_cas(true, $cas);
+		}
 	}
 	
 ?>

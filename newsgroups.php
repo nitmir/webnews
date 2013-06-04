@@ -20,6 +20,7 @@
 
 	// Start the session before output anything
 	session_name($session_name);
+	LogoutRequest();
 	session_start();
 
 	dbconn();
