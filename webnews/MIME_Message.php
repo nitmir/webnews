@@ -65,7 +65,9 @@
 		function decode_header($headers) {
 			$header_want = "/^(From|Subject|Date|Newsgroups|Followup-To|X-Webnews|X-Cancel-Lock|References|Message-ID|Content-Type|Content-Transfer-Encoding|Content-Disposition|Content-ID): (.*$)/i";
 			
-			$headers = split("\r\n", $headers);
+			$headers = preg_split('/\r\n\\b/', $headers);
+			// unfolding
+			$headers = str_replace("\r\n", "", $headers);
 			// Parse the header
 			for ($line_count = 0; $line_count < sizeof($headers);$line_count++) {
 				$line = $headers[$line_count];
