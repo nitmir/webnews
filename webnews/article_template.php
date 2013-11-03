@@ -49,6 +49,13 @@
 		<td bgcolor="<?php echo $primary_color; ?>" width="15%" valign="top"><font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["newsgroups"]; ?></b></font></td>
 		<td bgcolor="<?php echo $secondary_color; ?>"><font size="<?php echo $font_size; ?>"><?php echo ($header["newsgroups"]); ?></td>
 	</tr>
+<?php   if(isset($header['followup-to'])){ ?>
+        <tr>
+                <td bgcolor="<?php echo $primary_color; ?>" width="15%" valign="top"><font size="<?php echo $font_size; ?>"><b><?php echo $messages_ini["text"]["followup-to"]; ?></b></font></td>
+                <td bgcolor="<?php echo $secondary_color; ?>"><font size="<?php echo $font_size; ?>"><?php echo ($header["followup-to"]); ?></td>
+        </tr>
+<?php } ?>
+
 <!--
 	<tr>
 		<td bgcolor="<?php echo $primary_color; ?>" width="15%" valign="top"><font size="<?php echo $font_size; ?>"><b>Content-Type</b></font></td>
