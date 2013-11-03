@@ -54,6 +54,7 @@
                                                 "crans.politique",
                                                 "crans.culture",
                                                 "crans.dino",
+                                                "crans.sports",
                                                 "crans.stages",
                                                 "crans.informatique",
                                                 "crans.informatique.*",

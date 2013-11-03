@@ -113,16 +113,21 @@
 		return $msg;
 	}
 
-	function quote_format($str){
-		global $quote_colors;
-		//return '<pre>'.$str.'</pre>';
-		$color_n=count($quote_colors);
-		$cmp=0;
+        function msg_format($str){
 		$str=wrap($str,80);
 		$str=htmlentities($str,ENT_COMPAT ,mb_internal_encoding());
+		$str = quote_format($str);
+		$str = add_html_links($str);
+                $str = preg_replace('@\*([^ ]*)\*@','<b>$1</b>', $str);
+                return "<pre>".$str.'</pre>';
+	}
+	function quote_format($str){
+		global $quote_colors;
+		$color_n=count($quote_colors);
+		$cmp=0;
 		$str=preg_replace(array('/ &gt;/'),array('&gt;'),$str);
 		$array=explode("\r\n",$str);
-		$message="<pre>";
+		$message="";
 		$signed=false;
 		for($i=0;isset($array[$i]);$i++){
 			$count=count_quote($array[$i]);
@@ -149,15 +154,13 @@
 			$message .= '</div>';
 		}
 		if(!preg_match('/w3m|lynx/i',$_SERVER['HTTP_USER_AGENT'])){
-			//$message = preg_replace(array("@\n(\t*)((&gt;)+)((&nbsp;)?)@",""),array("\n$1"),$message);
 			$message = preg_replace(array(
 	"@\n(\t*)((&gt;)+)( ?)@",
 	"@(</?div.*>)((&gt;)+)( ?)@",),array(
 	"\n$1",
 	"$1"),$message);
 		}
-		$message = add_html_links($message);
-		return  $message.'</pre>';
+		return  $message;
 
 	}
 

@@ -101,7 +101,7 @@
 		} elseif (stristr($part["header"]["content-type"], "text")) {	// Treat all other form of text as plain text
 			echo "<tr><td colspan=\"2\"><font size=\"$font_size\"><br>";
 			$body = decode_message_content($part);
-			$body = quote_format($body);
+			$body = msg_format($body);
 			echo $body."<br></td></tr>";
 		} elseif (preg_match("/^image\/(gif|jpeg|pjpeg|png)/i", $part["header"]["content-type"])) {
 			echo "<tr><td colspan=\"2\" align=\"center\">";
