@@ -58,6 +58,7 @@
                                                 "crans.stages",
                                                 "crans.informatique",
                                                 "crans.informatique.*",
+                                                "crans.ratp",
                                                 "tac.dpt.*",
                                                 "tac.bde",
 						"tac.crous",
