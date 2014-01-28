@@ -33,15 +33,32 @@
 				} else {
 					$MIME_Message = $nntp->get_header($reply_id);
 					$header = $MIME_Message->get_main_header();
-		
 					if ($header == NULL) {
 						$error_messages[] = $messages_ini["error"]["header_fail"]."$reply_id. ".$nntp->get_error_message();
 					} else {
 						$reply_references = $header["references"]." ".$header["message-id"];
-					}	
+					}
+
 				}
 			//~ }
 			$reply_references = trim($reply_references);
+			if (strlen($reply_references) > 986) {
+				$begin_references = substr($reply_references, 0, 986);
+				$end_references = substr($reply_references, 986);
+				$cut_position = strrpos($begin_references, ' ');
+				$reply_references = substr($begin_references, 0, $cut_position);
+				$begin_references = substr($begin_references, $cut_position);
+				$end_references = $begin_references.$end_references;
+				while (strlen($end_references) > 997){
+					$begin_references = substr($end_references, 0, 997);
+					$end_references = substr($end_references, 997);
+					$cut_position = strrpos($begin_references, ' ');
+					$reply_references = $reply_references."\r\n ".substr($begin_references, 0, $cut_position);
+	                                $begin_references = substr($begin_references, $cut_position);
+        	                        $end_references = $begin_references.$end_references;
+				}
+				$reply_references = $reply_references."\r\n ".$end_references;
+			}
 		}
 		
 		$header = array();
@@ -138,8 +155,9 @@
                     			$message_node = NULL;
 					include("webnews/article_template.php");
 				} else {
-					echo "<font face=\"".$font_family."\"><b>".$messages_ini["error"]["post_fail"]."</b><br>";
-					echo $nntp->get_error_message()."<br>";
+					echo "<font face=\"".$font_family."\" color=\"red\"><b>".$messages_ini["error"]["post_fail"]."</b><br>";
+					echo $nntp->get_error_message()."<br></font>";
+					echo "\n<!--\n".$message."\n-->\n";
 				}
 				
 				unset($_SESSION["attach_count"]);
